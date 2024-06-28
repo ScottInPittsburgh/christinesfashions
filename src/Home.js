@@ -28,16 +28,17 @@ const ProductCard = ({ name, description, price, imageUrl }) => (
 function Home() {
     // Mock data for collections and products
     const collections = [
-        { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: "https://example.com/tshirt-image.jpg" },
-        { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: "https://example.com/hoodie-image.jpg" },
-        { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: "https://example.com/accessories-image.jpg" },
+        { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: "https://via.placeholder.com/300x200" },
+        { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: "https://via.placeholder.com/300x200" },
+        { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: "https://via.placeholder.com/300x200" },
     ];
 
     const newArrivals = [
-        { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: "https://example.com/summer-tee.jpg" },
-        { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: "https://example.com/cozy-hoodie.jpg" },
+        { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: "https://via.placeholder.com/300x200" },
+        { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: "https://via.placeholder.com/300x200" },
         // Add more products as needed
     ];
+
 
     return (
         <div>
