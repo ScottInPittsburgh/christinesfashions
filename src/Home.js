@@ -2,13 +2,41 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
 
+// Simplified CollectionCard component
+const CollectionCard = ({ title, text, url, imageUrl }) => (
+    <div className="collection-card">
+        <img src={imageUrl} alt={title} className="collection-image" />
+        <div className="collection-content">
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <Link to={url} className="shop-button">Shop {title}</Link>
+        </div>
+    </div>
+);
+
+// Simplified ProductCard component
+const ProductCard = ({ name, description, price, imageUrl }) => (
+    <div className="product-card">
+        <img src={imageUrl} alt={name} className="product-image" />
+        <h3>{name}</h3>
+        <p>{description}</p>
+        <p className="product-price">${price.toFixed(2)}</p>
+        <Link to="/product/1" className="view-product-button">View Product</Link>
+    </div>
+);
+
 function Home() {
-    // Mock product data
-    const products = [
-        { id: 1, name: "Summer Dress", description: "Light and breezy summer dress", price: 59.99 },
-        { id: 2, name: "Denim Jacket", description: "Classic denim jacket for all seasons", price: 79.99 },
-        { id: 3, name: "Floral Blouse", description: "Elegant floral print blouse", price: 39.99 },
-        { id: 4, name: "Leather Boots", description: "Stylish leather boots for any occasion", price: 129.99 }
+    // Mock data for collections and products
+    const collections = [
+        { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: "https://example.com/tshirt-image.jpg" },
+        { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: "https://example.com/hoodie-image.jpg" },
+        { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: "https://example.com/accessories-image.jpg" },
+    ];
+
+    const newArrivals = [
+        { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: "https://example.com/summer-tee.jpg" },
+        { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: "https://example.com/cozy-hoodie.jpg" },
+        // Add more products as needed
     ];
 
     return (
@@ -22,18 +50,28 @@ function Home() {
                 </nav>
             </header>
             <main>
-                <h1>Welcome to Christine's Fashions</h1>
-                <div className="product-grid">
-                    {products.map((product) => (
-                        <div key={product.id} className="product-box">
-                            <Link to={`/product/${product.id}`}>
-                                <h2>{product.name}</h2>
-                                <p>{product.description}</p>
-                                <p className="product-price">${product.price.toFixed(2)}</p>
-                            </Link>
-                        </div>
-                    ))}
-                </div>
+                <section className="hero">
+                    <h1>Welcome to Christine's Fashions</h1>
+                    <p>Discover your style with our latest collections</p>
+                </section>
+
+                <section className="new-arrivals">
+                    <h2>New Arrivals</h2>
+                    <div className="product-grid">
+                        {newArrivals.map(product => (
+                            <ProductCard key={product.id} {...product} />
+                        ))}
+                    </div>
+                </section>
+
+                <section className="collections">
+                    <h2>Our Collections</h2>
+                    <div className="collection-grid">
+                        {collections.map(collection => (
+                            <CollectionCard key={collection.id} {...collection} />
+                        ))}
+                    </div>
+                </section>
             </main>
         </div>
     );
