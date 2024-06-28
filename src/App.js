@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import Cart from './Cart';
 import Product from './Product';
+import ProductPage from './ProductPage';
 import './App.css';
 
 function App() {
