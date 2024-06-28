@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './styles.css';
 
 function Cart() {
     return (
@@ -15,7 +16,14 @@ function Cart() {
             </header>
             <main>
                 <h1>Shopping Cart</h1>
-                <p>Your shopping cart is empty.</p>
+                <div className="cart-content">
+                    <p>Your cart is currently empty.</p>
+                    <div className="cart-box">
+                        <p>Sample product in cart</p>
+                        <p>Quantity: 1</p>
+                        <p>Price: $00.00</p>
+                    </div>
+                </div>
             </main>
         </div>
     );
