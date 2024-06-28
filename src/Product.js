@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles.css';
 
 function Product() {
     return (
@@ -16,10 +15,7 @@ function Product() {
             </header>
             <main>
                 <h1>Product Page</h1>
-                <div className="product-detail">
-                    <h2>Product Name</h2>
-                    <p>Details details details.</p>
-                </div>
+                <p>Details about the product.</p>
             </main>
         </div>
     );
