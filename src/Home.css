@@ -74,7 +74,6 @@ main {
     margin-top: 10px;
 }
 
-
 .collection-card,
 .product-card {
     width: 200px;
@@ -90,6 +89,8 @@ main {
     width: 100%;
     height: auto;
     object-fit: cover;
+    max-width: 100%;
+    max-height: 200px;
 }
 
 .collection-content,
