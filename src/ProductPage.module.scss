@@ -1,8 +1,13 @@
+.myVideo {
+  position: relative;
+}
+
 .container_s,
 .container_b {
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .container_b {
