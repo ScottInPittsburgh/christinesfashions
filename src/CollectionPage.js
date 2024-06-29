@@ -35,6 +35,18 @@ const CollectionPage = () => {
         fetchProducts();
     }, [slugId, navigate]);
 
+    useEffect(() => {
+        const sortProducts = (products) => {
+            return [...products].sort((a, b) => {
+                if (sortBy === 'price: low-high') return a.price - b.price;
+                if (sortBy === 'price: high-low') return b.price - a.price;
+                return 0;
+            });
+        };
+
+        setFilteredProducts(sortProducts(filteredProducts));
+    }, [sortBy, filteredProducts]);
+
     const handleFilter = (property, value) => {
         const newFilterConditions = { ...filterConditions };
         if (newFilterConditions[property]?.includes(value)) {
@@ -55,12 +67,6 @@ const CollectionPage = () => {
 
     const handleSortBy = (value) => {
         setSortBy(value);
-        const sortedProducts = [...filteredProducts].sort((a, b) => {
-            if (value === 'price: low-high') return a.price - b.price;
-            if (value === 'price: high-low') return b.price - a.price;
-            return 0;
-        });
-        setFilteredProducts(sortedProducts);
     };
 
     const handleClearFilters = () => {
@@ -75,9 +81,9 @@ const CollectionPage = () => {
     return (
         <div className={styles.collectionPage}>
             <div className={styles.filterSection}>
-                <button onClick={() => handleSortBy('newest')}>Newest</button>
-                <button onClick={() => handleSortBy('price: low-high')}>Price: Low to High</button>
-                <button onClick={() => handleSortBy('price: high-low')}>Price: High to Low</button>
+                <button onClick={() => handleSortBy('newest')} className={sortBy === 'newest' ? styles.active : ''}>Newest</button>
+                <button onClick={() => handleSortBy('price: low-high')} className={sortBy === 'price: low-high' ? styles.active : ''}>Price: Low to High</button>
+                <button onClick={() => handleSortBy('price: high-low')} className={sortBy === 'price: high-low' ? styles.active : ''}>Price: High to Low</button>
                 <div className={styles.filterDropdown}>
                     Filter <FaChevronDown />
                     <div className={styles.filterOptions}>
