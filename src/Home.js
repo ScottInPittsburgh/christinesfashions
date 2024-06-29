@@ -17,9 +17,9 @@ const CollectionCard = ({ title, text, url, imageUrl }) => (
 );
 
 const ProductCard = ({ name, description, price, imageUrl }) => (
-    <div className="product-card">
-        <img src={imageUrl} alt={name} className="product-image" />
-        <div className="product-content">
+    <div className="new-arrival-card">
+        <img src={imageUrl} alt={name} className="new-arrival-image" />
+        <div className="new-arrival-content">
             <h3>{name}</h3>
             <p>{description}</p>
             <p className="product-price">${price.toFixed(2)}</p>
@@ -35,8 +35,8 @@ const collections = [
 ];
 
 const newArrivals = [
-    { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: "https://via.placeholder.com/300x200" },
-    { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: "https://via.placeholder.com/300x200" },
+    { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: id1image },
+    { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: id2image },
     // Add more products as needed
 ];
 
