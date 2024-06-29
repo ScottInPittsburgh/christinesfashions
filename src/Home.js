@@ -19,10 +19,12 @@ const CollectionCard = ({ title, text, url, imageUrl }) => (
 const ProductCard = ({ name, description, price, imageUrl }) => (
     <div className="product-card">
         <img src={imageUrl} alt={name} className="product-image" />
-        <h3>{name}</h3>
-        <p>{description}</p>
-        <p className="product-price">${price.toFixed(2)}</p>
-        <Link to="/product/1" className="view-product-button">View Product</Link>
+        <div className="product-content">
+            <h3>{name}</h3>
+            <p>{description}</p>
+            <p className="product-price">${price.toFixed(2)}</p>
+            <Link to="/product/1" className="view-product-button">View Product</Link>
+        </div>
     </div>
 );
 
