@@ -28,9 +28,9 @@ const ProductCard = ({ name, description, price, imageUrl }) => (
 function Home() {
     // Mock data for collections and products
     const collections = [
-        { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: "./images/content?id1image.jpeg" },
-        { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: "./images/content?id2image.jpeg" },
-        { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: "./images/content?id3image.jpeg" },
+        { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: "./images/content?id1image.jpg" },
+        { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: "./images/content?id2image.jpg" },
+        { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: "./images/content?id3image.jpg" },
     ];
 
 
