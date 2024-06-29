@@ -29,15 +29,14 @@ const ProductCard = ({ name, description, price, imageUrl }) => (
 );
 
 const collections = [
-    { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: id1image },
-    { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: id2image },
+    { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/t-shirts", imageUrl: id1image },
+    { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies-sweatshirts", imageUrl: id2image },
     { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: id3image },
 ];
 
 const newArrivals = [
     { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: id1image },
     { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: id2image },
-    // Add more products as needed
 ];
 
 const Home = () => {
@@ -48,6 +47,7 @@ const Home = () => {
                     <ul className="menu-bar">
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/cart">Shopping Cart</Link></li>
+                        <li><Link to="/collection/products">All Products</Link></li>
                     </ul>
                 </nav>
             </header>

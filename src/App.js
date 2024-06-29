@@ -4,6 +4,7 @@ import Home from './Home';
 import Cart from './Cart';
 import Product from './Product';
 import ProductPage from './ProductPage';
+import CollectionPage from './CollectionPage';
 import './styles.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/product" element={<Product />} />
                     <Route path="/product/:id" element={<ProductPage />} />
+                    <Route path="/collection/:id" element={<CollectionPage />} />
                 </Routes>
             </div>
         </Router>
