@@ -33,11 +33,11 @@ const ProductPage = () => {
     const videoRef = useRef();
     const audioLongRef = useRef(null);
     const cyanAudioRef = useRef(null);
-    const bronzeAudioRef = useRef(null);
-    const blackAudioRef = useRef(null);
+    // const bronzeAudioRef = useRef(null);
+    // const blackAudioRef = useRef(null);
     const [selectedColor, setSelectedColor] = useState('Cyan');
-    const [shortAudioFinished, setShortAudioFinished] = useState(false);
-    const [playingLongAudio, setPlayingLongAudio] = useState(true);
+    // const [shortAudioFinished, setShortAudioFinished] = useState(false);
+    // const [playingLongAudio, setPlayingLongAudio] = useState(true);
     const [selectedSize, setSelectedSize] = useState('');
 
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
@@ -64,25 +64,20 @@ const ProductPage = () => {
         }
     };
 
-    const handlePauseAudio = () => {
-        audioLongRef.current.pause();
-        cyanAudioRef.current.pause();
-    };
-
     const handlePlayLongAudio = () => {
         audioLongRef.current.play();
-        setPlayingLongAudio(true);
-        setShortAudioFinished(false);
+        // setPlayingLongAudio(true);
+        // setShortAudioFinished(false);
     };
 
     const handlePlayShortAudio = () => {
         cyanAudioRef.current.play();
         audioLongRef.current.pause();
-        setPlayingLongAudio(false);
+        // setPlayingLongAudio(false);
     };
 
     const handleShortAudioEnded = () => {
-        setShortAudioFinished(true);
+        // setShortAudioFinished(true);
         audioLongRef.current.play();
         cyanAudioRef.current.currentTime = 0;
     };
