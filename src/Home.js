@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
+import id1image from './images/content/id1image.jpg';
+import id2image from './images/content/id2image.jpg';
+import id3image from './images/content/id3image.jpg';
 
-// Simplified CollectionCard component
 const CollectionCard = ({ title, text, url, imageUrl }) => (
     <div className="collection-card">
         <img src={imageUrl} alt={title} className="collection-image" />
@@ -14,7 +16,6 @@ const CollectionCard = ({ title, text, url, imageUrl }) => (
     </div>
 );
 
-// Simplified ProductCard component
 const ProductCard = ({ name, description, price, imageUrl }) => (
     <div className="product-card">
         <img src={imageUrl} alt={name} className="product-image" />
@@ -25,22 +26,19 @@ const ProductCard = ({ name, description, price, imageUrl }) => (
     </div>
 );
 
-function Home() {
-    // Mock data for collections and products
-    const collections = [
-        { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: "./images/content/id1image.jpg" },
-        { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: "./images/content/id2mage.jpg" },
-        { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: "./images/content/id3image.jpg" },
-    ];
+const collections = [
+    { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/tshirts", imageUrl: id1image },
+    { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies", imageUrl: id2image },
+    { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: id3image },
+];
 
+const newArrivals = [
+    { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: "https://via.placeholder.com/300x200" },
+    { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: "https://via.placeholder.com/300x200" },
+    // Add more products as needed
+];
 
-    const newArrivals = [
-        { id: 1, name: "Summer Tee", description: "Light and breezy", price: 29.99, imageUrl: "https://via.placeholder.com/300x200" },
-        { id: 2, name: "Cozy Hoodie", description: "Perfect for chilly days", price: 49.99, imageUrl: "https://via.placeholder.com/300x200" },
-        // Add more products as needed
-    ];
-
-
+const Home = () => {
     return (
         <div>
             <header>
