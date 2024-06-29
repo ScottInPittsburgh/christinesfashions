@@ -20,10 +20,8 @@ const CollectionPage = () => {
             navigate('/');
         }
 
-
         const fetchProducts = async () => {
             setIsLoading(true);
-            // Need API call
             const mockProducts = [
                 { id: 1, name: 'T-Shirt', price: 19.99, color: 'red', size: 'M', type: 't-shirt' },
                 { id: 2, name: 'Hoodie', price: 39.99, color: 'blue', size: 'L', type: 'hoodie' },
