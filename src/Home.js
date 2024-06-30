@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './styles.css';
-import heroImage from './images/hero-image.jpg';
+import heroImage from './images/content/hero-image.jpg';
 import id1image from './images/content/id1image.jpg';
 import id2image from './images/content/id2image.jpg';
 import id3image from './images/content/id3image.jpg';
