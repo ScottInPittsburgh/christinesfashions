@@ -17,6 +17,12 @@ const ProductColors = ({ handleSelectedColor }) => (
     </div>
 );
 
+const ProductSize = ({ value, isSelected, isOutOfStock, onClick }) => (
+    <div className={`${styles.size} ${isSelected ? styles.fill : ''} ${isOutOfStock ? styles.no_stock : ''}`} onClick={onClick}>
+        {value.toUpperCase()}
+    </div>
+);
+
 const ProductPage = () => {
     const videoRef = useRef();
     const audioLongRef = useRef(null);
@@ -24,6 +30,7 @@ const ProductPage = () => {
     const bronzeAudioRef = useRef(null);
     const blackAudioRef = useRef(null);
     const [selectedColor, setSelectedColor] = useState('Cyan');
+    const [selectedSize, setSelectedSize] = useState('');
 
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
@@ -86,6 +93,21 @@ const ProductPage = () => {
                             <ProductColors handleSelectedColor={handleSelectedColor} />
                         </div>
                     </div>
+                    <div className={styles.sizes_container}>
+                        <p className={styles.pick_size}>Select Size</p>
+                        <div className={styles.sizes_wrapper}>
+                            {['S', 'M', 'L', 'XL'].map((size) => (
+                                <ProductSize
+                                    key={size}
+                                    value={size}
+                                    isSelected={selectedSize === size}
+                                    isOutOfStock={false}
+                                    onClick={() => setSelectedSize(size)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    <button className={styles.button}>ADD TO BAG</button>
                 </div>
             </div>
             <audio ref={audioLongRef}>
