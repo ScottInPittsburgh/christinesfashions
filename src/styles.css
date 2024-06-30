@@ -51,6 +51,7 @@ header {
     justify-content: center;
     text-align: center;
     background-color: #333;
+    margin-top: 60px;
 }
 
 .hero h1 {
@@ -61,11 +62,10 @@ header {
 }
 
 main {
-    margin-top: 460px;
     padding: 40px;
     background-color: white;
     max-width: 1200px;
-    margin: 460px auto 40px auto;
+    margin: 40px auto;
 }
 
 .product-grid {
