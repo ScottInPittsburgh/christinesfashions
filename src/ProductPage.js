@@ -1,20 +1,35 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
 import { useMediaQuery } from 'react-responsive';
-import CyanVideo from './assets/videos/Cyan.mp4';
-import BlackVideo from './assets/videos/Black.mp4';
-import BronzeVideo from './assets/videos/Bronze.mp4';
+
+import CyanVideo from './assets/videos/Cyan.mp4'
+
+import BlackVideo from './assets/videos/Black.mp4'
+
+import BronzeVideo from './assets/videos/Bronze.mp4'
+
 import LongerAudio from "./assets/audios/Default.m4a";
+
 import CyanAudio from "./assets/audios/Cyan.m4a";
+
+import BronzeAudio from "./assets/audios/Bronze.m4a";
+
+import BlackAudio from "./assets/audios/Black.m4a";
+
 import styles from './ProductPage.module.scss';
 
-const ProductColors = ({ thumbnail, isSelected, onClick }) => (
-    <div className={`${styles.color_image_container} ${isSelected ? styles.selected : ''}`} onClick={onClick}>
-        <img src={thumbnail} alt="Product color" className={styles.color_thumbnail} />
+const ProductColors = ({ isSelected, handleSelectedColor }) => (
+    <div className={`${styles.color_image_container} ${isSelected ? styles.selected : ''}`}>
+        <div className={styles.color_container}>
+            <button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button>
+            <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
+            <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button>
+        </div>
     </div>
 );
 
-const ProductSize = ({ value, isSelected, isOutOfStock, onClick }) => (
-    <div className={`${styles.size} ${isSelected ? styles.fill : ''} ${isOutOfStock ? styles.no_stock : ''}`} onClick={onClick}>
+const ProductSize = ({ value, isSelected, isOutOfStock }) => (
+    <div className={`${styles.size} ${isSelected ? styles.fill : ''} ${isOutOfStock ? styles.no_stock : ''}`}>
         {value.toUpperCase()}
     </div>
 );
@@ -33,22 +48,17 @@ const ProductPage = () => {
     const videoRef = useRef();
     const audioLongRef = useRef(null);
     const cyanAudioRef = useRef(null);
-    // const bronzeAudioRef = useRef(null);
-    // const blackAudioRef = useRef(null);
+    const bronzeAudioRef = useRef(null);
+    const blackAudioRef = useRef(null);
     const [selectedColor, setSelectedColor] = useState('Cyan');
-    // const [shortAudioFinished, setShortAudioFinished] = useState(false);
-    // const [playingLongAudio, setPlayingLongAudio] = useState(true);
+    const [shortAudioFinished, setShortAudioFinished] = useState(false);
+    const [playingLongAudio, setPlayingLongAudio] = useState(true);
     const [selectedSize, setSelectedSize] = useState('');
 
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
     const handleSelectedColor = (color) => {
         setSelectedColor(color);
-        if (color === 'Cyan') {
-            handlePlayShortAudio();
-        } else {
-            handlePlayLongAudio();
-        }
     };
 
     const playVideoAsPerSelectedColor = () => {
@@ -60,27 +70,67 @@ const ProductPage = () => {
             case 'Black':
                 return BlackVideo;
             default:
+                return null;
+        }
+    };
+
+    const playAudioAsPerSelectedColor = () => {
+        switch (selectedColor) {
+            case 'Cyan':
+                cyanAudioRef.current.play();
+                bronzeAudioRef.current.pause();
+                blackAudioRef.current.pause();
+                break;
+            case 'Bronze':
+                bronzeAudioRef.current.play();
+                cyanAudioRef.current.pause();
+                blackAudioRef.current.pause();
+                break;
+            case 'Black':
+                blackAudioRef.current.play();
+                bronzeAudioRef.current.pause();
+                cyanAudioRef.current.pause();
+                break;
+            default:
                 break;
         }
     };
 
+    const handlePauseAudio = () => {
+        audioLongRef.current.pause();
+        cyanAudioRef.current.pause();
+    };
+
     const handlePlayLongAudio = () => {
         audioLongRef.current.play();
-        // setPlayingLongAudio(true);
-        // setShortAudioFinished(false);
+        setPlayingLongAudio(true);
+        setShortAudioFinished(false);
     };
 
     const handlePlayShortAudio = () => {
-        cyanAudioRef.current.play();
+        playAudioAsPerSelectedColor();
         audioLongRef.current.pause();
-        // setPlayingLongAudio(false);
+        setPlayingLongAudio(false);
     };
 
     const handleShortAudioEnded = () => {
-        // setShortAudioFinished(true);
+        setShortAudioFinished(true);
         audioLongRef.current.play();
         cyanAudioRef.current.currentTime = 0;
+        bronzeAudioRef.current.currentTime = 0;
+        blackAudioRef.current.currentTime = 0;
     };
+
+    useEffect(() => {
+        audioLongRef.current.play();
+        return () => {
+            audioLongRef.current.stop();
+        };
+    }, []);
+
+    useEffect(() => {
+        handlePlayShortAudio();
+    }, [selectedColor]);
 
     // Mock data
     const product = {
@@ -95,64 +145,89 @@ const ProductPage = () => {
     };
 
     return (
-        <>
-            <section className={isBigScreen ? styles.container_b : styles.container_s}>
-                <div className={styles.details_wrapper}>
-                    <h1 className={styles.name}>{product.name}</h1>
-                    <p className={styles.description}>{product.description}</p>
-                    <p className={styles.color}>{product.colors[selectedColor]}</p>
-                    <ProductTags tags={product.tags} />
-                    <div className={styles.price_wrapper}>
-                        <span className={styles.current_price}>${product.discountedPrice}</span>
-                        {product.discountedPrice < product.price && (
-                            <span className={styles.crossed_price}>${product.price}</span>
-                        )}
+        <section className={isBigScreen ? styles.container_b : styles.container_s}>
+            <button onClick={handlePauseAudio}>Pause</button>
+            <div className={styles.details_wrapper}>
+                <h1 className={styles.name}>{product.name}</h1>
+                <p className={styles.description}>{product.description}</p>
+                <p className={styles.color}>{product.colors[selectedColor]}</p>
+                <ProductTags tags={product.tags} />
+                <div className={styles.price_wrapper}>
+                    <span className={styles.current_price}>${product.discountedPrice}</span>
+                    {product.discountedPrice < product.price && (
+                        <span className={styles.crossed_price}>${product.price}</span>
+                    )}
+                </div>
+            </div>
+            <div className={styles.controls_wrapper}>
+                <div className={styles.variants_container}>
+                    <p className={styles.number_of_colors}>
+                        {product.colors.length} Colors <span> | {product.colors[selectedColor]}</span>
+                    </p>
+                    <div className={styles.variants_wrapper}>
+                        <ProductColors
+                            isSelected={false}
+                            handleSelectedColor={handleSelectedColor}
+                        />
                     </div>
                 </div>
-                <div className={styles.controls_wrapper}>
-                    <div className={styles.variants_container}>
-                        <p className={styles.number_of_colors}>
-                            {product.colors.length} Colors <span>| {product.colors[selectedColor]}</span>
-                        </p>
-                        <div className={styles.variants_wrapper}>
-                            {product.colors.map((color, index) => (
-                                <ProductColors
-                                    key={index}
-                                    thumbnail={`https://via.placeholder.com/50x50/${color.toLowerCase()}`}
-                                    isSelected={selectedColor === color}
-                                    onClick={() => handleSelectedColor(color)}
-                                />
-                            ))}
-                        </div>
+                <div className={styles.sizes_container}>
+                    <p className={styles.pick_size}>Select Size</p>
+                    <div className={styles.sizes_wrapper}>
+                        {product.sizes.map((size, index) => (
+                            <ProductSize
+                                key={index}
+                                value={size}
+                                isSelected={selectedSize === size}
+                                isOutOfStock={false}
+                                onClick={() => setSelectedSize(size)}
+                            />
+                        ))}
                     </div>
-                    <div className={styles.sizes_container}>
-                        <p className={styles.pick_size}>Select Size</p>
-                        <div className={styles.sizes_wrapper}>
-                            {product.sizes.map((size, index) => (
-                                <ProductSize
-                                    key={index}
-                                    value={size}
-                                    isSelected={selectedSize === size}
-                                    isOutOfStock={false}
-                                    onClick={() => setSelectedSize(size)}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                    <button className={styles.button}>
-                        ADD TO BAG
-                    </button>
                 </div>
-
-                {selectedColor && <video ref={videoRef} style={{ width: "100%", height: '100%' }}
-                                         autoPlay="autoplay" src={playVideoAsPerSelectedColor()}
-                                         type="video/mp4" className="myVideo" loop={true}>
-                </video>}
-
-                <audio ref={audioLongRef} src={LongerAudio} loop />
-                <audio ref={cyanAudioRef} src={CyanAudio} onEnded={handleShortAudioEnded} />
-            </section>
-        </>
+                <button className={styles.button}>
+                    ADD TO BAG
+                </button>
+            </div>
+            <audio ref={audioLongRef} onEnded={handlePauseAudio}>
+                <source src={LongerAudio} type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+            <audio
+                ref={cyanAudioRef}
+                onEnded={handleShortAudioEnded}
+                style={{ display: shortAudioFinished ? "none" : "block" }}
+            >
+                <source src={CyanAudio} type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+            <audio
+                ref={bronzeAudioRef}
+                onEnded={handleShortAudioEnded}
+                style={{ display: shortAudioFinished ? "none" : "block" }}
+            >
+                <source src={BronzeAudio} type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+            <audio
+                ref={blackAudioRef}
+                onEnded={handleShortAudioEnded}
+                style={{ display: shortAudioFinished ? "none" : "block" }}
+            >
+                <source src={BlackAudio} type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+            {selectedColor && (
+                <video
+                    ref={videoRef}
+                    style={{ width: "80%", height: '100%' }}
+                    autoPlay
+                    src={playVideoAsPerSelectedColor()}
+                    type="video/mp4"
+                    className={styles.my_video}
+                ></video>
+            )}
+        </section>
     );
 };
 
