@@ -365,41 +365,35 @@ main {
 .cyan_button {
     font-size: 18px;
     padding: 20px;
-
     background: #12b4c0;
     color: #f3ecec;
     cursor: pointer;
-
     position: relative;
     right: 10px;
-
+    border: 1px solid black;
 }
 
 .bronze_button {
     font-size: 18px;
     padding: 20px;
-
     background: #de7a09;
     color: #f3ecec;
     cursor: pointer;
-
     left: 10px;
     right: 10px;
-
+    border: 1px solid black;
 }
 
 .black_button {
     font-size: 18px;
     padding: 20px;
-
     background: #0a090b;
     color: #f3ecec;
     cursor: pointer;
     position: relative;
-
     right: 10px;
     left: 10px;
-
+    border: 1px solid black;
 }
 
 .color_thumbnail {
