@@ -1,21 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-
 import { useMediaQuery } from 'react-responsive';
-
-import CyanVideo from './assets/videos/Cyan.mp4'
-
-import BlackVideo from './assets/videos/Black.mp4'
-
-import BronzeVideo from './assets/videos/Bronze.mp4'
-
+import CyanVideo from './assets/videos/Cyan.mp4';
+import BlackVideo from './assets/videos/Black.mp4';
+import BronzeVideo from './assets/videos/Bronze.mp4';
 import LongerAudio from "./assets/audios/Default.m4a";
-
 import CyanAudio from "./assets/audios/Cyan.m4a";
-
 import BronzeAudio from "./assets/audios/Bronze.m4a";
-
 import BlackAudio from "./assets/audios/Black.m4a";
-
 import styles from './ProductPage.module.scss';
 
 const ProductColors = ({ isSelected, handleSelectedColor }) => (
@@ -52,7 +43,6 @@ const ProductPage = () => {
     const blackAudioRef = useRef(null);
     const [selectedColor, setSelectedColor] = useState('Cyan');
     const [shortAudioFinished, setShortAudioFinished] = useState(false);
-    const [playingLongAudio, setPlayingLongAudio] = useState(true);
     const [selectedSize, setSelectedSize] = useState('');
 
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
@@ -101,16 +91,10 @@ const ProductPage = () => {
         cyanAudioRef.current.pause();
     };
 
-    const handlePlayLongAudio = () => {
-        audioLongRef.current.play();
-        setPlayingLongAudio(true);
-        setShortAudioFinished(false);
-    };
-
     const handlePlayShortAudio = () => {
         playAudioAsPerSelectedColor();
         audioLongRef.current.pause();
-        setPlayingLongAudio(false);
+        setShortAudioFinished(false);
     };
 
     const handleShortAudioEnded = () => {
@@ -122,9 +106,10 @@ const ProductPage = () => {
     };
 
     useEffect(() => {
-        audioLongRef.current.play();
+        const audioLong = audioLongRef.current;
+        audioLong.play();
         return () => {
-            audioLongRef.current.stop();
+            audioLong.pause();
         };
     }, []);
 
