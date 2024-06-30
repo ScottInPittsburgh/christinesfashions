@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './styles.css';
-import heroImage from './images/content/hero-image.jpg';
+import heroImage from './images/hero-image.jpg';
 import id1image from './images/content/id1image.jpg';
 import id2image from './images/content/id2image.jpg';
 import id3image from './images/content/id3image.jpg';
@@ -41,14 +41,16 @@ const newArrivals = [
 ];
 
 const Home = () => {
+    const location = useLocation();
+
     return (
         <div>
             <header className="header">
                 <nav>
                     <ul className="menu-bar">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/cart">Shopping Cart</Link></li>
-                        <li><Link to="/collection/products">All Products</Link></li>
+                        <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
+                        <li><Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>Shopping Cart</Link></li>
+                        <li><Link to="/collection/products" className={location.pathname === '/collection/products' ? 'active' : ''}>All Products</Link></li>
                     </ul>
                 </nav>
                 <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
