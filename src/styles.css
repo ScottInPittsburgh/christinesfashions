@@ -42,11 +42,12 @@ header {
 }
 
 .hero {
-    background: url('./images/hero-image.jpg') no-repeat center center;
     background-size: cover;
+    background-position: center;
     color: white;
     padding: 60px 20px;
     text-align: center;
+    background-color: #333;
 }
 
 .hero h1 {
@@ -190,7 +191,6 @@ main {
     text-align: center;
 }
 
-/* ProductPage Styles */
 .product-page {
     display: flex;
     flex-wrap: wrap;

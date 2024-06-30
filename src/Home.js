@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
+import heroImage from './images/content/hero-image.jpg';
 import id1image from './images/content/id1image.jpg';
 import id2image from './images/content/id2image.jpg';
 import id3image from './images/content/id3image.jpg';
@@ -50,7 +51,7 @@ const Home = () => {
                         <li><Link to="/collection/products">All Products</Link></li>
                     </ul>
                 </nav>
-                <div className="hero">
+                <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
                     <h1>Christine's Fashions</h1>
                 </div>
             </header>
