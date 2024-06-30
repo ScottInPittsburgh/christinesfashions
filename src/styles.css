@@ -45,10 +45,12 @@ header {
     background: url('./images/content/hero-image.jpg') no-repeat center center;
     background-size: cover;
     color: white;
-    padding: 120px 20px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     background-color: #333;
-    margin-top: 60px;
 }
 
 .hero h1 {
@@ -59,10 +61,11 @@ header {
 }
 
 main {
-    padding: 140px 40px 40px;
+    margin-top: 460px;
+    padding: 40px;
     background-color: white;
     max-width: 1200px;
-    margin: auto;
+    margin: 460px auto 40px auto;
 }
 
 .product-grid {
