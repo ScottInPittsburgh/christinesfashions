@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import CyanVideo from './assets/videos/Cyan.mp4';
 import BlackVideo from './assets/videos/Black.mp4';
@@ -47,11 +47,11 @@ const ProductPage = () => {
 
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
-    const handleSelectedColor = (color) => {
+    const handleSelectedColor = useCallback((color) => {
         setSelectedColor(color);
-    };
+    }, []);
 
-    const playVideoAsPerSelectedColor = () => {
+    const playVideoAsPerSelectedColor = useCallback(() => {
         switch (selectedColor) {
             case 'Cyan':
                 return CyanVideo;
@@ -62,9 +62,9 @@ const ProductPage = () => {
             default:
                 return null;
         }
-    };
+    }, [selectedColor]);
 
-    const playAudioAsPerSelectedColor = () => {
+    const playAudioAsPerSelectedColor = useCallback(() => {
         switch (selectedColor) {
             case 'Cyan':
                 cyanAudioRef.current.play();
@@ -84,26 +84,20 @@ const ProductPage = () => {
             default:
                 break;
         }
-    };
+    }, [selectedColor]);
 
-    const handlePauseAudio = () => {
+    const handlePauseAudio = useCallback(() => {
         audioLongRef.current.pause();
         cyanAudioRef.current.pause();
-    };
+    }, []);
 
-    const handlePlayShortAudio = () => {
-        playAudioAsPerSelectedColor();
-        audioLongRef.current.pause();
-        setShortAudioFinished(false);
-    };
-
-    const handleShortAudioEnded = () => {
+    const handleShortAudioEnded = useCallback(() => {
         setShortAudioFinished(true);
         audioLongRef.current.play();
         cyanAudioRef.current.currentTime = 0;
         bronzeAudioRef.current.currentTime = 0;
         blackAudioRef.current.currentTime = 0;
-    };
+    }, []);
 
     useEffect(() => {
         const audioLong = audioLongRef.current;
@@ -114,8 +108,8 @@ const ProductPage = () => {
     }, []);
 
     useEffect(() => {
-        handlePlayShortAudio();
-    }, [selectedColor]);
+        playAudioAsPerSelectedColor();
+    }, [selectedColor, playAudioAsPerSelectedColor]);
 
     // Mock data
     const product = {
