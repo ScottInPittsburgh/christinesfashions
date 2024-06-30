@@ -64,7 +64,15 @@ const ProductPage = () => {
         }
     }, [selectedColor]);
 
-    const playAudioAsPerSelectedColor = useCallback(() => {
+    useEffect(() => {
+        const audioLong = audioLongRef.current;
+        audioLong.play();
+        return () => {
+            audioLong.pause();
+        };
+    }, []);
+
+    useEffect(() => {
         switch (selectedColor) {
             case 'Cyan':
                 cyanAudioRef.current.play();
@@ -86,113 +94,36 @@ const ProductPage = () => {
         }
     }, [selectedColor]);
 
-    const handlePauseAudio = useCallback(() => {
-        audioLongRef.current.pause();
-        cyanAudioRef.current.pause();
-    }, []);
-
-    const handleShortAudioEnded = useCallback(() => {
-        setShortAudioFinished(true);
-        audioLongRef.current.play();
-        cyanAudioRef.current.currentTime = 0;
-        bronzeAudioRef.current.currentTime = 0;
-        blackAudioRef.current.currentTime = 0;
-    }, []);
-
-    useEffect(() => {
-        const audioLong = audioLongRef.current;
-        audioLong.play();
-        return () => {
-            audioLong.pause();
-        };
-    }, []);
-
-    useEffect(() => {
-        playAudioAsPerSelectedColor();
-    }, [selectedColor, playAudioAsPerSelectedColor]);
-
-    // Mock data
-    const product = {
-        name: "Sample Product",
-        description: "This is a sample product description.",
-        price: 99.99,
-        discountedPrice: 79.99,
-        colors: ["Red", "Blue", "Green"],
-        sizes: ["S", "M", "L", "XL"],
-        tags: ["new", "sale"],
-        images: ["https://via.placeholder.com/400x600", "https://via.placeholder.com/400x600"]
-    };
-
     return (
         <section className={isBigScreen ? styles.container_b : styles.container_s}>
-            <button onClick={handlePauseAudio}>Pause</button>
+            <button onClick={() => audioLongRef.current.pause()}>Pause</button>
             <div className={styles.details_wrapper}>
-                <h1 className={styles.name}>{product.name}</h1>
-                <p className={styles.description}>{product.description}</p>
-                <p className={styles.color}>{product.colors[selectedColor]}</p>
-                <ProductTags tags={product.tags} />
-                <div className={styles.price_wrapper}>
-                    <span className={styles.current_price}>${product.discountedPrice}</span>
-                    {product.discountedPrice < product.price && (
-                        <span className={styles.crossed_price}>${product.price}</span>
-                    )}
-                </div>
-            </div>
-            <div className={styles.controls_wrapper}>
-                <div className={styles.variants_container}>
-                    <p className={styles.number_of_colors}>
-                        {product.colors.length} Colors <span> | {product.colors[selectedColor]}</span>
-                    </p>
-                    <div className={styles.variants_wrapper}>
-                        <ProductColors
-                            isSelected={false}
-                            handleSelectedColor={handleSelectedColor}
-                        />
-                    </div>
-                </div>
-                <div className={styles.sizes_container}>
-                    <p className={styles.pick_size}>Select Size</p>
-                    <div className={styles.sizes_wrapper}>
-                        {product.sizes.map((size, index) => (
-                            <ProductSize
-                                key={index}
-                                value={size}
-                                isSelected={selectedSize === size}
-                                isOutOfStock={false}
-                                onClick={() => setSelectedSize(size)}
+                <h1 className={styles.name}>Sample Product</h1>
+                <p className={styles.description}>This is a sample product description.</p>
+                <div className={styles.controls_wrapper}>
+                    <div className={styles.variants_container}>
+                        <div className={styles.variants_wrapper}>
+                            <ProductColors
+                                isSelected={false}
+                                handleSelectedColor={handleSelectedColor}
                             />
-                        ))}
+                        </div>
                     </div>
                 </div>
-                <button className={styles.button}>
-                    ADD TO BAG
-                </button>
             </div>
-            <audio ref={audioLongRef} onEnded={handlePauseAudio}>
+            <audio ref={audioLongRef}>
                 <source src={LongerAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
-            <audio
-                ref={cyanAudioRef}
-                onEnded={handleShortAudioEnded}
-                style={{ display: shortAudioFinished ? "none" : "block" }}
-            >
+            <audio ref={cyanAudioRef}>
                 <source src={CyanAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
-            <audio
-                ref={bronzeAudioRef}
-                onEnded={handleShortAudioEnded}
-                style={{ display: shortAudioFinished ? "none" : "block" }}
-            >
+            <audio ref={bronzeAudioRef}>
                 <source src={BronzeAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
-            <audio
-                ref={blackAudioRef}
-                onEnded={handleShortAudioEnded}
-                style={{ display: shortAudioFinished ? "none" : "block" }}
-            >
+            <audio ref={blackAudioRef}>
                 <source src={BlackAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>

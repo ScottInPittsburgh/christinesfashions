@@ -149,3 +149,39 @@
   background-color: #000;
   color: #fff;
 }
+
+.cyan_button {
+  width: 40px;
+  height: 40px;
+  background-color: #12b4c0;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bronze_button {
+  width: 40px;
+  height: 40px;
+  background-color: #de7a09;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.black_button {
+  width: 40px;
+  height: 40px;
+  background-color: #0a090b;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
