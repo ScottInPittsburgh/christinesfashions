@@ -9,29 +9,13 @@ import BronzeAudio from "./assets/audios/Bronze.m4a";
 import BlackAudio from "./assets/audios/Black.m4a";
 import styles from './ProductPage.module.scss';
 
-const ProductColors = ({ isSelected, handleSelectedColor }) => (
-    <div className={`${styles.color_image_container} ${isSelected ? styles.selected : ''}`}>
+const ProductColors = ({ handleSelectedColor }) => (
+    <div className={styles.color_image_container}>
         <div className={styles.color_container}>
             <button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button>
             <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
             <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button>
         </div>
-    </div>
-);
-
-const ProductSize = ({ value, isSelected, isOutOfStock }) => (
-    <div className={`${styles.size} ${isSelected ? styles.fill : ''} ${isOutOfStock ? styles.no_stock : ''}`}>
-        {value.toUpperCase()}
-    </div>
-);
-
-const ProductTags = ({ tags }) => (
-    <div className={styles.tags_wrapper}>
-        {tags.map((tag, index) => (
-            <span key={index} className={tag === 'new' ? styles.tag_alt : styles.tag}>
-                {tag}
-            </span>
-        ))}
     </div>
 );
 
@@ -42,8 +26,6 @@ const ProductPage = () => {
     const bronzeAudioRef = useRef(null);
     const blackAudioRef = useRef(null);
     const [selectedColor, setSelectedColor] = useState('Cyan');
-    const [shortAudioFinished, setShortAudioFinished] = useState(false);
-    const [selectedSize, setSelectedSize] = useState('');
 
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
@@ -103,10 +85,7 @@ const ProductPage = () => {
                 <div className={styles.controls_wrapper}>
                     <div className={styles.variants_container}>
                         <div className={styles.variants_wrapper}>
-                            <ProductColors
-                                isSelected={false}
-                                handleSelectedColor={handleSelectedColor}
-                            />
+                            <ProductColors handleSelectedColor={handleSelectedColor} />
                         </div>
                     </div>
                 </div>
