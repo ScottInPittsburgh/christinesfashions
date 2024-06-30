@@ -45,7 +45,7 @@ header {
     background: url('./images/content/hero-image.jpg') no-repeat center center;
     background-size: cover;
     color: white;
-    padding: 60px 20px;
+    padding: 100px 20px;
     text-align: center;
     background-color: #333;
     margin-top: 60px;
@@ -59,7 +59,7 @@ header {
 }
 
 main {
-    padding: 40px;
+    padding: 80px 40px 40px;
     background-color: white;
     max-width: 1200px;
     margin: auto;
