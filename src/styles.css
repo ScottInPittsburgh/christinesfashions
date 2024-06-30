@@ -65,7 +65,8 @@ main {
     padding: 40px;
     background-color: white;
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 0 auto;
+    margin-top: 40px;
 }
 
 .product-grid {

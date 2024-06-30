@@ -53,10 +53,10 @@ const Home = () => {
                         <li><Link to="/collection/products" className={location.pathname === '/collection/products' ? 'active' : ''}>All Products</Link></li>
                     </ul>
                 </nav>
-                <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
-                    <h1>Christine's Fashions</h1>
-                </div>
             </header>
+            <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
+                <h1>Christine's Fashions</h1>
+            </div>
             <main>
                 <section className="new-arrivals">
                     <h2>New Arrivals</h2>
