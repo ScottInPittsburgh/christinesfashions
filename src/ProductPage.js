@@ -11,11 +11,9 @@ import styles from './ProductPage.module.scss';
 
 const ProductColors = ({ handleSelectedColor }) => (
     <div className={styles.color_image_container}>
-        <div className={styles.color_container}>
-            <button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button>
-            <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
-            <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button>
-        </div>
+        <button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button>
+        <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
+        <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button>
     </div>
 );
 
