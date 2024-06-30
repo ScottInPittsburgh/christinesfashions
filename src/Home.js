@@ -42,7 +42,7 @@ const newArrivals = [
 const Home = () => {
     return (
         <div>
-            <header>
+            <header className="header">
                 <nav>
                     <ul className="menu-bar">
                         <li><Link to="/">Home</Link></li>
@@ -50,13 +50,11 @@ const Home = () => {
                         <li><Link to="/collection/products">All Products</Link></li>
                     </ul>
                 </nav>
+                <div className="hero">
+                    <h1>Christine's Fashions</h1>
+                </div>
             </header>
             <main>
-                <section className="hero">
-                    <h1>Welcome to Christine's Fashions</h1>
-                    <p>Discover your style with our latest collections</p>
-                </section>
-
                 <section className="new-arrivals">
                     <h2>New Arrivals</h2>
                     <div className="product-grid">

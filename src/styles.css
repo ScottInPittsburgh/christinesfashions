@@ -11,6 +11,7 @@ header {
     color: white;
     padding: 20px 0;
     text-align: center;
+    position: relative;
 }
 
 .menu-bar {
@@ -38,6 +39,21 @@ header {
     text-decoration: none;
     background-color: #444;
     border-radius: 5px;
+}
+
+.hero {
+    background: url('./images/hero-image.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin: 0;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 main {
