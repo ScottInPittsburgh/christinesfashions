@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import CyanVideo from './assets/videos/Cyan15s.mp4';
-// import BlackVideo from './assets/videos/Black15s.mp4';
-// import BronzeVideo from './assets/videos/Bronze15s.mp4';
-// import ZoomCyanVideo from './assets/videos/CyanZoom15s.mp4';
-// import ZoomBronzeVideo from './assets/videos/BronzeZoom15s.mp4';
-// import ZoomBlackVideo from './assets/videos/BlackZoom15s.mp4';
+import BlackVideo from './assets/videos/Black15s.mp4';
+import BronzeVideo from './assets/videos/Bronze15s.mp4';
+import ZoomCyanVideo from './assets/videos/CyanZoom15s.mp4';
+import ZoomBronzeVideo from './assets/videos/BronzeZoom15s.mp4';
+import ZoomBlackVideo from './assets/videos/BlackZoom15s.mp4';
 import LongerAudio from "./assets/audios/Default.m4a";
 import CyanAudio from "./assets/audios/Cyan.m4a";
 import BronzeAudio from "./assets/audios/Bronze.m4a";
@@ -51,24 +51,24 @@ const ProductPage = () => {
             case 'Cyan':
                 switch (videoType) {
                     case 'CyanZoom':
-                        return CyanVideo;
+                        return ZoomCyanVideo;
                     default:
                         return CyanVideo;
                 }
-            // case 'Bronze':
-            //     switch (videoType) {
-            //         case 'BronzeZoom':
-            //             return ZoomBronzeVideo;
-            //         default:
-            //             return BronzeVideo;
-            //     }
-            // case 'Black':
-            //     switch (videoType) {
-            //         case 'BlackZoom':
-            //             return ZoomBlackVideo;
-            //         default:
-            //             return BlackVideo;
-            //     }
+            case 'Bronze':
+                switch (videoType) {
+                    case 'BronzeZoom':
+                        return ZoomBronzeVideo;
+                    default:
+                        return BronzeVideo;
+                }
+            case 'Black':
+                switch (videoType) {
+                    case 'BlackZoom':
+                        return ZoomBlackVideo;
+                    default:
+                        return BlackVideo;
+                }
             default:
                 return null;
         }
