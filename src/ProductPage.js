@@ -29,7 +29,7 @@ const ProductPage = () => {
     const cyanAudioRef = useRef(null);
     const bronzeAudioRef = useRef(null);
     const blackAudioRef = useRef(null);
-    const [selectedColor, setSelectedColor] = useState('Cyan');
+    const [selectedColor, setSelectedColor] = useState('Black');
     const [selectedSize, setSelectedSize] = useState('');
 
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
