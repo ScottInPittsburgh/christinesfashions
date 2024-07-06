@@ -460,3 +460,8 @@ main {
     background-color: #000;
     color: #fff;
 }
+
+iframe {
+    z-index: 0 !important;
+    display: none;
+}
