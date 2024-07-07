@@ -43,6 +43,7 @@ const ProductPage = () => {
 
     const handleSelectedColor = useCallback((color) => {
         setSelectedColor(color);
+        setVideoType('');
         setIsLongAudioPlaying(false)
     }, []);
 
@@ -74,11 +75,12 @@ const ProductPage = () => {
         }
     }, [selectedColor,videoType]);
 
-    const playZoomVideoAsPerSelectedColor = useCallback(() => {
+    const playZoomAudioAsPerSelectedColor = useCallback(() => {
         zoomAudioRef.current.play();
         cyanAudioRef.current.pause(); 
         bronzeAudioRef.current.pause();
         blackAudioRef.current.pause();
+        audioLongRef.current.pause();
         setVideoType(`${selectedColor}Zoom`)
     }, [selectedColor]);
 
@@ -162,7 +164,7 @@ const ProductPage = () => {
                 <h1 className={styles.name}>Sample Product</h1>
                 <p className={styles.description}>This is a sample product description.</p>
                 <div className={styles.zoom_btn_container}>
-                    <button className={styles.button} onClick={() => playZoomVideoAsPerSelectedColor()}>
+                    <button className={styles.button} onClick={() => playZoomAudioAsPerSelectedColor()}>
                         Closer View
                     </button>
                 </div>
