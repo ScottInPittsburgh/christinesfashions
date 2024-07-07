@@ -73,11 +73,11 @@ const ProductPage = () => {
             default:
                 return null;
         }
-    }, [selectedColor,videoType]);
+    }, [selectedColor, videoType]);
 
     const playZoomAudioAsPerSelectedColor = useCallback(() => {
         zoomAudioRef.current.play();
-        cyanAudioRef.current.pause(); 
+        cyanAudioRef.current.pause();
         bronzeAudioRef.current.pause();
         blackAudioRef.current.pause();
         audioLongRef.current.pause();
@@ -161,19 +161,30 @@ const ProductPage = () => {
 
             <div className={styles.details_wrapper}>
                 <button onClick={handlePauseAudio}>Pause</button>
-                <h1 className={styles.name}>Sample Product</h1>
-                <p className={styles.description}>This is a sample product description.</p>
+                <div className={styles.description_variant_container}>
+                    <div className={styles.description_containter}>
+                        <h1 className={styles.name}>Sample Product</h1>
+                        <p className={styles.description}>This is a sample product description.</p>
+                        <p className={styles.description}>This is a sample product description.</p>
+                        <p className={styles.description}>This is a sample product description.</p>
+                    </div>
+                    <div className={styles.variants_container}>
+                        <div className={styles.variants_wrapper}>
+                            <ProductColors handleSelectedColor={handleSelectedColor} />
+                        </div>
+                    </div>
+                </div>
                 <div className={styles.zoom_btn_container}>
                     <button className={styles.button} onClick={() => playZoomAudioAsPerSelectedColor()}>
                         Closer View
                     </button>
                 </div>
                 <div className={styles.controls_wrapper}>
-                    <div className={styles.variants_container}>
+                    {/* <div className={styles.variants_container}>
                         <div className={styles.variants_wrapper}>
                             <ProductColors handleSelectedColor={handleSelectedColor} />
                         </div>
-                    </div>
+                    </div> */}
                     <div className={styles.sizes_container}>
                         <p className={styles.pick_size}>Select Size</p>
                         <div className={styles.sizes_wrapper}>
