@@ -90,6 +90,14 @@ body {
     max-width: 1200px;
 }
 
+.hero h1 {
+    font-size: 3rem;
+    margin: 0;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Monument Extended', sans-serif;
+}
+
 /* Main content styles */
 main {
     padding: 40px;
