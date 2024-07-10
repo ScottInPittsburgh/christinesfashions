@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import id1image from './images/content/id1image.jpg';
-import id2image from './images/content/id2image.jpg';
 import './styles.css';
 
 const CartItem = ({ item, onRemove }) => (
@@ -18,8 +16,8 @@ const CartItem = ({ item, onRemove }) => (
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([
-        { id: 1, name: 'Summer Tee', price: 29.99, quantity: 1, imageUrl: id1image  },
-        { id: 2, name: 'Cozy Hoodie', price: 49.99, quantity: 2, imageUrl: id2image  },
+        { id: 1, name: 'Summer Tee', price: 29.99, quantity: 1, imageUrl: '/images/content/id1image.jpg' },
+        { id: 2, name: 'Cozy Hoodie', price: 49.99, quantity: 2, imageUrl: '/images/content/id2image.jpg' },
     ]);
 
     const [showDemoMessage, setShowDemoMessage] = useState(false);
@@ -40,8 +38,6 @@ const Cart = () => {
                 <nav>
                     <ul className="menu-bar">
                         <li><Link to="/">Home</Link></li>
-                        <li><Link to="/product">Product Page</Link></li>
-                        <li><Link to="/cart">Shopping Cart</Link></li>
                     </ul>
                 </nav>
             </header>
@@ -63,7 +59,7 @@ const Cart = () => {
                     )}
                     {showDemoMessage && (
                         <div className="demo-message">
-                            <p>This site is a demo and this purchase can not be completed.</p>
+                            <p>This site is a demo and not a real site.</p>
                         </div>
                     )}
                 </div>
