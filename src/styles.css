@@ -1,4 +1,4 @@
-/* Imports */
+/* Imports*/
 @font-face {
     font-family: 'Monument Extended';
     src: url('/src/assets/fonts/monument-extended.ttf') format('truetype');
@@ -96,6 +96,14 @@ main {
     flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
+}
+
+/* New styles for headers */
+section h2 {
+    font-family: 'Monument Extended', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Product box styles */
