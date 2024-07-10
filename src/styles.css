@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Maison+Neue:wght@400;700&display=swap');
 /* Imports */
 @font-face {
     font-family: 'Monument Extended';
@@ -15,7 +16,7 @@
 
 /* General styles */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Maison Neue', 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #FFFFFF;
@@ -135,6 +136,7 @@ section h2 {
     transition: transform 0.3s;
     display: flex;
     flex-direction: column;
+    font-family: 'Maison Neue', sans-serif;
 }
 
 .tile:hover {
@@ -157,7 +159,6 @@ section h2 {
 .new-arrival-content {
     padding: 20px;
     text-align: center;
-    font-family: 'Monument Extended', sans-serif;
     flex-grow: 1;
 }
 
@@ -194,7 +195,6 @@ section h2 {
 
 .cart-item-details {
     flex-grow: 1;
-    font-family: 'Monument Extended', sans-serif;
 }
 
 .remove-item-button {
@@ -205,7 +205,7 @@ section h2 {
     cursor: pointer;
     transition: background-color 0.3s;
     border-radius: 5px;
-    font-family: 'Monument Extended', sans-serif;
+    font-family: 'Maison Neue', sans-serif;
 }
 
 .remove-item-button:hover {
@@ -215,7 +215,7 @@ section h2 {
 .cart-summary {
     margin-top: 20px;
     text-align: right;
-    font-family: 'Monument Extended', sans-serif;
+    font-family: 'Maison Neue', sans-serif;
 }
 
 .checkout-button {
@@ -226,7 +226,7 @@ section h2 {
     cursor: pointer;
     transition: background-color 0.3s;
     border-radius: 5px;
-    font-family: 'Monument Extended', sans-serif;
+    font-family: 'Maison Neue', sans-serif;
 }
 
 .checkout-button:hover {
@@ -238,5 +238,5 @@ section h2 {
     padding: 15px;
     background-color: #f0f0f0;
     border-left: 4px solid #e91e63;
-    font-family: 'Monument Extended', sans-serif;
+    font-family: 'Maison Neue', sans-serif;
 }
