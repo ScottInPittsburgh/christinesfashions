@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import id1image from './images/content/id1image.jpg';
+import id2image from './images/content/id2image.jpg';
 import './styles.css';
 
 const CartItem = ({ item, onRemove }) => (
@@ -16,8 +18,8 @@ const CartItem = ({ item, onRemove }) => (
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([
-        { id: 1, name: 'Summer Tee', price: 29.99, quantity: 1, imageUrl: '/images/content/id1image.jpg' },
-        { id: 2, name: 'Cozy Hoodie', price: 49.99, quantity: 2, imageUrl: '/images/content/id2image.jpg' },
+        { id: 1, name: 'Summer Tee', price: 29.99, quantity: 1, imageUrl: id1image  },
+        { id: 2, name: 'Cozy Hoodie', price: 49.99, quantity: 2, imageUrl: id2image  },
     ]);
 
     const [showDemoMessage, setShowDemoMessage] = useState(false);
