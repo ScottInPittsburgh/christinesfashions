@@ -1,3 +1,21 @@
+/* Fonts */
+@font-face {
+    font-family: 'Monument Extended';
+    src: url('/src/assets/fonts/monument-extended.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+@font-face {
+    font-family: 'Monument Extended';
+    src: url('/src/assets/fonts/monument-extended-ultrabold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* General styles */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -6,6 +24,7 @@ body {
     color: #333;
 }
 
+/* Header styles */
 header {
     position: fixed;
     width: 100%;
@@ -34,6 +53,7 @@ header {
     font-size: 18px;
     padding: 10px;
     transition: color 0.3s;
+    font-family: 'Monument Extended', sans-serif;
 }
 
 .menu-bar li a:hover,
@@ -41,6 +61,7 @@ header {
     color: #e91e63;
 }
 
+/* Hero styles */
 .hero {
     background: url('./images/content/hero-image.jpg') no-repeat center center;
     background-size: cover;
@@ -59,8 +80,11 @@ header {
     margin: 0;
     font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Monument Extended', sans-serif;
+    font-weight: bold;
 }
 
+/* Main content styles */
 main {
     padding: 40px;
     background-color: white;
@@ -76,6 +100,7 @@ main {
     gap: 30px;
 }
 
+/* Product box styles */
 .product-box {
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -94,6 +119,7 @@ main {
 .product-box h2 {
     margin: 0 0 10px;
     font-size: 1.5rem;
+    font-family: 'Monument Extended', sans-serif;
 }
 
 .product-box p {
@@ -101,16 +127,7 @@ main {
     color: #555;
 }
 
-.product-detail {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: left;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-bottom: 40px;
-}
-
+/* Cart styles */
 .cart-content {
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -128,6 +145,64 @@ main {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+.cart-item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 20px 0;
+}
+
+.cart-item-image {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.remove-item-button {
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+.remove-item-button:hover {
+    background-color: #c2185b;
+}
+
+.cart-summary {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.checkout-button {
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+.checkout-button:hover {
+    background-color: #c2185b;
+}
+
+.demo-message {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-left: 4px solid #e91e63;
+}
+
+/* Collection card and product card styles */
 .collection-card,
 .product-card {
     width: 220px;
@@ -168,6 +243,7 @@ main {
     gap: 30px;
 }
 
+/* New arrival card styles */
 .new-arrival-card {
     width: 320px;
     margin: 20px;
@@ -196,6 +272,7 @@ main {
     text-align: center;
 }
 
+/* Product page styles */
 .product-page {
     display: flex;
     flex-wrap: wrap;
@@ -225,6 +302,8 @@ main {
 .product-title {
     font-size: 2.5rem;
     margin-bottom: 20px;
+    font-family: 'Monument Extended', sans-serif;
+    font-weight: bold;
 }
 
 .product-description {
@@ -464,61 +543,4 @@ main {
 iframe {
     z-index: 0 !important;
     display: none;
-}
-
-.cart-item {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding: 20px 0;
-}
-
-.cart-item-image {
-    width: 100px;
-    height: auto;
-    margin-right: 20px;
-}
-
-.cart-item-details {
-    flex-grow: 1;
-}
-
-.remove-item-button {
-    background-color: #e91e63;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    border-radius: 5px;
-}
-
-.remove-item-button:hover {
-    background-color: #c2185b;
-}
-
-.cart-summary {
-    margin-top: 20px;
-    text-align: right;
-}
-
-.checkout-button {
-    background-color: #e91e63;
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    border-radius: 5px;
-}
-
-.checkout-button:hover {
-    background-color: #c2185b;
-}
-
-.demo-message {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f0f0f0;
-    border-left: 4px solid #e91e63;
 }
