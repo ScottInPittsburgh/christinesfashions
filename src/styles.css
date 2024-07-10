@@ -30,18 +30,20 @@ body {
 }
 
 /* Header styles */
-header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+.header {
     background-color: rgba(34, 34, 34, 0.8);
     padding: 10px 0;
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 40px;
+    box-sizing: border-box;
 }
 
 .menu-bar {
@@ -80,18 +82,12 @@ header {
     justify-content: center;
     text-align: center;
     background-color: #333;
+    margin: 0 auto;
     margin-top: 60px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin: 0;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-family: 'Monument Extended', sans-serif;
-    font-weight: bold;
+    width: calc(100% - 80px);
+    max-width: 1200px;
 }
 
 /* Main content styles */

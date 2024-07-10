@@ -46,7 +46,7 @@ const Home = () => {
     return (
         <div>
             <header className="header">
-                <nav>
+                <nav className="nav-container">
                     <ul className="menu-bar">
                         <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
                         <li><Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>Shopping Cart</Link></li>
