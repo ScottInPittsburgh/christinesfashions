@@ -7,7 +7,7 @@ import id2image from './images/content/id2image.jpg';
 import id3image from './images/content/id3image.jpg';
 
 const CollectionCard = ({ title, text, url, imageUrl }) => (
-    <div className="collection-card">
+    <div className="collection-card tile">
         <img src={imageUrl} alt={title} className="collection-image" />
         <div className="collection-content">
             <h3>{title}</h3>
@@ -18,7 +18,7 @@ const CollectionCard = ({ title, text, url, imageUrl }) => (
 );
 
 const ProductCard = ({ name, description, price, imageUrl }) => (
-    <div className="new-arrival-card">
+    <div className="new-arrival-card tile">
         <img src={imageUrl} alt={name} className="new-arrival-image" />
         <div className="new-arrival-content">
             <h3>{name}</h3>
@@ -60,7 +60,7 @@ const Home = () => {
             <main>
                 <section className="new-arrivals">
                     <h2>New Arrivals</h2>
-                    <div className="product-grid">
+                    <div className="tile-grid">
                         {newArrivals.map(product => (
                             <ProductCard key={product.id} {...product} />
                         ))}
@@ -69,7 +69,7 @@ const Home = () => {
 
                 <section className="collections">
                     <h2>Our Collections</h2>
-                    <div className="collection-grid">
+                    <div className="tile-grid">
                         {collections.map(collection => (
                             <CollectionCard key={collection.id} {...collection} />
                         ))}
