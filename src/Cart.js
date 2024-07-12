@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import id1image from './images/content/id1image.jpg';
-import id2image from './images/content/id2image.jpg';
 import './styles.css';
 
 const CartItem = ({ item, onRemove }) => (
     <div className="cart-item">
-        <img src={item.imageUrl} alt={item.name} className="cart-item-image" />
+    
         <div className="cart-item-details">
-            <h3>{item.name}</h3>
-            <p>Price: ${item.price.toFixed(2)}</p>
+            <h3>{item.color}</h3>
+            <p>Price: ${item.totalPrice.toFixed(2)}</p>
             <p>Quantity: {item.quantity}</p>
             <button onClick={() => onRemove(item.id)} className="remove-item-button">Remove</button>
         </div>
@@ -17,10 +15,8 @@ const CartItem = ({ item, onRemove }) => (
 );
 
 const Cart = () => {
-    const [cartItems, setCartItems] = useState([
-        { id: 1, name: 'Summer Tee', price: 29.99, quantity: 1, imageUrl: id1image },
-        { id: 2, name: 'Cozy Hoodie', price: 49.99, quantity: 2, imageUrl: id2image },
-    ]);
+ 
+    const [cartItems, setCartItems] = useState([]);
 
     const [showDemoMessage, setShowDemoMessage] = useState(false);
 
@@ -32,8 +28,12 @@ const Cart = () => {
         setShowDemoMessage(true);
     };
 
-    const totalAmount = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const totalAmount = cartItems.reduce((acc, item) => acc + item.totalPrice * item.quantity, 0);
 
+    useEffect(() => {
+      const items = JSON.parse(localStorage.getItem('cart'))
+      setCartItems(items)
+    }, []);
     return (
         <div>
             <header>

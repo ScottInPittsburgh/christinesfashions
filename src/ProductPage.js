@@ -34,11 +34,12 @@ const ProductPage = () => {
     const bronzeAudioRef = useRef(null);
     const blackAudioRef = useRef(null);
     const zoomAudioRef = useRef(null);
+    const [pricePerItem] =useState(103.99)
     const [isLongAudioPlaying, setIsLongAudioPlaying] = useState(true);
     const [selectedColor, setSelectedColor] = useState('Cyan');
     const [selectedSize, setSelectedSize] = useState('');
     const [videoType, setVideoType] = useState('')
-
+    const [selectedItems, setSelectedItems] = useState([])
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
     const handleSelectedColor = useCallback((color) => {
@@ -130,7 +131,7 @@ const ProductPage = () => {
         bronzeAudioRef.current.currentTime = 0;
         blackAudioRef.current.currentTime = 0;
     };
-    // const handleZoomShortAudioEnded = () => {
+  
     //     audioLongRef.current.pause();
     //     cyanAudioRef.current.currentTime = 0; // Reset short audio to start for next play
     //     bronzeAudioRef.current.currentTime = 0;
@@ -143,7 +144,34 @@ const ProductPage = () => {
         bronzeAudioRef.current.pause();
         blackAudioRef.current.pause();
     };
+    const handleAddtoBag = () => {
+        if (selectedSize) {
+      
+            const existingItemIndex = selectedItems.findIndex(item => item.color === selectedColor && item.size === selectedSize);
 
+            if (existingItemIndex !== -1) {
+              
+                const updatedItems = [...selectedItems];
+                updatedItems[existingItemIndex].quantity += 1;
+                updatedItems[existingItemIndex].totalPrice = pricePerItem * updatedItems[existingItemIndex].quantity;
+                setSelectedItems(updatedItems);
+                localStorage.setItem('cart',JSON.stringify(updatedItems))
+            } else {
+               
+                const newItem = {
+                    id:Math.random(),
+                    color: selectedColor,
+                    size: selectedSize,
+                    quantity: 1,
+                    totalPrice: pricePerItem
+                };
+                setSelectedItems([...selectedItems, newItem]);
+                localStorage.setItem('cart',JSON.stringify([...selectedItems, newItem]))
+            }
+        }
+    };
+
+    console.log(selectedItems)
 
     return (
         <section className={isBigScreen ? styles.container_b : styles.container_s}>
@@ -161,9 +189,10 @@ const ProductPage = () => {
 
             <div className={styles.details_wrapper}>
                 <button onClick={handlePauseAudio}>Pause</button>
+                <button className={styles.button}>{`Items in Cart ${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</button>
                 <div className={styles.description_variant_container}>
                     <div className={styles.description_containter}>
-                        <h1 className={styles.name}>Sample Product</h1>
+                        <h1 className={styles.name}>Sample Product $103.99</h1>
                         <p className={styles.description}>This is a sample product description.</p>
                         <p className={styles.description}>This is a sample product description.</p>
                         <p className={styles.description}>This is a sample product description.</p>
@@ -179,12 +208,7 @@ const ProductPage = () => {
                         Closer View
                     </button>
                 </div>
-                <div className={styles.controls_wrapper}>
-                    {/* <div className={styles.variants_container}>
-                        <div className={styles.variants_wrapper}>
-                            <ProductColors handleSelectedColor={handleSelectedColor} />
-                        </div>
-                    </div> */}
+                <div className={styles.controls_wrapper}>                  
                     <div className={styles.sizes_container}>
                         <p className={styles.pick_size}>Select Size</p>
                         <div className={styles.sizes_wrapper}>
@@ -199,7 +223,11 @@ const ProductPage = () => {
                             ))}
                         </div>
                     </div>
-                    <button className={styles.button}>ADD TO BAG</button>
+                    <button className={styles.button} onClick={() => handleAddtoBag()}>
+                        ADD TO CART
+
+                    </button>
+
                 </div>
             </div>
             <audio ref={audioLongRef}>

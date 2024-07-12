@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Maison+Neue:wght@400;700&display=swap');
+
 /* Imports */
 @font-face {
     font-family: 'Monument Extended';
@@ -131,7 +132,7 @@ section h2 {
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
     transition: transform 0.3s;
     display: flex;
@@ -168,7 +169,7 @@ section h2 {
     border-radius: 10px;
     padding: 20px;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cart-box {
@@ -177,7 +178,7 @@ section h2 {
     padding: 20px;
     margin-top: 20px;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cart-item {
@@ -239,4 +240,9 @@ section h2 {
     background-color: #f0f0f0;
     border-left: 4px solid #e91e63;
     font-family: 'Maison Neue', sans-serif;
+}
+
+iframe {
+    display: none;
+    z-index: 0 !important
 }
