@@ -2,19 +2,22 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './styles.css';
 import heroImage from './images/content/hero-image.jpg';
+import id1image from './images/content/id1image.jpg';
+import id2image from './images/content/id2image.jpg';
+import id3image from './images/content/id3image.jpg';
 import Footer from './Footer';
 import CollectionCard from './CollectionCard';
 import ProductCard from './ProductCard';
 
 const newArrivals = [
-    { id: 1, name: 'Summer Tee', description: 'Light and breezy', price: 29.99, imageUrl: heroImage },
-    { id: 2, name: 'Cozy Hoodie', description: 'Perfect for chilly days', price: 49.99, imageUrl: heroImage },
+    { id: 1, name: 'Summer Tee', description: 'Light and breezy', price: 29.99, imageUrl: id1image },
+    { id: 2, name: 'Cozy Hoodie', description: 'Perfect for chilly days', price: 49.99, imageUrl: id2image },
 ];
 
 const collections = [
-    { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/t-shirts", imageUrl: heroImage },
-    { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies-sweatshirts", imageUrl: heroImage },
-    { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: heroImage },
+    { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/t-shirts", imageUrl: id1image },
+    { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies-sweatshirts", imageUrl: id2image },
+    { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: id3image },
 ];
 
 const Home = () => {
