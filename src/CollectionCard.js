@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './CollectionCard.css';
+import './styles.css';
 
 const CollectionCard = ({ title, text, url, imageUrl }) => (
     <div className="collection-card tile">

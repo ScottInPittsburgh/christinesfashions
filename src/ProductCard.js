@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './ProductCard.css';
+import './styles.css';
 
 const ProductCard = ({ id, name, description, price, imageUrl }) => (
-    <div className="new-arrival-card tile">
-        <img src={imageUrl} alt={name} className="new-arrival-image" />
-        <div className="new-arrival-content">
+    <div className="product-card tile">
+        <img src={imageUrl} alt={name} className="product-image" />
+        <div className="product-content">
             <h3>{name}</h3>
             <p>{description}</p>
             <p className="product-price">${price.toFixed(2)}</p>
