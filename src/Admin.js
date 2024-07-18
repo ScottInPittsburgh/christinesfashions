@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './styles.css';
 import { useAuth } from './AuthContext';
 
@@ -8,47 +9,84 @@ const Admin = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [newProduct, setNewProduct] = useState({
-        id: '',
         name: '',
         description: '',
         price: '',
         imageUrl: '',
         stock: '',
+        image: null,
     });
 
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/login');
         } else {
-            // Simulate fetching products from a backend
-            const initialProducts = [
-                { id: 1, name: 'Sample Product 1', description: 'Description 1', price: 19.99, imageUrl: '/images/sample1.jpg', stock: 10 },
-                { id: 2, name: 'Sample Product 2', description: 'Description 2', price: 29.99, imageUrl: '/images/sample2.jpg', stock: 5 },
-            ];
-            setProducts(initialProducts);
+            axios.get('/api/products')
+                .then(response => {
+                    setProducts(response.data);
+                })
+                .catch(error => {
+                    console.error('There was an error fetching the products!', error);
+                });
         }
     }, [isAuthenticated, navigate]);
 
     const handleChange = (e) => {
-        setNewProduct({
-            ...newProduct,
-            [e.target.name]: e.target.value,
-        });
+        const { name, value, files } = e.target;
+        if (name === 'image') {
+            setNewProduct({
+                ...newProduct,
+                image: files[0],
+            });
+        } else {
+            setNewProduct({
+                ...newProduct,
+                [name]: value,
+            });
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const id = products.length ? products[products.length - 1].id + 1 : 1;
-        setProducts([...products, { ...newProduct, id }]);
-        setNewProduct({ id: '', name: '', description: '', price: '', imageUrl: '', stock: '' });
+
+        const formData = new FormData();
+        formData.append('name', newProduct.name);
+        formData.append('description', newProduct.description);
+        formData.append('price', newProduct.price);
+        formData.append('imageUrl', newProduct.imageUrl);
+        formData.append('stock', newProduct.stock);
+        formData.append('image', newProduct.image);
+
+        try {
+            const response = await axios.post('/api/products', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            setProducts([...products, response.data]);
+            setNewProduct({ name: '', description: '', price: '', imageUrl: '', stock: '', image: null });
+        } catch (error) {
+            console.error('There was an error creating the product!', error);
+        }
     };
 
-    const handleDelete = (id) => {
-        setProducts(products.filter(product => product.id !== id));
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`/api/products/${id}`);
+            setProducts(products.filter(product => product.id !== id));
+        } catch (error) {
+            console.error('There was an error deleting the product!', error);
+        }
     };
 
-    const handleUpdate = (id, updatedProduct) => {
-        setProducts(products.map(product => (product.id === id ? updatedProduct : product)));
+    const handleUpdate = async (id, updatedProduct) => {
+        try {
+            const response = await axios.put(`/api/products/${id}`, updatedProduct);
+            setProducts(products.map(product => (product.id === id ? response.data : product)));
+        } catch (error) {
+            console.error('There was an error updating the product!', error);
+        }
     };
 
     return (
@@ -59,21 +97,22 @@ const Admin = () => {
                 <input type="text" name="description" value={newProduct.description} onChange={handleChange} placeholder="Description" required />
                 <input type="number" name="price" value={newProduct.price} onChange={handleChange} placeholder="Price" required />
                 <input type="text" name="imageUrl" value={newProduct.imageUrl} onChange={handleChange} placeholder="Image URL" required />
+                <input type="file" name="image" onChange={handleChange} placeholder="Upload Image" required />
                 <input type="number" name="stock" value={newProduct.stock} onChange={handleChange} placeholder="Stock" required />
                 <button type="submit">Add Product</button>
             </form>
             <h2>Product List</h2>
             <div className="product-list">
                 {products.map((product) => (
-                    <div key={product.id} className="product-item">
+                    <div key={product._id} className="product-item">
                         <img src={product.imageUrl} alt={product.name} className="product-image" />
                         <h3>{product.name}</h3>
                         <p>{product.description}</p>
                         <p>${product.price.toFixed(2)}</p>
                         <p>Stock: {product.stock}</p>
-                        <button onClick={() => handleDelete(product.id)}>Delete</button>
-                        <button onClick={() => handleUpdate(product.id, { ...product, stock: product.stock - 1 })}>Decrement Stock</button>
-                        <button onClick={() => handleUpdate(product.id, { ...product, stock: product.stock + 1 })}>Increment Stock</button>
+                        <button onClick={() => handleDelete(product._id)}>Delete</button>
+                        <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock - 1 })}>Decrement Stock</button>
+                        <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock + 1 })}>Increment Stock</button>
                     </div>
                 ))}
             </div>
