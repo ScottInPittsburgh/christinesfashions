@@ -22,7 +22,11 @@ const Admin = () => {
         } else {
             axios.get('/api/products')
                 .then(response => {
-                    setProducts(response.data);
+                    if (Array.isArray(response.data)) {
+                        setProducts(response.data);
+                    } else {
+                        console.error('Expected an array but got:', response.data);
+                    }
                 })
                 .catch(error => {
                     console.error('There was an error fetching the products!', error);
