@@ -1,0 +1,19 @@
+.footer {
+    background-color: #282c34;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.social-icons i {
+    margin: 0 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.social-icons i:hover {
+    color: #61dafb;
+}

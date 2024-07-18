@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaRedoAlt, FaChevronDown, FaTimes } from 'react-icons/fa';
 import styles from './CollectionPage.module.scss';
+import Footer from './Footer';
 
 const validSlugs = ['products', 't-shirts', 'hoodies-sweatshirts', 'accessories'];
 
 const CollectionPage = () => {
     const navigate = useNavigate();
     const { id: slugId } = useParams();
-
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [filterConditions, setFilterConditions] = useState({});
@@ -136,6 +136,7 @@ const CollectionPage = () => {
                     ))}
                 </div>
             )}
+            <Footer />
         </div>
     );
 };
