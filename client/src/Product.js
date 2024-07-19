@@ -28,10 +28,10 @@ function Product() {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItem = {
             ...product,
-            price: parseFloat(product.price.$numberDouble),
-            stock: parseInt(product.stock.$numberInt),
+            price: product.price ? parseFloat(product.price.$numberDouble) : 0,
+            stock: product.stock ? parseInt(product.stock.$numberInt) : 0,
             quantity: 1,
-            totalPrice: parseFloat(product.price.$numberDouble)
+            totalPrice: product.price ? parseFloat(product.price.$numberDouble) : 0
         };
         cart.push(cartItem);
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -65,8 +65,8 @@ function Product() {
                                 <img src={product.imageUrl} alt={product.name} className="product-detail-image" />
                                 <div className="product-detail-info">
                                     <p>{product.description}</p>
-                                    <p>Price: ${parseFloat(product.price.$numberDouble).toFixed(2)}</p>
-                                    <p>Stock: {parseInt(product.stock.$numberInt)}</p>
+                                    <p>Price: ${product.price && product.price.$numberDouble ? parseFloat(product.price.$numberDouble).toFixed(2) : 'N/A'}</p>
+                                    <p>Stock: {product.stock && product.stock.$numberInt ? parseInt(product.stock.$numberInt) : 'N/A'}</p>
                                     <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
                                 </div>
                             </div>
