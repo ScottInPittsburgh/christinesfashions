@@ -2,6 +2,9 @@
 command = "npm install --prefix client && npm run build --prefix client"
 publish = "client/build"
 
+[environment]
+NODE_VERSION = "14.20.0"
+
 [[redirects]]
 from = "/*"
 to = "/index.html"
