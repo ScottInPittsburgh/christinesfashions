@@ -15,6 +15,7 @@ const Admin = () => {
         stock: '',
     });
     const [file, setFile] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -46,6 +47,7 @@ const Admin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         try {
             const formData = new FormData();
             formData.append('name', newProduct.name);
@@ -64,8 +66,11 @@ const Admin = () => {
             setProducts([...products, response.data]);
             setNewProduct({ name: '', description: '', price: '', stock: '' });
             setFile(null);
+            console.log("Product added successfully:", response.data);
         } catch (error) {
             console.error("Error adding product:", error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -96,7 +101,9 @@ const Admin = () => {
                 <input type="number" name="price" value={newProduct.price} onChange={handleChange} placeholder="Price" required />
                 <input type="file" name="image" onChange={handleFileChange} required />
                 <input type="number" name="stock" value={newProduct.stock} onChange={handleChange} placeholder="Stock" required />
-                <button type="submit">Add Product</button>
+                <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Adding...' : 'Add Product'}
+                </button>
             </form>
             <h2>Product List</h2>
             <div className="product-list">
