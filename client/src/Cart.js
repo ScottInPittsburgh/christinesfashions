@@ -6,7 +6,7 @@ const CartItem = ({ item, onRemove }) => (
     <div className="cart-item">
         <div className="cart-item-details">
             <h3>{item.color}</h3>
-            <p>Price: ${item.totalPrice.toFixed(2)}</p>
+            <p>Price: ${item.totalPrice ? item.totalPrice.toFixed(2) : '0.00'}</p>
             <p>Quantity: {item.quantity}</p>
             <button onClick={() => onRemove(item.id)} className="remove-item-button">Remove</button>
         </div>
@@ -27,7 +27,7 @@ const Cart = () => {
         setShowDemoMessage(true);
     };
 
-    const totalAmount = cartItems.reduce((acc, item) => acc + item.totalPrice * item.quantity, 0);
+    const totalAmount = cartItems.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
 
     useEffect(() => {
         const items = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
