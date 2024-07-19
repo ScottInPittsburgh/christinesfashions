@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     .catch(err => console.error('MongoDB connection error:', err));
 
 app.use(cors({
-    origin: ['https://christinesfashions.com', 'https://christinesfashions.netlify.app', 'http://localhost:3000'],
+    origin: 'https://christinesfashions.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -39,6 +39,7 @@ const upload = multer({
         bucket: process.env.AWS_BUCKET_NAME,
         acl: 'public-read',
         key: function (req, file, cb) {
+            console.log('Uploading file:', file);
             cb(null, Date.now().toString() + file.originalname);
         }
     })
@@ -119,6 +120,18 @@ app.put('/api/products/:id', async (req, res) => {
         console.error('Error updating product:', error);
         res.status(500).json({ error: 'Error updating product', details: error.message, stack: error.stack });
     }
+});
+
+app.get('/test-aws', (req, res) => {
+    s3.listBuckets((err, data) => {
+        if (err) {
+            console.error("Error", err);
+            res.status(500).json({ error: "Error connecting to AWS", details: err.message });
+        } else {
+            console.log("Success", data.Buckets);
+            res.json({ message: "Successfully connected to AWS", buckets: data.Buckets });
+        }
+    });
 });
 
 app.use(express.static(path.join(__dirname, 'client/build')));
