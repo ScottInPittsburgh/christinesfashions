@@ -7,6 +7,7 @@ import Product from './Product';
 import CollectionPage from './CollectionPage';
 import Login from './Login';
 import Admin from './Admin';
+import AllProducts from './AllProducts';
 import './styles.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/productpage/:id" element={<ProductPage />} />
                     <Route path="/product/:id" element={<Product />} />
                     <Route path="/collection/:id" element={<CollectionPage />} />
+                    <Route path="/collection/products" element={<AllProducts />} /> {/* Add this line */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/admin" element={<Admin />} />
                 </Routes>
