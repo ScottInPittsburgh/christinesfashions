@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
 import { useAuth } from './AuthContext';
-import axios from 'axios';
 
 const Admin = () => {
     const { isAuthenticated } = useAuth();
@@ -21,26 +21,18 @@ const Admin = () => {
         if (!isAuthenticated) {
             navigate('/login');
         } else {
-
-            const fetchProducts = async () => {
-                try {
-                    console.log("Fetching products...");
-                    const response = await axios.get('/api/products');
-                    console.log("Products response:", response.data);
-                    if (Array.isArray(response.data)) {
-                        setProducts(response.data);
-                    } else {
-                        console.error("Unexpected response format:", response.data);
-                        setProducts([]);
-                    }
-                } catch (error) {
-                    console.error("Error fetching products:", error);
-                    setProducts([]);
-                }
-            };
             fetchProducts();
         }
     }, [isAuthenticated, navigate]);
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products`);
+            setProducts(response.data);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
 
     const handleChange = (e) => {
         setNewProduct({
@@ -56,10 +48,10 @@ const Admin = () => {
             formData.append('name', newProduct.name);
             formData.append('description', newProduct.description);
             formData.append('price', newProduct.price);
-            formData.append('image', newProduct.imageUrl);
+            formData.append('image', newProduct.imageUrl); // Assuming imageUrl is a file input
             formData.append('stock', newProduct.stock);
 
-            const response = await axios.post('/api/products', formData);
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/products`, formData);
             setProducts([...products, response.data]);
             setNewProduct({ id: '', name: '', description: '', price: '', imageUrl: '', stock: '' });
         } catch (error) {
@@ -69,7 +61,7 @@ const Admin = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`/api/products/${id}`);
+            await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
             setProducts(products.filter(product => product._id !== id));
         } catch (error) {
             console.error("Error deleting product:", error);
@@ -78,7 +70,7 @@ const Admin = () => {
 
     const handleUpdate = async (id, updatedProduct) => {
         try {
-            const response = await axios.put(`/api/products/${id}`, updatedProduct);
+            const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`, updatedProduct);
             setProducts(products.map(product => (product._id === id ? response.data : product)));
         } catch (error) {
             console.error("Error updating product:", error);
@@ -98,22 +90,18 @@ const Admin = () => {
             </form>
             <h2>Product List</h2>
             <div className="product-list">
-                {Array.isArray(products) && products.length > 0 ? (
-                    products.map((product) => (
-                        <div key={product._id} className="product-item">
-                            <img src={product.imageUrl} alt={product.name} className="product-image" />
-                            <h3>{product.name}</h3>
-                            <p>{product.description}</p>
-                            <p>${product.price.toFixed(2)}</p>
-                            <p>Stock: {product.stock}</p>
-                            <button onClick={() => handleDelete(product._id)}>Delete</button>
-                            <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock - 1 })}>Decrement Stock</button>
-                            <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock + 1 })}>Increment Stock</button>
-                        </div>
-                    ))
-                ) : (
-                    <p>No products available</p>
-                )}
+                {products.map((product) => (
+                    <div key={product._id} className="product-item">
+                        <img src={product.imageUrl} alt={product.name} className="product-image" />
+                        <h3>{product.name}</h3>
+                        <p>{product.description}</p>
+                        <p>${product.price.toFixed(2)}</p>
+                        <p>Stock: {product.stock}</p>
+                        <button onClick={() => handleDelete(product._id)}>Delete</button>
+                        <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock - 1 })}>Decrement Stock</button>
+                        <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock + 1 })}>Increment Stock</button>
+                    </div>
+                ))}
             </div>
         </div>
     );
