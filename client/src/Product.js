@@ -14,6 +14,7 @@ function Product() {
                 console.log('Fetching product with id:', id);
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
                 console.log('API response:', response);
+                console.log('API response data:', response.data);
                 setProduct(response.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -57,16 +58,22 @@ function Product() {
             </header>
             <main>
                 <div className="product-detail-container">
-                    <h1>{product.name}</h1>
-                    <div className="product-detail">
-                        <img src={product.imageUrl} alt={product.name} className="product-detail-image" />
-                        <div className="product-detail-info">
-                            <p>{product.description}</p>
-                            <p>Price: ${parseFloat(product.price.$numberDouble).toFixed(2)}</p>
-                            <p>Stock: {parseInt(product.stock.$numberInt)}</p>
-                            <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
-                        </div>
-                    </div>
+                    {product ? (
+                        <>
+                            <h1>{product.name}</h1>
+                            <div className="product-detail">
+                                <img src={product.imageUrl} alt={product.name} className="product-detail-image" />
+                                <div className="product-detail-info">
+                                    <p>{product.description}</p>
+                                    <p>Price: ${parseFloat(product.price.$numberDouble).toFixed(2)}</p>
+                                    <p>Stock: {parseInt(product.stock.$numberInt)}</p>
+                                    <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <p>Loading product...</p>
+                    )}
                 </div>
             </main>
         </div>
