@@ -20,14 +20,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     .catch(err => console.error('MongoDB connection error:', err));
 
 app.use(cors({
-    origin: function(origin, callback) {
-        const allowedOrigins = ['https://christinesfashions.com', 'https://christinesfashions.netlify.app', 'http://localhost:3000'];
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: ['https://christinesfashions.com', 'https://christinesfashions.netlify.app', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -85,6 +78,8 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', upload.single('image'), async (req, res) => {
     console.log('POST /api/products request received');
+    console.log('Request body:', req.body);
+    console.log('File:', req.file);
     try {
         const newProduct = new Product({
             name: req.body.name,
