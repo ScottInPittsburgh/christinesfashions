@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import heroImage from './images/content/hero-image.jpg';
 import id1image from './images/content/id1image.jpg';
 import id2image from './images/content/id2image.jpg';
@@ -20,8 +19,6 @@ const collections = [
 ];
 
 const Home = () => {
-    const location = useLocation();
-
     return (
         <div>
             <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
