@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './styles.css';
 import { useAuth } from './AuthContext';
+import axios from 'axios';
 
 const Admin = () => {
     const { isAuthenticated } = useAuth();
@@ -12,7 +12,7 @@ const Admin = () => {
         name: '',
         description: '',
         price: '',
-        image: null,
+        imageUrl: '',
         stock: '',
     });
 
@@ -28,45 +28,38 @@ const Admin = () => {
         try {
             const response = await axios.get('/api/products');
             setProducts(response.data);
-        } catch (error) {
-            console.error('There was an error fetching the products!', error);
+        } catch (err) {
+            console.error('Error fetching products!', err);
         }
     };
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        if (name === 'image') {
-            setNewProduct({ ...newProduct, image: files[0] });
-        } else {
-            setNewProduct({ ...newProduct, [name]: value });
-        }
+        setNewProduct({
+            ...newProduct,
+            [e.target.name]: e.target.value,
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('name', newProduct.name);
-        formData.append('description', newProduct.description);
-        formData.append('price', newProduct.price);
-        formData.append('image', newProduct.image);
-        formData.append('stock', newProduct.stock);
-
         try {
+            const formData = new FormData();
+            formData.append('name', newProduct.name);
+            formData.append('description', newProduct.description);
+            formData.append('price', newProduct.price);
+            formData.append('image', newProduct.imageUrl);
+            formData.append('stock', newProduct.stock);
+
             const response = await axios.post('/api/products', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+
             setProducts([...products, response.data]);
-            setNewProduct({
-                name: '',
-                description: '',
-                price: '',
-                image: null,
-                stock: '',
-            });
-        } catch (error) {
-            console.error('There was an error adding the product!', error);
+            setNewProduct({ name: '', description: '', price: '', imageUrl: '', stock: '' });
+        } catch (err) {
+            console.error('Error adding product!', err);
         }
     };
 
@@ -74,17 +67,17 @@ const Admin = () => {
         try {
             await axios.delete(`/api/products/${id}`);
             setProducts(products.filter(product => product._id !== id));
-        } catch (error) {
-            console.error('There was an error deleting the product!', error);
+        } catch (err) {
+            console.error('Error deleting product!', err);
         }
     };
 
     const handleUpdate = async (id, updatedProduct) => {
         try {
-            const response = await axios.put(`/api/products/${id}`, updatedProduct);
-            setProducts(products.map(product => (product._id === id ? response.data : product)));
-        } catch (error) {
-            console.error('There was an error updating the product!', error);
+            await axios.put(`/api/products/${id}`, updatedProduct);
+            setProducts(products.map(product => (product._id === id ? updatedProduct : product)));
+        } catch (err) {
+            console.error('Error updating product!', err);
         }
     };
 
@@ -95,7 +88,7 @@ const Admin = () => {
                 <input type="text" name="name" value={newProduct.name} onChange={handleChange} placeholder="Product Name" required />
                 <input type="text" name="description" value={newProduct.description} onChange={handleChange} placeholder="Description" required />
                 <input type="number" name="price" value={newProduct.price} onChange={handleChange} placeholder="Price" required />
-                <input type="file" name="image" onChange={handleChange} required />
+                <input type="file" name="imageUrl" onChange={(e) => setNewProduct({ ...newProduct, imageUrl: e.target.files[0] })} required />
                 <input type="number" name="stock" value={newProduct.stock} onChange={handleChange} placeholder="Stock" required />
                 <button type="submit">Add Product</button>
             </form>

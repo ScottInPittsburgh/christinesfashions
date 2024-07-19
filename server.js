@@ -56,9 +56,12 @@ const Product = mongoose.model('Product', productSchema);
 // Routes
 app.get('/api/products', async (req, res) => {
     try {
+        console.log("Fetching products...");
         const products = await Product.find();
+        console.log("Products:", products);
         res.json(products);
     } catch (error) {
+        console.error("Error fetching products:", error);
         res.status(500).json({ error: 'Error fetching products' });
     }
 });
@@ -73,8 +76,10 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
             stock: req.body.stock,
         });
         await newProduct.save();
+        console.log("Product added:", newProduct);
         res.json(newProduct);
     } catch (error) {
+        console.error("Error adding product:", error);
         res.status(500).json({ error: 'Error adding product' });
     }
 });
@@ -82,8 +87,10 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
 app.delete('/api/products/:id', async (req, res) => {
     try {
         await Product.findByIdAndDelete(req.params.id);
+        console.log("Product deleted:", req.params.id);
         res.json({ message: 'Product deleted' });
     } catch (error) {
+        console.error("Error deleting product:", error);
         res.status(500).json({ error: 'Error deleting product' });
     }
 });
@@ -91,8 +98,10 @@ app.delete('/api/products/:id', async (req, res) => {
 app.put('/api/products/:id', async (req, res) => {
     try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        console.log("Product updated:", updatedProduct);
         res.json(updatedProduct);
     } catch (error) {
+        console.error("Error updating product:", error);
         res.status(500).json({ error: 'Error updating product' });
     }
 });
