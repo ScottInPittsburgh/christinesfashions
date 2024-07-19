@@ -1,28 +1,49 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const aws = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+})
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://scottdrickman27:Fc1M6Jft6ycdVZvr@cluster0.gmyhuuh.mongodb.net/christinesfashions?retryWrites=true&w=majority&appName=Cluster0";
+app.use(cors({
+    origin: 'https://christinesfashions.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-// Connect to MongoDB
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-    console.log('Connected to MongoDB');
+app.use(express.json());
+
+const s3 = new aws.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
 });
 
-// Product Schema
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.AWS_BUCKET_NAME,
+        key: function (req, file, cb) {
+            console.log('Uploading file:', file);
+            cb(null, Date.now().toString() + file.originalname);
+        }
+    })
+});
+
 const productSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -33,52 +54,89 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
-// Routes
+app.get('/api/test-db', async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.json({ message: 'Database connection successful' });
+    } catch (error) {
+        console.error('Database connection failed:', error);
+        res.status(500).json({ error: 'Database connection failed', details: error.message, stack: error.stack });
+    }
+});
+
 app.get('/api/products', async (req, res) => {
+    console.log('GET /api/products request received');
     try {
-        const products = await Product.find({});
+        const products = await Product.find();
+        console.log(`Found ${products.length} products`);
         res.json(products);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        res.status(500).json({ error: 'Error fetching products', details: error.message, stack: error.stack });
     }
 });
 
-app.post('/api/products', async (req, res) => {
-    const { name, description, price, imageUrl, stock } = req.body;
+app.post('/api/products', upload.single('image'), async (req, res) => {
+    console.log('POST /api/products request received');
+    console.log('Request body:', req.body);
+    console.log('File:', req.file);
     try {
-        const newProduct = new Product({ name, description, price, imageUrl, stock });
+        const newProduct = new Product({
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            imageUrl: req.file ? req.file.location : null,
+            stock: req.body.stock,
+        });
         await newProduct.save();
-        res.status(201).json(newProduct);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
-
-app.put('/api/products/:id', async (req, res) => {
-    const { id } = req.params;
-    const { name, description, price, imageUrl, stock } = req.body;
-    try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, { name, description, price, imageUrl, stock }, { new: true });
-        res.json(updatedProduct);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+        console.log('New product saved:', newProduct);
+        res.json(newProduct);
+    } catch (error) {
+        console.error('Error adding product:', error);
+        res.status(500).json({ error: 'Error adding product', details: error.message, stack: error.stack });
     }
 });
 
 app.delete('/api/products/:id', async (req, res) => {
-    const { id } = req.params;
+    console.log(`DELETE /api/products/${req.params.id} request received`);
     try {
-        await Product.findByIdAndDelete(id);
+        await Product.findByIdAndDelete(req.params.id);
+        console.log('Product deleted');
         res.json({ message: 'Product deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Error deleting product', details: error.message, stack: error.stack });
     }
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.put('/api/products/:id', async (req, res) => {
+    console.log(`PUT /api/products/${req.params.id} request received`);
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        console.log('Product updated:', updatedProduct);
+        res.json(updatedProduct);
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Error updating product', details: error.message, stack: error.stack });
+    }
+});
+
+app.get('/test-aws', (req, res) => {
+    s3.listBuckets((err, data) => {
+        if (err) {
+            console.error("Error", err);
+            res.status(500).json({ error: "Error connecting to AWS", details: err.message });
+        } else {
+            console.log("Success", data.Buckets);
+            res.json({ message: "Successfully connected to AWS", buckets: data.Buckets });
+        }
+    });
+});
+
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.listen(port, () => {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { FaRedoAlt, FaChevronDown, FaTimes } from 'react-icons/fa';
 import styles from './CollectionPage.module.scss';
 import Footer from './Footer';
@@ -22,13 +23,13 @@ const CollectionPage = () => {
 
         const fetchProducts = async () => {
             setIsLoading(true);
-            const mockProducts = [
-                { id: 1, name: 'T-Shirt', price: 19.99, color: 'red', size: 'M', type: 't-shirt' },
-                { id: 2, name: 'Hoodie', price: 39.99, color: 'blue', size: 'L', type: 'hoodie' },
-                { id: 3, name: 'Cap', price: 14.99, color: 'black', size: 'One Size', type: 'accessory' },
-            ];
-            setProducts(mockProducts);
-            setFilteredProducts(mockProducts);
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products`);
+                setProducts(response.data);
+                setFilteredProducts(response.data);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
             setIsLoading(false);
         };
 
@@ -112,12 +113,12 @@ const CollectionPage = () => {
 
             <div className={styles.activeFilters}>
                 {Object.entries(filterConditions).map(([property, values]) =>
-                        values.map(value => (
-                            <span key={`${property}-${value}`} className={styles.filterTag}>
-              {value}
-                                <FaTimes onClick={() => handleFilter(property, value)} />
-            </span>
-                        ))
+                    values.map(value => (
+                        <span key={`${property}-${value}`} className={styles.filterTag}>
+                            {value}
+                            <FaTimes onClick={() => handleFilter(property, value)} />
+                        </span>
+                    ))
                 )}
             </div>
 
@@ -126,7 +127,7 @@ const CollectionPage = () => {
             ) : (
                 <div className={styles.productGrid}>
                     {filteredProducts.map(product => (
-                        <div key={product.id} className={styles.productCard}>
+                        <div key={product._id} className={styles.productCard}>
                             <h3>{product.name}</h3>
                             <p>${product.price.toFixed(2)}</p>
                             <p>Color: {product.color}</p>
