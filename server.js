@@ -5,6 +5,7 @@ const cors = require('cors');
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -20,19 +21,8 @@ mongoose.connect(mongoUri, {
     console.error('Error connecting to MongoDB', err);
 });
 
-// CORS configuration
-const allowedOrigins = ['https://christinesfashions.com', 'https://christinesfashions.netlify.app'];
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
-}));
-
+// Middleware
+app.use(cors());
 app.use(express.json());
 
 // AWS S3 configuration
@@ -106,6 +96,13 @@ app.put('/api/products/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Error updating product' });
     }
+});
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 // Start server
