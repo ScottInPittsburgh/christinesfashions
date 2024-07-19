@@ -14,7 +14,7 @@ import './styles.css';
 
 const Layout = ({ children }) => {
     const location = useLocation();
-    const noHeaderFooter = location.pathname === '/productpage/:id';
+    const noHeaderFooter = location.pathname === '/productpage/:id'; // Add more paths if necessary
 
     return (
         <>
@@ -67,7 +67,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/collection/:id"
+                        path="/collection/:type"
                         element={
                             <Layout>
                                 <CollectionPage />
