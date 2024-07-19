@@ -22,7 +22,11 @@ mongoose.connect(mongoUri, {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['https://christinesfashions.com', 'https://christinesfashions.netlify.app'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // AWS S3 configuration
