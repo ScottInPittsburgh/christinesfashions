@@ -19,6 +19,14 @@ function Product() {
         fetchProduct();
     }, [id]);
 
+    const addToCart = (product) => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItem = { ...product, quantity: 1, totalPrice: product.price };
+        cart.push(cartItem);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert('Product added to cart!');
+    };
+
     if (!product) {
         return <div>Loading...</div>;
     }
@@ -34,13 +42,17 @@ function Product() {
                 </nav>
             </header>
             <main>
-                <h1>Product Page</h1>
-                <div className="product-detail">
-                    <h2>{product.name}</h2>
-                    <img src={product.imageUrl} alt={product.name} />
-                    <p>{product.description}</p>
-                    <p>Price: ${product.price.toFixed(2)}</p>
-                    <p>Stock: {product.stock}</p>
+                <div className="product-detail-container">
+                    <h1>{product.name}</h1>
+                    <div className="product-detail">
+                        <img src={product.imageUrl} alt={product.name} className="product-detail-image" />
+                        <div className="product-detail-info">
+                            <p>{product.description}</p>
+                            <p>Price: ${product.price.toFixed(2)}</p>
+                            <p>Stock: {product.stock}</p>
+                            <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
