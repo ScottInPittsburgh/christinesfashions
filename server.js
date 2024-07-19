@@ -24,7 +24,7 @@ mongoose.connect(mongoUri, {
 // Middleware
 app.use(cors({
     origin: function(origin, callback) {
-        const allowedOrigins = ['https://christinesfashions.com', 'https://christinesfashions.netlify.app'];
+        const allowedOrigins = ['https://christinesfashions.com', 'https://christinesfashions.netlify.app', 'http://localhost:3000'];
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
@@ -67,15 +67,19 @@ const Product = mongoose.model('Product', productSchema);
 
 // Routes
 app.get('/api/products', async (req, res) => {
+    console.log('GET /api/products request received');
     try {
         const products = await Product.find();
+        console.log(`Found ${products.length} products`);
         res.json(products);
     } catch (error) {
+        console.error('Error fetching products:', error);
         res.status(500).json({ error: 'Error fetching products' });
     }
 });
 
 app.post('/api/products', upload.single('image'), async (req, res) => {
+    console.log('POST /api/products request received');
     try {
         const newProduct = new Product({
             name: req.body.name,
@@ -85,26 +89,34 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
             stock: req.body.stock,
         });
         await newProduct.save();
+        console.log('New product saved:', newProduct);
         res.json(newProduct);
     } catch (error) {
+        console.error('Error adding product:', error);
         res.status(500).json({ error: 'Error adding product' });
     }
 });
 
 app.delete('/api/products/:id', async (req, res) => {
+    console.log(`DELETE /api/products/${req.params.id} request received`);
     try {
         await Product.findByIdAndDelete(req.params.id);
+        console.log('Product deleted');
         res.json({ message: 'Product deleted' });
     } catch (error) {
+        console.error('Error deleting product:', error);
         res.status(500).json({ error: 'Error deleting product' });
     }
 });
 
 app.put('/api/products/:id', async (req, res) => {
+    console.log(`PUT /api/products/${req.params.id} request received`);
     try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        console.log('Product updated:', updatedProduct);
         res.json(updatedProduct);
     } catch (error) {
+        console.error('Error updating product:', error);
         res.status(500).json({ error: 'Error updating product' });
     }
 });
@@ -112,6 +124,7 @@ app.put('/api/products/:id', async (req, res) => {
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+// "catchall" handler
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
@@ -119,13 +132,4 @@ app.get('*', (req, res) => {
 // Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-});
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
 });
