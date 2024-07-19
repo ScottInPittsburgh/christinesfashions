@@ -8,12 +8,14 @@ import CollectionPage from './CollectionPage';
 import Login from './Login';
 import Admin from './Admin';
 import AllProducts from './AllProducts';
+import Header from './Header';
 import './styles.css';
 
 function App() {
     return (
         <Router>
             <div className="App">
+                <Header />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/home" element={<Home />} />
@@ -21,7 +23,7 @@ function App() {
                     <Route path="/productpage/:id" element={<ProductPage />} />
                     <Route path="/product/:id" element={<Product />} />
                     <Route path="/collection/:id" element={<CollectionPage />} />
-                    <Route path="/collection/products" element={<AllProducts />} /> {/* Add this line */}
+                    <Route path="/collection/products" element={<AllProducts />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/admin" element={<Admin />} />
                 </Routes>
