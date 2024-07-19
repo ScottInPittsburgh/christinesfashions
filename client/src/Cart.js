@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './styles.css';
 
 const CartItem = ({ item, onRemove }) => (
@@ -18,8 +17,9 @@ const Cart = () => {
     const [showDemoMessage, setShowDemoMessage] = useState(false);
 
     const handleRemoveItem = (id) => {
-        localStorage.setItem('cart', cartItems.filter(item => item.id !== id))
-        setCartItems(cartItems.filter(item => item.id !== id));
+        const updatedCartItems = cartItems.filter(item => item.id !== id);
+        setCartItems(updatedCartItems);
+        localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
     const handleCheckout = () => {
@@ -29,21 +29,12 @@ const Cart = () => {
     const totalAmount = cartItems.reduce((acc, item) => acc + item.totalPrice * item.quantity, 0);
 
     useEffect(() => {
-   
-        const items = localStorage.getItem('cart') === '' ? [] : JSON.parse(localStorage.getItem('cart'));
+        const items = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
         setCartItems(items);
     }, []);
 
     return (
-        <div>
-            <header>
-                <nav>
-                    <ul className="menu-bar">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/login">Login</Link></li>
-                    </ul>
-                </nav>
-            </header>
+        <div className="cart-container">
             <main>
                 <h1>Shopping Cart</h1>
                 <div className="cart-content">

@@ -346,3 +346,57 @@ main {
 .add-to-cart-button:hover {
     background-color: #555;
 }
+
+.cart-container {
+    padding: 20px;
+}
+
+.cart-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cart-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cart-summary {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.checkout-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.checkout-button:hover {
+    background-color: #0056b3;
+}
+
+.demo-message {
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
+}
+
+.login-link {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: #007bff;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
