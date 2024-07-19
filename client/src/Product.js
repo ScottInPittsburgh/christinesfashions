@@ -5,6 +5,7 @@ import './styles.css';
 
 function Product() {
     const [product, setProduct] = useState(null);
+    const [error, setError] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -14,6 +15,7 @@ function Product() {
                 setProduct(response.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
+                setError(error);
             }
         };
         fetchProduct();
@@ -26,6 +28,10 @@ function Product() {
         localStorage.setItem('cart', JSON.stringify(cart));
         alert('Product added to cart!');
     };
+
+    if (error) {
+        return <div>Error loading product: {error.message}</div>;
+    }
 
     if (!product) {
         return <div>Loading...</div>;
