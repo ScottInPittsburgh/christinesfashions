@@ -11,7 +11,9 @@ function Product() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
+                console.log('Fetching product with id:', id);
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
+                console.log('API response:', response);
                 setProduct(response.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -23,7 +25,13 @@ function Product() {
 
     const addToCart = (product) => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartItem = { ...product, quantity: 1, totalPrice: product.price };
+        const cartItem = {
+            ...product,
+            price: parseFloat(product.price.$numberDouble),
+            stock: parseInt(product.stock.$numberInt),
+            quantity: 1,
+            totalPrice: parseFloat(product.price.$numberDouble)
+        };
         cart.push(cartItem);
         localStorage.setItem('cart', JSON.stringify(cart));
         alert('Product added to cart!');
@@ -54,8 +62,8 @@ function Product() {
                         <img src={product.imageUrl} alt={product.name} className="product-detail-image" />
                         <div className="product-detail-info">
                             <p>{product.description}</p>
-                            <p>Price: ${product.price?.toFixed(2)}</p>
-                            <p>Stock: {product.stock}</p>
+                            <p>Price: ${parseFloat(product.price.$numberDouble).toFixed(2)}</p>
+                            <p>Stock: {parseInt(product.stock.$numberInt)}</p>
                             <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
                         </div>
                     </div>
