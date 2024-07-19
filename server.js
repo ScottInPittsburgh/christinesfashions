@@ -23,7 +23,14 @@ mongoose.connect(mongoUri, {
 
 // Middleware
 app.use(cors({
-    origin: ['https://christinesfashions.com', 'https://christinesfashions.netlify.app'],
+    origin: function(origin, callback) {
+        const allowedOrigins = ['https://christinesfashions.com', 'https://christinesfashions.netlify.app'];
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -112,4 +119,13 @@ app.get('*', (req, res) => {
 // Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
 });

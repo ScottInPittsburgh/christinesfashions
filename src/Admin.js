@@ -51,7 +51,11 @@ const Admin = () => {
             formData.append('image', newProduct.imageUrl); // Assuming imageUrl is a file input
             formData.append('stock', newProduct.stock);
 
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/products`, formData);
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/products`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             setProducts([...products, response.data]);
             setNewProduct({ id: '', name: '', description: '', price: '', imageUrl: '', stock: '' });
         } catch (error) {
