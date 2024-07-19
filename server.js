@@ -37,7 +37,6 @@ const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: process.env.AWS_BUCKET_NAME,
-        acl: 'public-read',
         key: function (req, file, cb) {
             console.log('Uploading file:', file);
             cb(null, Date.now().toString() + file.originalname);
@@ -86,7 +85,7 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            imageUrl: req.file.location,
+            imageUrl: req.file ? req.file.location : null,
             stock: req.body.stock,
         });
         await newProduct.save();
