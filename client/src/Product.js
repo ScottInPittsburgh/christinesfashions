@@ -9,11 +9,9 @@ function Product() {
     const { id } = useParams();
 
     useEffect(() => {
-        console.log('Fetching product with id:', id); // Log the id to ensure it's being passed correctly
         const fetchProduct = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
-                console.log('Fetched product data:', response.data); // Log the response data
                 setProduct(response.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -56,7 +54,7 @@ function Product() {
                         <img src={product.imageUrl} alt={product.name} className="product-detail-image" />
                         <div className="product-detail-info">
                             <p>{product.description}</p>
-                            <p>Price: ${product.price?.toFixed(2)}</p> {/* Optional chaining to prevent undefined error */}
+                            <p>Price: ${product.price?.toFixed(2)}</p>
                             <p>Stock: {product.stock}</p>
                             <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
                         </div>
