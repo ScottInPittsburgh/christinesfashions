@@ -18,6 +18,7 @@ const Cart = () => {
     const [showDemoMessage, setShowDemoMessage] = useState(false);
 
     const handleRemoveItem = (id) => {
+        localStorage.setItem('cart', cartItems.filter(item => item.id !== id))
         setCartItems(cartItems.filter(item => item.id !== id));
     };
 
@@ -28,7 +29,8 @@ const Cart = () => {
     const totalAmount = cartItems.reduce((acc, item) => acc + item.totalPrice * item.quantity, 0);
 
     useEffect(() => {
-        const items = JSON.parse(localStorage.getItem('cart'));
+   
+        const items = localStorage.getItem('cart') === '' ? [] : JSON.parse(localStorage.getItem('cart'));
         setCartItems(items);
     }, []);
 

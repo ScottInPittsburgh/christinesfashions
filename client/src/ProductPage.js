@@ -21,9 +21,9 @@ import Zoom from './assets/images/zoom.png'
 const ProductColors = ({ handleSelectedColor }) => (
     <div className={styles.color_image_container}>
         {/*<button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button> */}
-        <img alt="" className={styles.cyan_button} src={BlackTanColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Cyan")} />
-        <img alt="" className={styles.cyan_button} src={WhiteColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Bronze")} />
-        <img alt="" className={styles.cyan_button} src={StripeColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Black")} />
+        <img alt="" className={styles.cyan_button} src={BlackTanColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Black/Tan")} />
+        <img alt="" className={styles.cyan_button} src={WhiteColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Gold Awning Stripe")} />
+        <img alt="" className={styles.cyan_button} src={StripeColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Multi Petal")} />
         {/* <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
         <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button> */}
     </div>
@@ -43,7 +43,7 @@ const ProductPage = () => {
     const zoomAudioRef = useRef(null);
     const [pricePerItem] = useState(103.99)
     const [isLongAudioPlaying, setIsLongAudioPlaying] = useState(true);
-    const [selectedColor, setSelectedColor] = useState('Cyan');
+    const [selectedColor, setSelectedColor] = useState('Black/Tan');
     const [selectedSize, setSelectedSize] = useState('');
     const [videoType, setVideoType] = useState('')
     const [selectedItems, setSelectedItems] = useState([])
@@ -57,21 +57,21 @@ const ProductPage = () => {
 
     const playVideoAsPerSelectedColor = useCallback(() => {
         switch (selectedColor) {
-            case 'Cyan':
+            case 'Black/Tan':
                 switch (videoType) {
                     case 'CyanZoom':
                         return ZoomCyanVideo;
                     default:
                         return CyanVideo;
                 }
-            case 'Bronze':
+            case 'Gold Awning Stripe':
                 switch (videoType) {
                     case 'BronzeZoom':
                         return ZoomBronzeVideo;
                     default:
                         return BronzeVideo;
                 }
-            case 'Black':
+            case 'Multi Petal':
                 switch (videoType) {
                     case 'BlackZoom':
                         return ZoomBlackVideo;
@@ -103,19 +103,19 @@ const ProductPage = () => {
     const handlePlayAudioAsPerSelectedColor = useCallback((selectedColor) => {
         console.log({ selectedColor })
         switch (selectedColor) {
-            case 'Cyan':
+            case 'Black/Tan':
                 cyanAudioRef.current.play();
                 bronzeAudioRef.current.pause();
                 blackAudioRef.current.pause();
                 audioLongRef.current.pause();
                 break;
-            case 'Bronze':
+            case 'Gold Awning Stripe':
                 bronzeAudioRef.current.play();
                 cyanAudioRef.current.pause();
                 blackAudioRef.current.pause();
                 audioLongRef.current.pause();
                 break;
-            case 'Black':
+            case 'Multi Petal':
                 blackAudioRef.current.play();
                 bronzeAudioRef.current.pause();
                 cyanAudioRef.current.pause();
@@ -195,15 +195,15 @@ const ProductPage = () => {
             )}
 
             <div className={styles.details_wrapper}>
-                <div className={styles.cartStyles}>
-                    <img src={Cart} alt="" height={"50px"} width={"50px"} />
-                    <p>{`${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</p>
-                </div>
+            <div className={styles.cartStyles}>
+                <img src={Cart} alt="" height={"50px"} width={"50px"} />
+                <p className={styles.items}>{`${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</p>
+            </div>
                 <button onClick={handlePauseAudio}>Pause</button>
                 {/* <button className={styles.button}>{`Items in Cart ${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</button> */}
                 <div className={styles.description_variant_container}>
                     <div className={styles.description_containter}>
-                        <h1 className={styles.name}>Button Front Ruffle <br/>
+                        <h1 className={styles.name}>Button Front Ruffle <br />
                             Hem Dress </h1>
                         <h6 className={styles.amount}>$39.99 </h6>
                         {/* <p className={styles.description}>This is a sample product description.</p>
@@ -218,7 +218,7 @@ const ProductPage = () => {
                 </div>
                 <div className={styles.zoom_btn_container}>
                     {/* <button className={styles.button} onClick={() => playZoomAudioAsPerSelectedColor()}> */}
-                    <img src={Zoom} alt="" height={"70px"} width={"70px"} onClick={() => playZoomAudioAsPerSelectedColor()}/>
+                    <img src={Zoom} alt="" height={"70px"} width={"70px"} onClick={() => playZoomAudioAsPerSelectedColor()} />
                     {/* Closer View */}
                     {/* </button> */}
                 </div>
@@ -237,10 +237,11 @@ const ProductPage = () => {
                             ))}
                         </div>
                     </div>
-                    <button className={styles.button} onClick={() => handleAddtoBag()}>
-                        ADD TO CART
-
-                    </button>
+                    <div className={styles.cart}>
+                        <button className={styles.button} onClick={() => handleAddtoBag()}>
+                            ADD TO CART
+                        </button>
+                    </div>
 
                 </div>
             </div>
