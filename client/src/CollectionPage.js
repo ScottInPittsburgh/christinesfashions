@@ -12,7 +12,7 @@ const CollectionPage = () => {
         const fetchProducts = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products`);
-                const filteredProducts = response.data.filter(product => product.description.includes(`(${type})`));
+                const filteredProducts = response.data.filter(product => product.name.includes(`(${type})`));
                 setProducts(filteredProducts);
             } catch (error) {
                 console.error("Error fetching products:", error);
