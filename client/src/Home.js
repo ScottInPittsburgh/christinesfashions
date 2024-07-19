@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import './styles.css';
 import heroImage from './images/content/hero-image.jpg';
 import id1image from './images/content/id1image.jpg';
@@ -21,7 +22,20 @@ const collections = [
 ];
 
 const Home = () => {
+    const [products, setProducts] = useState([]);
     const location = useLocation();
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products`);
+                setProducts(response.data);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+        fetchProducts();
+    }, []);
 
     return (
         <div>
@@ -53,6 +67,15 @@ const Home = () => {
                     <div className="tile-grid">
                         {collections.map(collection => (
                             <CollectionCard key={collection.id} {...collection} />
+                        ))}
+                    </div>
+                </section>
+
+                <section className="all-products">
+                    <h2>All Products</h2>
+                    <div className="tile-grid">
+                        {products.map(product => (
+                            <ProductCard key={product._id} {...product} />
                         ))}
                     </div>
                 </section>
