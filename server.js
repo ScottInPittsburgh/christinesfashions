@@ -1,10 +1,11 @@
+
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
-require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -20,10 +21,19 @@ mongoose.connect(mongoUri, {
     console.error('Error connecting to MongoDB', err);
 });
 
-// Middleware
+// CORS configuration
+const allowedOrigins = ['https://christinesfashions.com', 'https://christinesfashions.netlify.app'];
 app.use(cors({
-    origin: 'https://christinesfashions.com'
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
 }));
+
 app.use(express.json());
 
 // AWS S3 configuration
@@ -58,9 +68,7 @@ const Product = mongoose.model('Product', productSchema);
 // Routes
 app.get('/api/products', async (req, res) => {
     try {
-        console.log("Fetching products...");
         const products = await Product.find();
-        console.log("Products:", products);
         res.json(products);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching products' });
