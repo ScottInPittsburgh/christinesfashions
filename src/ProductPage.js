@@ -12,12 +12,20 @@ import BronzeAudio from "./assets/audios/Bronze.m4a";
 import BlackAudio from "./assets/audios/Black.m4a";
 import ZoomAudio from "./assets/audios/Zoom.m4a";
 import styles from './ProductPage.module.scss';
+import BlackTanColorButton from './assets/images/BlackTanColorButton.png'
+import WhiteColorButton from './assets/images/StripeColorButton.png'
+import StripeColorButton from './assets/images/WhiteColorButton.png'
+import Cart from './assets/images/cart.png'
+import Zoom from './assets/images/zoom.png'
 
 const ProductColors = ({ handleSelectedColor }) => (
     <div className={styles.color_image_container}>
-        <button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button>
-        <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
-        <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button>
+        {/*<button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button> */}
+        <img alt="" className={styles.cyan_button} src={BlackTanColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Cyan")} />
+        <img alt="" className={styles.cyan_button} src={WhiteColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Bronze")} />
+        <img alt="" className={styles.cyan_button} src={StripeColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Black")} />
+        {/* <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
+        <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button> */}
     </div>
 );
 
@@ -26,7 +34,6 @@ const ProductSize = ({ value, isSelected, isOutOfStock, onClick }) => (
         {value.toUpperCase()}
     </div>
 );
-
 const ProductPage = () => {
     const videoRef = useRef();
     const audioLongRef = useRef(null);
@@ -34,7 +41,7 @@ const ProductPage = () => {
     const bronzeAudioRef = useRef(null);
     const blackAudioRef = useRef(null);
     const zoomAudioRef = useRef(null);
-    const [pricePerItem] =useState(103.99)
+    const [pricePerItem] = useState(103.99)
     const [isLongAudioPlaying, setIsLongAudioPlaying] = useState(true);
     const [selectedColor, setSelectedColor] = useState('Cyan');
     const [selectedSize, setSelectedSize] = useState('');
@@ -131,7 +138,7 @@ const ProductPage = () => {
         bronzeAudioRef.current.currentTime = 0;
         blackAudioRef.current.currentTime = 0;
     };
-  
+
     //     audioLongRef.current.pause();
     //     cyanAudioRef.current.currentTime = 0; // Reset short audio to start for next play
     //     bronzeAudioRef.current.currentTime = 0;
@@ -146,27 +153,27 @@ const ProductPage = () => {
     };
     const handleAddtoBag = () => {
         if (selectedSize) {
-      
+
             const existingItemIndex = selectedItems.findIndex(item => item.color === selectedColor && item.size === selectedSize);
 
             if (existingItemIndex !== -1) {
-              
+
                 const updatedItems = [...selectedItems];
                 updatedItems[existingItemIndex].quantity += 1;
                 updatedItems[existingItemIndex].totalPrice = pricePerItem * updatedItems[existingItemIndex].quantity;
                 setSelectedItems(updatedItems);
-                localStorage.setItem('cart',JSON.stringify(updatedItems))
+                localStorage.setItem('cart', JSON.stringify(updatedItems))
             } else {
-               
+
                 const newItem = {
-                    id:Math.random(),
+                    id: Math.random(),
                     color: selectedColor,
                     size: selectedSize,
                     quantity: 1,
                     totalPrice: pricePerItem
                 };
                 setSelectedItems([...selectedItems, newItem]);
-                localStorage.setItem('cart',JSON.stringify([...selectedItems, newItem]))
+                localStorage.setItem('cart', JSON.stringify([...selectedItems, newItem]))
             }
         }
     };
@@ -188,14 +195,20 @@ const ProductPage = () => {
             )}
 
             <div className={styles.details_wrapper}>
+                <div className={styles.cartStyles}>
+                    <img src={Cart} alt="" height={"50px"} width={"50px"} />
+                    <p>{`${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</p>
+                </div>
                 <button onClick={handlePauseAudio}>Pause</button>
-                <button className={styles.button}>{`Items in Cart ${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</button>
+                {/* <button className={styles.button}>{`Items in Cart ${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</button> */}
                 <div className={styles.description_variant_container}>
                     <div className={styles.description_containter}>
-                        <h1 className={styles.name}>Sample Product $103.99</h1>
+                        <h1 className={styles.name}>Button Front Ruffle <br/>
+                            Hem Dress </h1>
+                        <h6 className={styles.amount}>$39.99 </h6>
+                        {/* <p className={styles.description}>This is a sample product description.</p>
                         <p className={styles.description}>This is a sample product description.</p>
-                        <p className={styles.description}>This is a sample product description.</p>
-                        <p className={styles.description}>This is a sample product description.</p>
+                        <p className={styles.description}>This is a sample product description.</p> */}
                     </div>
                     <div className={styles.variants_container}>
                         <div className={styles.variants_wrapper}>
@@ -204,11 +217,12 @@ const ProductPage = () => {
                     </div>
                 </div>
                 <div className={styles.zoom_btn_container}>
-                    <button className={styles.button} onClick={() => playZoomAudioAsPerSelectedColor()}>
-                        Closer View
-                    </button>
+                    {/* <button className={styles.button} onClick={() => playZoomAudioAsPerSelectedColor()}> */}
+                    <img src={Zoom} alt="" height={"70px"} width={"70px"} onClick={() => playZoomAudioAsPerSelectedColor()}/>
+                    {/* Closer View */}
+                    {/* </button> */}
                 </div>
-                <div className={styles.controls_wrapper}>                  
+                <div className={styles.controls_wrapper}>
                     <div className={styles.sizes_container}>
                         <p className={styles.pick_size}>Select Size</p>
                         <div className={styles.sizes_wrapper}>

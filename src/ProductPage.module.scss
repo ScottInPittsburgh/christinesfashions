@@ -46,8 +46,14 @@
   z-index: 1;
   width: 100%;
 
+.cartStyles {
+display: flex;
+justify-content: flex-end;
+}
+
+
   .description_containter {
-    width: 30%;
+    width: 20%;
     background-color: #8142308c;
     color: white;
     padding: 10px;
@@ -55,7 +61,8 @@
   }
 
   .zoom_btn_container {
-    top: 200px;
+    top: 100px;
+    left: 100px;
     position:relative;
   }
   .description_variant_container{
@@ -77,9 +84,20 @@
 }
 
 .name {
-  font-size: 2.4rem;
-  margin-bottom: 1rem;
+  // font-size: 2.4rem;
+  margin: 10px 0px;
+  font-size: 28px;
+    font-weight: 400;
+    font-style: normal;
 }
+
+.amount {
+  margin: 20px 0px;
+  font-size: 25px;
+}
+
+
+
 
 .description,
 .color {
@@ -110,7 +128,7 @@
 .number_of_colors,
 .pick_size {
 color:white;
-font-size: 32px;
+font-size: 20px;
 font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -132,19 +150,20 @@ font-weight: bold;
 .bronze_button,
 .black_button {
   font-size: 18px;
-  padding: 20px;
+  // padding: 20px;
   border: none;
   color: #f3ecec;
   cursor: pointer;
   text-align: auto;
   position: relative;
-  right: 10px;
+  // right: 10px;
+  right: 90px;
   border: 1px solid black
 }
 
-.cyan_button {
-  background-color: #12b4c0;
-}
+// .cyan_button {
+//   // background-color: #12b4c0;
+// }
 
 .bronze_button {
   background-color: #de7a09;
@@ -170,6 +189,7 @@ font-weight: bold;
   border-radius: 1rem;
   color:white;
   cursor: pointer;
+  
 }
 
 .fill {
@@ -184,15 +204,16 @@ font-weight: bold;
 }
 
 .button {
-  //width: 100%;
+  width: 20%;
   padding: 1rem;
   background-color: #000;
   color: #fff;
   border: none;
-  border-radius: 0.5rem;
-  font-size: 1.6rem;
+  font-size: 1rem;
   cursor: pointer;
   margin-top: 1rem;
+  border-radius: 30px;
+    height: 56px;
   /* Ensure button is not hidden */
 }
 
