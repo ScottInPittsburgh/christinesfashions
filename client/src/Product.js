@@ -15,9 +15,6 @@ function Product() {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
                 console.log('API response:', response);
                 console.log('API response data:', response.data);
-                console.log('Product price:', response.data.price);
-                console.log('Product stock:', response.data.stock);
-                console.log('Product imageUrl:', response.data.imageUrl);
                 setProduct(response.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -31,10 +28,10 @@ function Product() {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItem = {
             ...product,
-            price: product.price !== undefined ? parseFloat(product.price) : 0,
-            stock: product.stock !== undefined ? parseInt(product.stock) : 0,
+            price: product.price ? parseFloat(product.price.$numberDouble) : 0,
+            stock: product.stock ? parseInt(product.stock.$numberInt) : 0,
             quantity: 1,
-            totalPrice: product.price !== undefined ? parseFloat(product.price) : 0
+            totalPrice: product.price ? parseFloat(product.price.$numberDouble) : 0
         };
         cart.push(cartItem);
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -66,8 +63,8 @@ function Product() {
                         {product.imageUrl && <img src={product.imageUrl} alt={product.name} className="product-detail-image" />}
                         <div className="product-detail-info">
                             <p>{product.description}</p>
-                            <p>Price: {product.price !== undefined ? `$${parseFloat(product.price).toFixed(2)}` : 'N/A'}</p>
-                            <p>Stock: {product.stock !== undefined ? parseInt(product.stock) : 'N/A'}</p>
+                            <p>Price: {product.price ? `$${parseFloat(product.price.$numberDouble).toFixed(2)}` : 'N/A'}</p>
+                            <p>Stock: {product.stock ? parseInt(product.stock.$numberInt) : 'N/A'}</p>
                             <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
                         </div>
                     </div>
