@@ -9,11 +9,11 @@ function Product() {
     const { id } = useParams();
 
     useEffect(() => {
-        console.log('Fetching product with id:', id); // Log  id
+        console.log('Fetching product with id:', id); // Log the id to ensure it's being passed correctly
         const fetchProduct = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
-                console.log('Fetched product data:', response.data); // Log response data
+                console.log('Fetched product data:', response.data); // Log the response data
                 setProduct(response.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
