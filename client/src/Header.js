@@ -13,7 +13,7 @@ const Header = () => {
                     <li><Link to="/collection/products" className={location.pathname === '/collection/products' ? 'active' : ''}>Shop</Link></li>
                     <li><Link to="/login" className={location.pathname === '/login' ? 'active' : ''}>Login/Register</Link></li>
                     <li><Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>
-                        <i className="fas fa-shopping-cart"></i> Cart
+                        <i className="fas fa-shopping-cart"></i>
                     </Link></li>
                 </ul>
             </nav>
