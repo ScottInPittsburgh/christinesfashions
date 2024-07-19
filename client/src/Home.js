@@ -75,7 +75,7 @@ const Home = () => {
                     <h2>All Products</h2>
                     <div className="tile-grid">
                         {products.map(product => (
-                            <ProductCard key={product._id} {...product} />
+                            <ProductCard key={product._id} {...product} link={`/product/${product._id}`} />
                         ))}
                     </div>
                 </section>
