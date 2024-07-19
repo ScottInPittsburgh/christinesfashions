@@ -4,6 +4,7 @@ publish = "client/build"
 
 [environment]
 NODE_OPTIONS = "--openssl-legacy-provider"
+NODE_VERSION = "14.20.0"
 
 [[redirects]]
 from = "/*"
