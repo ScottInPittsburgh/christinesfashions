@@ -11,7 +11,6 @@ const app = express();
 const port = process.env.PORT || 5001;
 const mongoUri = process.env.MONGODB_URI;
 
-// MongoDB connection
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -21,7 +20,6 @@ mongoose.connect(mongoUri, {
     console.error('Error connecting to MongoDB', err);
 });
 
-// Middleware
 app.use(cors({
     origin: function(origin, callback) {
         const allowedOrigins = ['https://christinesfashions.com', 'https://christinesfashions.netlify.app', 'http://localhost:3000'];
@@ -36,7 +34,6 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// AWS S3 configuration
 const s3 = new aws.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -54,7 +51,6 @@ const upload = multer({
     })
 });
 
-// MongoDB schema and model
 const productSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -65,7 +61,6 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
-// Routes
 app.get('/api/products', async (req, res) => {
     console.log('GET /api/products request received');
     try {
@@ -121,15 +116,12 @@ app.put('/api/products/:id', async (req, res) => {
     }
 });
 
-// Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// "catchall" handler
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-// Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
