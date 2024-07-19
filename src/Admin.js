@@ -9,6 +9,7 @@ const Admin = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [newProduct, setNewProduct] = useState({
+        id: '',
         name: '',
         description: '',
         price: '',
@@ -20,18 +21,26 @@ const Admin = () => {
         if (!isAuthenticated) {
             navigate('/login');
         } else {
+
+            const fetchProducts = async () => {
+                try {
+                    console.log("Fetching products...");
+                    const response = await axios.get('/api/products');
+                    console.log("Products response:", response.data);
+                    if (Array.isArray(response.data)) {
+                        setProducts(response.data);
+                    } else {
+                        console.error("Unexpected response format:", response.data);
+                        setProducts([]);
+                    }
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                    setProducts([]);
+                }
+            };
             fetchProducts();
         }
     }, [isAuthenticated, navigate]);
-
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get('/api/products');
-            setProducts(response.data);
-        } catch (err) {
-            console.error('Error fetching products!', err);
-        }
-    };
 
     const handleChange = (e) => {
         setNewProduct({
@@ -50,16 +59,11 @@ const Admin = () => {
             formData.append('image', newProduct.imageUrl);
             formData.append('stock', newProduct.stock);
 
-            const response = await axios.post('/api/products', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-
+            const response = await axios.post('/api/products', formData);
             setProducts([...products, response.data]);
-            setNewProduct({ name: '', description: '', price: '', imageUrl: '', stock: '' });
-        } catch (err) {
-            console.error('Error adding product!', err);
+            setNewProduct({ id: '', name: '', description: '', price: '', imageUrl: '', stock: '' });
+        } catch (error) {
+            console.error("Error adding product:", error);
         }
     };
 
@@ -67,17 +71,17 @@ const Admin = () => {
         try {
             await axios.delete(`/api/products/${id}`);
             setProducts(products.filter(product => product._id !== id));
-        } catch (err) {
-            console.error('Error deleting product!', err);
+        } catch (error) {
+            console.error("Error deleting product:", error);
         }
     };
 
     const handleUpdate = async (id, updatedProduct) => {
         try {
-            await axios.put(`/api/products/${id}`, updatedProduct);
-            setProducts(products.map(product => (product._id === id ? updatedProduct : product)));
-        } catch (err) {
-            console.error('Error updating product!', err);
+            const response = await axios.put(`/api/products/${id}`, updatedProduct);
+            setProducts(products.map(product => (product._id === id ? response.data : product)));
+        } catch (error) {
+            console.error("Error updating product:", error);
         }
     };
 
@@ -94,18 +98,22 @@ const Admin = () => {
             </form>
             <h2>Product List</h2>
             <div className="product-list">
-                {products.map((product) => (
-                    <div key={product._id} className="product-item">
-                        <img src={product.imageUrl} alt={product.name} className="product-image" />
-                        <h3>{product.name}</h3>
-                        <p>{product.description}</p>
-                        <p>${product.price.toFixed(2)}</p>
-                        <p>Stock: {product.stock}</p>
-                        <button onClick={() => handleDelete(product._id)}>Delete</button>
-                        <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock - 1 })}>Decrement Stock</button>
-                        <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock + 1 })}>Increment Stock</button>
-                    </div>
-                ))}
+                {Array.isArray(products) && products.length > 0 ? (
+                    products.map((product) => (
+                        <div key={product._id} className="product-item">
+                            <img src={product.imageUrl} alt={product.name} className="product-image" />
+                            <h3>{product.name}</h3>
+                            <p>{product.description}</p>
+                            <p>${product.price.toFixed(2)}</p>
+                            <p>Stock: {product.stock}</p>
+                            <button onClick={() => handleDelete(product._id)}>Delete</button>
+                            <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock - 1 })}>Decrement Stock</button>
+                            <button onClick={() => handleUpdate(product._id, { ...product, stock: product.stock + 1 })}>Increment Stock</button>
+                        </div>
+                    ))
+                ) : (
+                    <p>No products available</p>
+                )}
             </div>
         </div>
     );
