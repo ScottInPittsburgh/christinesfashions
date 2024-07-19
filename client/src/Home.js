@@ -11,8 +11,8 @@ import CollectionCard from './CollectionCard';
 import ProductCard from './ProductCard';
 
 const newArrivals = [
-    { id: 1, name: 'Summer Tee', description: 'Light and breezy', price: 29.99, imageUrl: id1image },
-    { id: 2, name: 'Cozy Hoodie', description: 'Perfect for chilly days', price: 49.99, imageUrl: id2image },
+    { id: 1, name: 'Summer Tee', description: 'Light and breezy', price: 29.99, imageUrl: id1image, link: '/productpage/1' },
+    { id: 2, name: 'Cozy Hoodie', description: 'Perfect for chilly days', price: 49.99, imageUrl: id2image, link: '/productpage/2' },
 ];
 
 const collections = [
