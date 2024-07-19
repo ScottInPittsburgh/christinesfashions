@@ -14,8 +14,12 @@ function Product() {
                 console.log('Fetching product with id:', id);
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
                 console.log('API response:', response);
-                console.log('API response data:', response.data);
-                setProduct(response.data);
+                if (response.headers['content-type'].includes('application/json')) {
+                    setProduct(response.data);
+                } else {
+                    console.error('Expected JSON response but received:', response.headers['content-type']);
+                    setError('Invalid response format');
+                }
             } catch (error) {
                 console.error("Error fetching product:", error);
                 setError(error);
