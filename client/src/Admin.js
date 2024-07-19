@@ -9,13 +9,12 @@ const Admin = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [newProduct, setNewProduct] = useState({
-        id: '',
         name: '',
         description: '',
         price: '',
-        imageUrl: '',
         stock: '',
     });
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -41,6 +40,10 @@ const Admin = () => {
         });
     };
 
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -48,8 +51,10 @@ const Admin = () => {
             formData.append('name', newProduct.name);
             formData.append('description', newProduct.description);
             formData.append('price', newProduct.price);
-            formData.append('image', newProduct.imageUrl); // Assuming imageUrl is a file input
             formData.append('stock', newProduct.stock);
+            if (file) {
+                formData.append('image', file);
+            }
 
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/products`, formData, {
                 headers: {
@@ -57,7 +62,8 @@ const Admin = () => {
                 }
             });
             setProducts([...products, response.data]);
-            setNewProduct({ id: '', name: '', description: '', price: '', imageUrl: '', stock: '' });
+            setNewProduct({ name: '', description: '', price: '', stock: '' });
+            setFile(null);
         } catch (error) {
             console.error("Error adding product:", error);
         }
@@ -88,7 +94,7 @@ const Admin = () => {
                 <input type="text" name="name" value={newProduct.name} onChange={handleChange} placeholder="Product Name" required />
                 <input type="text" name="description" value={newProduct.description} onChange={handleChange} placeholder="Description" required />
                 <input type="number" name="price" value={newProduct.price} onChange={handleChange} placeholder="Price" required />
-                <input type="file" name="imageUrl" onChange={(e) => setNewProduct({ ...newProduct, imageUrl: e.target.files[0] })} required />
+                <input type="file" name="image" onChange={handleFileChange} required />
                 <input type="number" name="stock" value={newProduct.stock} onChange={handleChange} placeholder="Stock" required />
                 <button type="submit">Add Product</button>
             </form>
