@@ -15,6 +15,9 @@ function Product() {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products/${id}`);
                 console.log('API response:', response);
                 console.log('API response data:', response.data);
+                console.log('Product price:', response.data.price);
+                console.log('Product stock:', response.data.stock);
+                console.log('Product imageUrl:', response.data.imageUrl);
                 setProduct(response.data);
             } catch (error) {
                 console.error("Error fetching product:", error);
@@ -28,10 +31,10 @@ function Product() {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItem = {
             ...product,
-            price: product.price ? parseFloat(product.price.$numberDouble) : 0,
-            stock: product.stock ? parseInt(product.stock.$numberInt) : 0,
+            price: product.price !== undefined ? parseFloat(product.price) : 0,
+            stock: product.stock !== undefined ? parseInt(product.stock) : 0,
             quantity: 1,
-            totalPrice: product.price ? parseFloat(product.price.$numberDouble) : 0
+            totalPrice: product.price !== undefined ? parseFloat(product.price) : 0
         };
         cart.push(cartItem);
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -58,22 +61,16 @@ function Product() {
             </header>
             <main>
                 <div className="product-detail-container">
-                    {product ? (
-                        <>
-                            <h1>{product.name}</h1>
-                            <div className="product-detail">
-                                <img src={product.imageUrl} alt={product.name} className="product-detail-image" />
-                                <div className="product-detail-info">
-                                    <p>{product.description}</p>
-                                    <p>Price: ${product.price && product.price.$numberDouble ? parseFloat(product.price.$numberDouble).toFixed(2) : 'N/A'}</p>
-                                    <p>Stock: {product.stock && product.stock.$numberInt ? parseInt(product.stock.$numberInt) : 'N/A'}</p>
-                                    <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <p>Loading product...</p>
-                    )}
+                    <h1>{product.name}</h1>
+                    <div className="product-detail">
+                        {product.imageUrl && <img src={product.imageUrl} alt={product.name} className="product-detail-image" />}
+                        <div className="product-detail-info">
+                            <p>{product.description}</p>
+                            <p>Price: {product.price !== undefined ? `$${parseFloat(product.price).toFixed(2)}` : 'N/A'}</p>
+                            <p>Stock: {product.stock !== undefined ? parseInt(product.stock) : 'N/A'}</p>
+                            <button onClick={() => addToCart(product)} className="add-to-cart-button">Add to Cart</button>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
