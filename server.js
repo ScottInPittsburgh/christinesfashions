@@ -1,28 +1,48 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
+const aws = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
+const mongoUri = process.env.MONGODB_URI;
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://scottdrickman27:Fc1M6Jft6ycdVZvr@cluster0.gmyhuuh.mongodb.net/christinesfashions?retryWrites=true&w=majority&appName=Cluster0";
-
-// Connect to MongoDB
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
+// MongoDB connection
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
     console.log('Connected to MongoDB');
+}).catch(err => {
+    console.error('Error connecting to MongoDB', err);
 });
 
-// Product Schema
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// AWS S3 configuration
+const s3 = new aws.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+});
+
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.AWS_BUCKET_NAME,
+        acl: 'public-read',
+        key: function (req, file, cb) {
+            cb(null, Date.now().toString() + file.originalname);
+        }
+    })
+});
+
+// MongoDB schema and model
 const productSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -36,51 +56,48 @@ const Product = mongoose.model('Product', productSchema);
 // Routes
 app.get('/api/products', async (req, res) => {
     try {
-        const products = await Product.find({});
+        const products = await Product.find();
         res.json(products);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching products' });
     }
 });
 
-app.post('/api/products', async (req, res) => {
-    const { name, description, price, imageUrl, stock } = req.body;
+app.post('/api/products', upload.single('image'), async (req, res) => {
     try {
-        const newProduct = new Product({ name, description, price, imageUrl, stock });
+        const newProduct = new Product({
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            imageUrl: req.file.location,
+            stock: req.body.stock,
+        });
         await newProduct.save();
-        res.status(201).json(newProduct);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
-
-app.put('/api/products/:id', async (req, res) => {
-    const { id } = req.params;
-    const { name, description, price, imageUrl, stock } = req.body;
-    try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, { name, description, price, imageUrl, stock }, { new: true });
-        res.json(updatedProduct);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.json(newProduct);
+    } catch (error) {
+        res.status(500).json({ error: 'Error adding product' });
     }
 });
 
 app.delete('/api/products/:id', async (req, res) => {
-    const { id } = req.params;
     try {
-        await Product.findByIdAndDelete(id);
+        await Product.findByIdAndDelete(req.params.id);
         res.json({ message: 'Product deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting product' });
     }
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.put('/api/products/:id', async (req, res) => {
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedProduct);
+    } catch (error) {
+        res.status(500).json({ error: 'Error updating product' });
+    }
 });
 
+// Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

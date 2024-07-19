@@ -12,7 +12,7 @@ const Admin = () => {
         name: '',
         description: '',
         price: '',
-        imageUrl: '',
+        image: null,
         stock: '',
     });
 
@@ -20,57 +20,72 @@ const Admin = () => {
         if (!isAuthenticated) {
             navigate('/login');
         } else {
-            axios.get('/api/products')
-                .then(response => {
-                    if (Array.isArray(response.data)) {
-                        setProducts(response.data);
-                    } else {
-                        console.error('Expected an array but got:', response.data);
-                    }
-                })
-                .catch(error => {
-                    console.error('There was an error fetching the products!', error);
-                });
+            fetchProducts();
         }
     }, [isAuthenticated, navigate]);
 
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get('/api/products');
+            setProducts(response.data);
+        } catch (error) {
+            console.error('There was an error fetching the products!', error);
+        }
+    };
+
     const handleChange = (e) => {
-        setNewProduct({
-            ...newProduct,
-            [e.target.name]: e.target.value,
-        });
+        const { name, value, files } = e.target;
+        if (name === 'image') {
+            setNewProduct({ ...newProduct, image: files[0] });
+        } else {
+            setNewProduct({ ...newProduct, [name]: value });
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('/api/products', newProduct)
-            .then(response => {
-                setProducts([...products, response.data]);
-                setNewProduct({ name: '', description: '', price: '', imageUrl: '', stock: '' });
-            })
-            .catch(error => {
-                console.error('There was an error adding the product!', error);
+        const formData = new FormData();
+        formData.append('name', newProduct.name);
+        formData.append('description', newProduct.description);
+        formData.append('price', newProduct.price);
+        formData.append('image', newProduct.image);
+        formData.append('stock', newProduct.stock);
+
+        try {
+            const response = await axios.post('/api/products', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
+            setProducts([...products, response.data]);
+            setNewProduct({
+                name: '',
+                description: '',
+                price: '',
+                image: null,
+                stock: '',
+            });
+        } catch (error) {
+            console.error('There was an error adding the product!', error);
+        }
     };
 
-    const handleDelete = (id) => {
-        axios.delete(`/api/products/${id}`)
-            .then(() => {
-                setProducts(products.filter(product => product._id !== id));
-            })
-            .catch(error => {
-                console.error('There was an error deleting the product!', error);
-            });
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`/api/products/${id}`);
+            setProducts(products.filter(product => product._id !== id));
+        } catch (error) {
+            console.error('There was an error deleting the product!', error);
+        }
     };
 
-    const handleUpdate = (id, updatedProduct) => {
-        axios.put(`/api/products/${id}`, updatedProduct)
-            .then(response => {
-                setProducts(products.map(product => product._id === id ? response.data : product));
-            })
-            .catch(error => {
-                console.error('There was an error updating the product!', error);
-            });
+    const handleUpdate = async (id, updatedProduct) => {
+        try {
+            const response = await axios.put(`/api/products/${id}`, updatedProduct);
+            setProducts(products.map(product => (product._id === id ? response.data : product)));
+        } catch (error) {
+            console.error('There was an error updating the product!', error);
+        }
     };
 
     return (
@@ -80,7 +95,7 @@ const Admin = () => {
                 <input type="text" name="name" value={newProduct.name} onChange={handleChange} placeholder="Product Name" required />
                 <input type="text" name="description" value={newProduct.description} onChange={handleChange} placeholder="Description" required />
                 <input type="number" name="price" value={newProduct.price} onChange={handleChange} placeholder="Price" required />
-                <input type="text" name="imageUrl" value={newProduct.imageUrl} onChange={handleChange} placeholder="Image URL" required />
+                <input type="file" name="image" onChange={handleChange} required />
                 <input type="number" name="stock" value={newProduct.stock} onChange={handleChange} placeholder="Stock" required />
                 <button type="submit">Add Product</button>
             </form>
