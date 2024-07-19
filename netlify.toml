@@ -3,7 +3,7 @@ command = "npm install --prefix client && npm run build --prefix client"
 publish = "client/build"
 
 [environment]
-NODE_VERSION = "14.20.0"
+NODE_OPTIONS = "--openssl-legacy-provider"
 
 [[redirects]]
 from = "/*"
