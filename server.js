@@ -9,16 +9,15 @@ const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 5001;
-const mongoUri = process.env.MONGODB_URI;
 
-mongoose.connect(mongoUri, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-}).then(() => {
-    console.log('Connected to MongoDB');
-}).catch(err => {
-    console.error('Error connecting to MongoDB', err);
-});
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+})
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 app.use(cors({
     origin: function(origin, callback) {
@@ -32,6 +31,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 
 const s3 = new aws.S3({
@@ -61,6 +61,16 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
+app.get('/api/test-db', async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.json({ message: 'Database connection successful' });
+    } catch (error) {
+        console.error('Database connection failed:', error);
+        res.status(500).json({ error: 'Database connection failed', details: error.message, stack: error.stack });
+    }
+});
+
 app.get('/api/products', async (req, res) => {
     console.log('GET /api/products request received');
     try {
@@ -69,7 +79,7 @@ app.get('/api/products', async (req, res) => {
         res.json(products);
     } catch (error) {
         console.error('Error fetching products:', error);
-        res.status(500).json({ error: 'Error fetching products' });
+        res.status(500).json({ error: 'Error fetching products', details: error.message, stack: error.stack });
     }
 });
 
@@ -88,7 +98,7 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
         res.json(newProduct);
     } catch (error) {
         console.error('Error adding product:', error);
-        res.status(500).json({ error: 'Error adding product' });
+        res.status(500).json({ error: 'Error adding product', details: error.message, stack: error.stack });
     }
 });
 
@@ -100,7 +110,7 @@ app.delete('/api/products/:id', async (req, res) => {
         res.json({ message: 'Product deleted' });
     } catch (error) {
         console.error('Error deleting product:', error);
-        res.status(500).json({ error: 'Error deleting product' });
+        res.status(500).json({ error: 'Error deleting product', details: error.message, stack: error.stack });
     }
 });
 
@@ -112,7 +122,7 @@ app.put('/api/products/:id', async (req, res) => {
         res.json(updatedProduct);
     } catch (error) {
         console.error('Error updating product:', error);
-        res.status(500).json({ error: 'Error updating product' });
+        res.status(500).json({ error: 'Error updating product', details: error.message, stack: error.stack });
     }
 });
 
