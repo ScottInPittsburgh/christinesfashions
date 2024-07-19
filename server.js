@@ -6,6 +6,7 @@ const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const path = require('path');
+const { ObjectId } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -73,6 +74,21 @@ app.get('/api/products', async (req, res) => {
     } catch (error) {
         console.error('Error fetching products:', error);
         res.status(500).json({ error: 'Error fetching products', details: error.message, stack: error.stack });
+    }
+});
+
+app.get('/api/products/:id', async (req, res) => {
+    console.log(`GET /api/products/${req.params.id} request received`);
+    try {
+        const product = await Product.findById(req.params.id);
+        if (product) {
+            res.json(product);
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        res.status(500).json({ error: 'Error fetching product', details: error.message, stack: error.stack });
     }
 });
 
