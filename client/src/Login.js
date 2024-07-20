@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import axios from 'axios';
 import './styles.css';
@@ -10,6 +10,7 @@ const Login = () => {
     const [isRegistering, setIsRegistering] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,7 +25,8 @@ const Login = () => {
                     if (username === 'admin365' && password === '314159') {
                         navigate('/admin');
                     } else {
-                        navigate('/');
+                        const from = location.state?.from || '/';
+                        navigate(from);
                     }
                 } else {
                     alert('Invalid credentials. Please try again or create an account.');

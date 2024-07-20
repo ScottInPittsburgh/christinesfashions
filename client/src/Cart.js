@@ -34,7 +34,7 @@ const Cart = () => {
 
     const handleCheckout = async () => {
         if (!isAuthenticated) {
-            navigate('/login');
+            navigate('/login', { state: { from: '/cart' } });
             return;
         }
         try {
@@ -79,7 +79,9 @@ const Cart = () => {
                             ))}
                             <div className="cart-summary">
                                 <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
-                                <button onClick={handleCheckout} className="checkout-button">Checkout</button>
+                                <button onClick={handleCheckout} className="checkout-button">
+                                    {isAuthenticated ? 'Checkout' : 'Login to Checkout'}
+                                </button>
                             </div>
                         </div>
                     )}
@@ -89,7 +91,12 @@ const Cart = () => {
                         </div>
                     )}
                 </div>
-                <Link to="/login" className="login-link">Login to your account</Link>
+                {!isAuthenticated && (
+                    <p>Please <Link to="/login" className="login-link">login or create an account</Link> to complete your order.</p>
+                )}
+                {isAuthenticated && (
+                    <Link to="/orders" className="view-orders-link">View Your Orders</Link>
+                )}
             </main>
         </div>
     );
