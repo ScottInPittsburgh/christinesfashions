@@ -1,27 +1,44 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import axios from 'axios';
 import './styles.css';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isRegistering, setIsRegistering] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(username, password);
-            navigate('/');
+            if (isRegistering) {
+                await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/users/register`, { username, password });
+                alert('User registered successfully. Please log in.');
+                setIsRegistering(false);
+            } else {
+                const success = await login(username, password);
+                if (success) {
+                    if (username === 'admin365' && password === '314159') {
+                        navigate('/admin');
+                    } else {
+                        navigate('/');
+                    }
+                } else {
+                    alert('Invalid credentials. Please try again or create an account.');
+                }
+            }
         } catch (error) {
-            console.error('Login failed:', error);
+            console.error('Login/Register failed:', error);
+            alert(error.response?.data?.message || 'An error occurred. Please try again.');
         }
     };
 
     return (
         <div className="login-container">
-            <h2>Login</h2>
+            <h2>{isRegistering ? 'Create Account' : 'Login'}</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Username:</label>
@@ -43,8 +60,11 @@ const Login = () => {
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
             </form>
+            <button onClick={() => setIsRegistering(!isRegistering)}>
+                {isRegistering ? 'Back to Login' : 'Create Account'}
+            </button>
         </div>
     );
 };

@@ -11,16 +11,17 @@ export const AuthProvider = ({ children }) => {
         if (username === 'admin365' && password === '314159') {
             setIsAuthenticated(true);
             setUser({ username: 'admin', isAdmin: true });
-            return;
+            return true;
         }
 
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/users/login`, { username, password });
             setUser(response.data);
             setIsAuthenticated(true);
+            return true;
         } catch (error) {
             console.error('Login error:', error);
-            alert('Invalid credentials');
+            return false;
         }
     };
 

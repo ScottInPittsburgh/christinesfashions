@@ -41,9 +41,16 @@ const Cart = () => {
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {
                 userId: user.userId,
                 products: cartItems.map(item => item.id),
-                totalAmount: totalAmount
+                totalAmount
             });
             console.log('Order created:', response.data);
+
+            for (const item of cartItems) {
+                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/products/${item.id}`, {
+                    stock: item.stock - item.quantity
+                });
+            }
+
             setCartItems([]);
             localStorage.removeItem('cart');
             setShowDemoMessage(true);

@@ -1,20 +1,22 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import './styles.css';
 
 const Header = () => {
-    const location = useLocation();
+    const { isAuthenticated, logout } = useAuth();
 
     return (
-        <header className="header">
-            <nav className="nav-container">
+        <header>
+            <nav>
                 <ul className="menu-bar">
-                    <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
-                    <li><Link to="/collection/products" className={location.pathname === '/collection/products' ? 'active' : ''}>Shop</Link></li>
-                    <li><Link to="/login" className={location.pathname === '/login' ? 'active' : ''}>Login/Register</Link></li>
-                    <li><Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>
-                        <i className="fas fa-shopping-cart"></i>
-                    </Link></li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/cart">Shopping Cart</Link></li>
+                    {isAuthenticated ? (
+                        <li><button onClick={logout}>Logout</button></li>
+                    ) : (
+                        <li><Link to="/login">Login</Link></li>
+                    )}
                 </ul>
             </nav>
         </header>
