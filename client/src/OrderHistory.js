@@ -39,7 +39,7 @@ const OrderHistory = () => {
                             <h4>Products:</h4>
                             <ul>
                                 {order.products.map(product => (
-                                    <li key={product._id}>{product.name} - Quantity: {product.quantity}</li>
+                                    <li key={product._id}>{product.name}</li>
                                 ))}
                             </ul>
                         </li>
