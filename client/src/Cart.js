@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './styles.css';
+import { useAuth } from './AuthContext';
 
 const CartItem = ({ item, onRemove }) => (
     <div className="cart-item">
@@ -16,6 +18,13 @@ const CartItem = ({ item, onRemove }) => (
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [showDemoMessage, setShowDemoMessage] = useState(false);
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const items = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+        setCartItems(items);
+    }, []);
 
     const handleRemoveItem = (id) => {
         const updatedCartItems = cartItems.filter(item => item.id !== id);
@@ -23,16 +32,27 @@ const Cart = () => {
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
-    const handleCheckout = () => {
-        setShowDemoMessage(true);
+    const handleCheckout = async () => {
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {
+                userId: user.userId,
+                products: cartItems.map(item => item.id),
+                totalAmount: totalAmount
+            });
+            console.log('Order created:', response.data);
+            setCartItems([]);
+            localStorage.removeItem('cart');
+            setShowDemoMessage(true);
+        } catch (error) {
+            console.error('Checkout error:', error);
+        }
     };
 
     const totalAmount = cartItems.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
-
-    useEffect(() => {
-        const items = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-        setCartItems(items);
-    }, []);
 
     return (
         <div className="cart-container">
