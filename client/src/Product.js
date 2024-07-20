@@ -31,11 +31,11 @@ function Product() {
     const addToCart = (product) => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItem = {
-            ...product,
-            price: product.price ? parseFloat(product.price) : 0,
-            stock: product.stock ? parseInt(product.stock) : 0,
-            quantity: 1,
-            totalPrice: product.price ? parseFloat(product.price) : 0
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+            quantity: 1
         };
         cart.push(cartItem);
         localStorage.setItem('cart', JSON.stringify(cart));

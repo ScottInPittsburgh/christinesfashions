@@ -7,10 +7,10 @@ import { useAuth } from './AuthContext';
 const CartItem = ({ item, onRemove }) => (
     <div className="cart-item">
         <div className="cart-item-details">
-            <h3>{item.color}</h3>
-            <p>Price: ${item.totalPrice ? item.totalPrice.toFixed(2) : '0.00'}</p>
+            <h3>{item.name}</h3>
+            <p>Price: ${item.price ? parseFloat(item.price).toFixed(2) : '0.00'}</p>
             <p>Quantity: {item.quantity}</p>
-            <button onClick={() => onRemove(item.id)} className="remove-item-button">Remove</button>
+            <button onClick={() => onRemove(item._id)} className="remove-item-button">Remove</button>
         </div>
     </div>
 );
@@ -27,7 +27,7 @@ const Cart = () => {
     }, []);
 
     const handleRemoveItem = (id) => {
-        const updatedCartItems = cartItems.filter(item => item.id !== id);
+        const updatedCartItems = cartItems.filter(item => item._id !== id);
         setCartItems(updatedCartItems);
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
@@ -40,15 +40,19 @@ const Cart = () => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {
                 userId: user.userId,
-                products: cartItems.map(item => item.id),
+                products: cartItems.map(item => item._id),
                 totalAmount
             });
             console.log('Order created:', response.data);
 
             for (const item of cartItems) {
-                await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/products/${item.id}`, {
-                    stock: item.stock - item.quantity
-                });
+                if (item._id) {
+                    await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/products/${item._id}`, {
+                        stock: item.stock - item.quantity
+                    });
+                } else {
+                    console.error('Product ID is undefined for item:', item);
+                }
             }
 
             setCartItems([]);
@@ -59,7 +63,7 @@ const Cart = () => {
         }
     };
 
-    const totalAmount = cartItems.reduce((acc, item) => acc + (item.totalPrice * item.quantity), 0);
+    const totalAmount = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
 
     return (
         <div className="cart-container">
@@ -71,7 +75,7 @@ const Cart = () => {
                     ) : (
                         <div>
                             {cartItems.map(item => (
-                                <CartItem key={item.id} item={item} onRemove={handleRemoveItem} />
+                                <CartItem key={item._id} item={item} onRemove={handleRemoveItem} />
                             ))}
                             <div className="cart-summary">
                                 <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
