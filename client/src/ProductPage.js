@@ -11,6 +11,10 @@ import CyanAudio from "./assets/audios/Cyan.m4a";
 import BronzeAudio from "./assets/audios/Bronze.m4a";
 import BlackAudio from "./assets/audios/Black.m4a";
 import ZoomAudio from "./assets/audios/Zoom.m4a";
+import CyanSaying from "./assets/audios/CyanSaying.m4a";
+import BronzeSaying from "./assets/audios/BronzeSaying.m4a";
+import BlackSaying from "./assets/audios/BlackSaying.m4a";
+import ZoomSaying from "./assets/audios/ZoomSaying.m4a";
 import styles from './ProductPage.module.scss';
 import BlackTanColorButton from './assets/images/BlackTanColorButton.png'
 import WhiteColorButton from './assets/images/StripeColorButton.png'
