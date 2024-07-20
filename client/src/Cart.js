@@ -7,8 +7,9 @@ import { useAuth } from './AuthContext';
 const CartItem = ({ item, onRemove }) => (
     <div className="cart-item">
         <div className="cart-item-details">
-            <h3>{item.name}</h3>
-            <p>Price: ${item.price ? parseFloat(item.price).toFixed(2) : '0.00'}</p>
+            <h3>{item.color}</h3>
+            <p>Size: {item.size}</p>
+            <p>Price: ${item.totalPrice ? parseFloat(item.totalPrice).toFixed(2) : '0.00'}</p>
             <p>Quantity: {item.quantity}</p>
             <button onClick={() => onRemove(item._id)} className="remove-item-button">Remove</button>
         </div>
@@ -68,7 +69,7 @@ const Cart = () => {
         }
     };
 
-    const totalAmount = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
+    const totalAmount = cartItems.reduce((acc, item) => acc + (parseFloat(item.totalPrice) * item.quantity), 0);
 
     return (
         <div className="cart-container">

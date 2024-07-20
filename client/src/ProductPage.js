@@ -6,12 +6,13 @@ import BronzeVideo from './assets/videos/Bronze30s.mp4';
 import ZoomCyanVideo from './assets/videos/CyanZoom30s.mp4';
 import ZoomBronzeVideo from './assets/videos/BronzeZoom30s.mp4';
 import ZoomBlackVideo from './assets/videos/BlackZoom30s.mp4';
-import LongerAudio from "./assets/audios/Default.m4a";
+// import LongerAudio from "./assets/audios/Default.m4a";
+import LongerAudio from "./assets/audios/longAudio.m4a";
 import CyanAudio from "./assets/audios/Cyan.m4a";
 import BronzeAudio from "./assets/audios/Bronze.m4a";
 import BlackAudio from "./assets/audios/Black.m4a";
 import ZoomAudio from "./assets/audios/Zoom.m4a";
-import CyanSaying from "./assets/audios/CyanSaying.m4a";
+import BlackTanSaying from "./assets/audios/CyanSaying.m4a";
 import BronzeSaying from "./assets/audios/BronzeSaying.m4a";
 import BlackSaying from "./assets/audios/BlackSaying.m4a";
 import ZoomSaying from "./assets/audios/ZoomSaying.m4a";
@@ -45,13 +46,16 @@ const ProductPage = () => {
     const bronzeAudioRef = useRef(null);
     const blackAudioRef = useRef(null);
     const zoomAudioRef = useRef(null);
+    const blackTanSayingRef = useRef()
     const [pricePerItem] = useState(103.99)
     const [isLongAudioPlaying, setIsLongAudioPlaying] = useState(true);
+    const [isLongAudioEnded, setIsLongAudioEnded] = useState(false);
     const [selectedColor, setSelectedColor] = useState('Black/Tan');
     const [selectedSize, setSelectedSize] = useState('');
     const [videoType, setVideoType] = useState('')
     const [selectedItems, setSelectedItems] = useState([])
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
 
     const handleSelectedColor = useCallback((color) => {
         setSelectedColor(color);
@@ -63,21 +67,21 @@ const ProductPage = () => {
         switch (selectedColor) {
             case 'Black/Tan':
                 switch (videoType) {
-                    case 'CyanZoom':
+                    case 'Black/TanZoom':
                         return ZoomCyanVideo;
                     default:
                         return CyanVideo;
                 }
             case 'Gold Awning Stripe':
                 switch (videoType) {
-                    case 'BronzeZoom':
+                    case 'Gold Awning StripeZoom':
                         return ZoomBronzeVideo;
                     default:
                         return BronzeVideo;
                 }
             case 'Multi Petal':
                 switch (videoType) {
-                    case 'BlackZoom':
+                    case 'Multi PetalZoom':
                         return ZoomBlackVideo;
                     default:
                         return BlackVideo;
@@ -96,19 +100,26 @@ const ProductPage = () => {
         setVideoType(`${selectedColor}Zoom`)
     }, [selectedColor]);
 
+
+    console.log({ended:audioLongRef})
     useEffect(() => {
         const audioLong = audioLongRef.current;
         audioLong.play();
         return () => {
             audioLong.pause();
         };
-    }, []);
+    }, [audioLongRef?.current?.ended]);
 
     const handlePlayAudioAsPerSelectedColor = useCallback((selectedColor) => {
         console.log({ selectedColor })
         switch (selectedColor) {
             case 'Black/Tan':
-                cyanAudioRef.current.play();
+                if (isLongAudioEnded) {
+                    cyanAudioRef.current.play();
+                } else {
+                    blackTanSayingRef.current.play()
+                }
+
                 bronzeAudioRef.current.pause();
                 blackAudioRef.current.pause();
                 audioLongRef.current.pause();
@@ -141,6 +152,7 @@ const ProductPage = () => {
         cyanAudioRef.current.currentTime = 0; // Reset short audio to start for next play
         bronzeAudioRef.current.currentTime = 0;
         blackAudioRef.current.currentTime = 0;
+        blackTanSayingRef.current.currentTime = 0;
     };
 
     //     audioLongRef.current.pause();
@@ -150,6 +162,7 @@ const ProductPage = () => {
     // };
 
     const handlePauseAudio = () => {
+        debugger
         audioLongRef.current.pause();
         cyanAudioRef.current.pause();
         bronzeAudioRef.current.pause();
@@ -182,8 +195,12 @@ const ProductPage = () => {
         }
     };
 
-    console.log(selectedItems)
-
+    const handleLongAudioEnded = () => {
+        debugger
+        setIsLongAudioEnded(true)
+        audioLongRef.current.currentTime = 0;
+    }
+    console.log(isLongAudioEnded)
     return (
         <section className={isBigScreen ? styles.container_b : styles.container_s}>
             {selectedColor && (
@@ -199,10 +216,10 @@ const ProductPage = () => {
             )}
 
             <div className={styles.details_wrapper}>
-            <div className={styles.cartStyles}>
-                <img src={Cart} alt="" height={"50px"} width={"50px"} />
-                <p className={styles.items}>{`${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</p>
-            </div>
+                <div className={styles.cartStyles}>
+                    <img src={Cart} alt="" height={"50px"} width={"50px"} />
+                    <p className={styles.items}>{`${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</p>
+                </div>
                 <button onClick={handlePauseAudio}>Pause</button>
                 {/* <button className={styles.button}>{`Items in Cart ${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</button> */}
                 <div className={styles.description_variant_container}>
@@ -250,7 +267,7 @@ const ProductPage = () => {
                 </div>
             </div>
             <audio ref={audioLongRef}>
-                <source src={LongerAudio} type="audio/mpeg" />
+                <source src={LongerAudio} type="audio/mpeg" onEnded={()=>alert(1)} />
                 Your browser does not support the audio element.
             </audio>
             <audio ref={cyanAudioRef} onEnded={handleShortAudioEnded}>
@@ -267,6 +284,10 @@ const ProductPage = () => {
             </audio>
             <audio ref={zoomAudioRef} onEnded={handleShortAudioEnded}>
                 <source src={ZoomAudio} type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+            <audio ref={blackTanSayingRef} onEnded={handleShortAudioEnded}>
+                <source src={BlackTanSaying} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
 

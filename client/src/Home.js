@@ -1,15 +1,17 @@
 import React from 'react';
-import heroImage from './images/content/hero-image.jpg';
-import id1image from './images/content/id1image.jpg';
-import id2image from './images/content/id2image.jpg';
-import id3image from './images/content/id3image.jpg';
-import Footer from './Footer';
+import heroImage from './assets/images/content/hero-image.jpg';
+import model1image from './assets/images/content/id1image.png';
+import model2image from './assets/images/content/id2image.png';
+import id1image from './assets/images/content/id1image.jpg';
+import id2image from './assets/images/content/id2image.jpg';
+import id3image from './assets/images/content/id3image.jpg';
+// import Footer from './Footer';
 import CollectionCard from './CollectionCard';
 import ProductCard from './ProductCard';
 
 const newArrivals = [
-    { id: 1, name: 'Summer Tee', description: 'Light and breezy', price: 29.99, imageUrl: id1image, link: '/productpage/1' },
-    { id: 2, name: 'Cozy Hoodie', description: 'Perfect for chilly days', price: 49.99, imageUrl: id2image, link: '/productpage/2' },
+    { id: 1, name: 'Summer Tee', description: 'Light and breezy', price: 29.99, imageUrl: model1image, link: '/productpage/1' },
+    { id: 2, name: 'Cozy Hoodie', description: 'Perfect for chilly days', price: 49.99, imageUrl: model2image, link: '/productpage/2' },
 ];
 
 const collections = [
@@ -42,8 +44,10 @@ const Home = () => {
                         ))}
                     </div>
                 </section>
+
+              
             </main>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }
