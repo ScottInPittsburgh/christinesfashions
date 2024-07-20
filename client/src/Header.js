@@ -13,7 +13,10 @@ const Header = () => {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/cart">Shopping Cart</Link></li>
                     {isAuthenticated ? (
-                        <li><button onClick={logout}>Logout</button></li>
+                        <>
+                            <li><Link to="/orders">Orders</Link></li>
+                            <li><button onClick={logout}>Logout</button></li>
+                        </>
                     ) : (
                         <li><Link to="/login">Login</Link></li>
                     )}

@@ -18,6 +18,7 @@ const CartItem = ({ item, onRemove }) => (
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [showDemoMessage, setShowDemoMessage] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const { user, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
@@ -57,7 +58,11 @@ const Cart = () => {
 
             setCartItems([]);
             localStorage.removeItem('cart');
-            setShowDemoMessage(true);
+            setShowSuccessMessage(true);
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+                setShowDemoMessage(true);
+            }, 3000);
         } catch (error) {
             console.error('Checkout error:', error);
         }
@@ -85,6 +90,11 @@ const Cart = () => {
                             </div>
                         </div>
                     )}
+                    {showSuccessMessage && (
+                        <div className="success-message">
+                            <p>Checkout successful! Your order has been placed.</p>
+                        </div>
+                    )}
                     {showDemoMessage && (
                         <div className="demo-message">
                             <p>This site is a demo and not a real site.</p>
@@ -93,9 +103,6 @@ const Cart = () => {
                 </div>
                 {!isAuthenticated && (
                     <p>Please <Link to="/login" className="login-link">login or create an account</Link> to complete your order.</p>
-                )}
-                {isAuthenticated && (
-                    <Link to="/orders" className="view-orders-link">View Your Orders</Link>
                 )}
             </main>
         </div>
