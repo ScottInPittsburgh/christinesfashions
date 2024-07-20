@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './styles.css';
+import { useAuth } from './AuthContext';
 
 const CartItem = ({ item, onRemove }) => (
     <div className="cart-item">
         <div className="cart-item-details">
-            <h3>{item.color}</h3>
-            <p>Price: ${item.totalPrice.toFixed(2)}</p>
+            <h3>{item.name}</h3>
+            <p>Price: ${item.price ? parseFloat(item.price).toFixed(2) : '0.00'}</p>
             <p>Quantity: {item.quantity}</p>
-            <button onClick={() => onRemove(item.id)} className="remove-item-button">Remove</button>
+            <button onClick={() => onRemove(item._id)} className="remove-item-button">Remove</button>
         </div>
     </div>
 );
@@ -16,34 +18,60 @@ const CartItem = ({ item, onRemove }) => (
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [showDemoMessage, setShowDemoMessage] = useState(false);
-
-    const handleRemoveItem = (id) => {
-        localStorage.setItem('cart', cartItems.filter(item => item.id !== id))
-        setCartItems(cartItems.filter(item => item.id !== id));
-    };
-
-    const handleCheckout = () => {
-        setShowDemoMessage(true);
-    };
-
-    const totalAmount = cartItems.reduce((acc, item) => acc + item.totalPrice * item.quantity, 0);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
-   
-        const items = localStorage.getItem('cart') === '' ? [] : JSON.parse(localStorage.getItem('cart'));
+        const items = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
         setCartItems(items);
     }, []);
 
+    const handleRemoveItem = (id) => {
+        const updatedCartItems = cartItems.filter(item => item._id !== id);
+        setCartItems(updatedCartItems);
+        localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+    };
+
+    const handleCheckout = async () => {
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: '/cart' } });
+            return;
+        }
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/orders`, {
+                userId: user.userId,
+                products: cartItems.map(item => item._id),
+                totalAmount
+            });
+            console.log('Order created:', response.data);
+
+            for (const item of cartItems) {
+                if (item._id) {
+                    await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/products/${item._id}`, {
+                        stock: item.stock - item.quantity
+                    });
+                } else {
+                    console.error('Product ID is undefined for item:', item);
+                }
+            }
+
+            setCartItems([]);
+            localStorage.removeItem('cart');
+            setShowSuccessMessage(true);
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+                setShowDemoMessage(true);
+            }, 3000);
+        } catch (error) {
+            console.error('Checkout error:', error);
+        }
+    };
+
+    const totalAmount = cartItems.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0);
+
     return (
-        <div>
-            <header>
-                <nav>
-                    <ul className="menu-bar">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/login">Login</Link></li>
-                    </ul>
-                </nav>
-            </header>
+        <div className="cart-container">
             <main>
                 <h1>Shopping Cart</h1>
                 <div className="cart-content">
@@ -52,12 +80,19 @@ const Cart = () => {
                     ) : (
                         <div>
                             {cartItems.map(item => (
-                                <CartItem key={item.id} item={item} onRemove={handleRemoveItem} />
+                                <CartItem key={item._id} item={item} onRemove={handleRemoveItem} />
                             ))}
                             <div className="cart-summary">
                                 <h2>Total Amount: ${totalAmount.toFixed(2)}</h2>
-                                <button onClick={handleCheckout} className="checkout-button">Checkout</button>
+                                <button onClick={handleCheckout} className="checkout-button">
+                                    {isAuthenticated ? 'Checkout' : 'Login to Checkout'}
+                                </button>
                             </div>
+                        </div>
+                    )}
+                    {showSuccessMessage && (
+                        <div className="success-message">
+                            <p>Checkout successful! Your order has been placed.</p>
                         </div>
                     )}
                     {showDemoMessage && (
@@ -66,7 +101,9 @@ const Cart = () => {
                         </div>
                     )}
                 </div>
-                <Link to="/login" className="login-link">Login to your account</Link>
+                {!isAuthenticated && (
+                    <p>Please <Link to="/login" className="login-link">login or create an account</Link> to complete your order.</p>
+                )}
             </main>
         </div>
     );

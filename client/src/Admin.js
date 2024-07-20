@@ -95,6 +95,12 @@ const Admin = () => {
     return (
         <div className="admin-container">
             <h1>Admin Page</h1>
+            <nav>
+                <ul>
+                    <li><a href="#products">Manage Products</a></li>
+                    <li><a href="/admin/orders">View All Orders</a></li>
+                </ul>
+            </nav>
             <form onSubmit={handleSubmit} className="product-form">
                 <input type="text" name="name" value={newProduct.name} onChange={handleChange} placeholder="Product Name" required />
                 <input type="text" name="description" value={newProduct.description} onChange={handleChange} placeholder="Description" required />
@@ -105,7 +111,7 @@ const Admin = () => {
                     {isSubmitting ? 'Adding...' : 'Add Product'}
                 </button>
             </form>
-            <h2>Product List</h2>
+            <h2 id="products">Product List</h2>
             <div className="product-list">
                 {products.map((product) => (
                     <div key={product._id} className="product-item">

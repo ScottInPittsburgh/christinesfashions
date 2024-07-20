@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import heroImage from './images/content/hero-image.jpg';
 import id1image from './images/content/id1image.jpg';
 import id2image from './images/content/id2image.jpg';
@@ -14,26 +13,14 @@ const newArrivals = [
 ];
 
 const collections = [
-    { id: 1, title: "T-Shirts", text: "Comfortable and stylish tees", url: "/collection/t-shirts", imageUrl: id1image },
-    { id: 2, title: "Hoodies", text: "Stay warm and look cool", url: "/collection/hoodies-sweatshirts", imageUrl: id2image },
-    { id: 3, title: "Accessories", text: "Complete your look", url: "/collection/accessories", imageUrl: id3image },
+    { id: 1, title: "Dresses", text: "Beautiful and elegant dresses", url: "/collection/Dress", imageUrl: id1image },
+    { id: 2, title: "Tops", text: "Stylish and comfortable tops", url: "/collection/Top", imageUrl: id2image },
+    { id: 3, title: "Pants", text: "Trendy and versatile pants", url: "/collection/Pants", imageUrl: id3image },
 ];
 
 const Home = () => {
-    const location = useLocation();
-
     return (
         <div>
-            <header className="header">
-                <nav className="nav-container">
-                    <ul className="menu-bar">
-                        <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
-                        <li><Link to="/cart" className={location.pathname === '/cart' ? 'active' : ''}>Shopping Cart</Link></li>
-                        <li><Link to="/collection/products" className={location.pathname === '/collection/products' ? 'active' : ''}>All Products</Link></li>
-                        <li><Link to="/login" className={location.pathname === '/login' ? 'active' : ''}>Login</Link></li>
-                    </ul>
-                </nav>
-            </header>
             <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
                 <h1>Christine's Fashions</h1>
             </div>

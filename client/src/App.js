@@ -8,25 +8,38 @@ import CollectionPage from './CollectionPage';
 import Login from './Login';
 import Admin from './Admin';
 import AllProducts from './AllProducts';
+import OrderHistory from './OrderHistory';
+import AdminOrderHistory from './AdminOrderHistory';
+import Header from './Header';
+import Footer from './Footer';
+import { AuthProvider } from './AuthContext';
 import './styles.css';
 
 function App() {
     return (
-        <Router>
-            <div className="App">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/productpage/:id" element={<ProductPage />} />
-                    <Route path="/product/:id" element={<Product />} />
-                    <Route path="/collection/:id" element={<CollectionPage />} />
-                    <Route path="/collection/products" element={<AllProducts />} /> {/* Add this line */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/admin" element={<Admin />} />
-                </Routes>
-            </div>
-        </Router>
+        <AuthProvider>
+            <Router>
+                <div className="App">
+                    <Header />
+                    <div className="content-wrapper">
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path="/productpage/:id" element={<ProductPage />} />
+                            <Route path="/product/:id" element={<Product />} />
+                            <Route path="/collection/:type" element={<CollectionPage />} />
+                            <Route path="/collection/products" element={<AllProducts />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/admin" element={<Admin />} />
+                            <Route path="/orders" element={<OrderHistory />} />
+                            <Route path="/admin/orders" element={<AdminOrderHistory />} />
+                        </Routes>
+                    </div>
+                    <Footer />
+                </div>
+            </Router>
+        </AuthProvider>
     );
 }
 

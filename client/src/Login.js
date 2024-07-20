@@ -1,48 +1,72 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import axios from 'axios';
 import './styles.css';
 
 const Login = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [isRegistering, setIsRegistering] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
-    const [credentials, setCredentials] = useState({ username: '', password: '' });
+    const location = useLocation();
 
-    const handleChange = (e) => {
-        setCredentials({
-            ...credentials,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        login(credentials.username, credentials.password);
-        navigate('/admin');
+        try {
+            if (isRegistering) {
+                await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/users/register`, { username, password });
+                alert('User registered successfully. Please log in.');
+                setIsRegistering(false);
+            } else {
+                const success = await login(username, password);
+                if (success) {
+                    if (username === 'admin365' && password === '314159') {
+                        navigate('/admin');
+                    } else {
+                        const from = location.state?.from || '/';
+                        navigate(from);
+                    }
+                } else {
+                    alert('Invalid credentials. Please try again or create an account.');
+                }
+            }
+        } catch (error) {
+            console.error('Login/Register failed:', error);
+            alert(error.response?.data?.message || 'An error occurred. Please try again.');
+        }
     };
 
     return (
         <div className="login-container">
-            <form onSubmit={handleSubmit} className="login-form">
-                <h2>Login</h2>
-                <input
-                    type="text"
-                    name="username"
-                    value={credentials.username}
-                    onChange={handleChange}
-                    placeholder="Username"
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    value={credentials.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    required
-                />
-                <button type="submit">Login</button>
+            <h2>{isRegistering ? 'Create Account' : 'Login'}</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
             </form>
+            <button onClick={() => setIsRegistering(!isRegistering)}>
+                {isRegistering ? 'Back to Login' : 'Create Account'}
+            </button>
         </div>
     );
 };
