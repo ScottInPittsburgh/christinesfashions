@@ -9,6 +9,7 @@ import Login from './Login';
 import Admin from './Admin';
 import AllProducts from './AllProducts';
 import OrderHistory from './OrderHistory';
+import AdminOrderHistory from './AdminOrderHistory';
 import Header from './Header';
 import Footer from './Footer';
 import { AuthProvider } from './AuthContext';
@@ -20,18 +21,21 @@ function App() {
             <Router>
                 <div className="App">
                     <Header />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/productpage/:id" element={<ProductPage />} />
-                        <Route path="/product/:id" element={<Product />} />
-                        <Route path="/collection/:type" element={<CollectionPage />} />
-                        <Route path="/collection/products" element={<AllProducts />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/admin" element={<Admin />} />
-                        <Route path="/orders" element={<OrderHistory />} />
-                    </Routes>
+                    <div className="content-wrapper">
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path="/productpage/:id" element={<ProductPage />} />
+                            <Route path="/product/:id" element={<Product />} />
+                            <Route path="/collection/:type" element={<CollectionPage />} />
+                            <Route path="/collection/products" element={<AllProducts />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/admin" element={<Admin />} />
+                            <Route path="/orders" element={<OrderHistory />} />
+                            <Route path="/admin/orders" element={<AdminOrderHistory />} />
+                        </Routes>
+                    </div>
                     <Footer />
                 </div>
             </Router>
