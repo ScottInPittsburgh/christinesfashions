@@ -141,7 +141,7 @@ const ProductPage = () => {
             default:
                 break;
         }
-    }, [isLongAudioEnded]) // Added isLongAudioEnded dependency
+    }, [isLongAudioEnded]) // Added isLongAudioEnded as a dependency
 
     useEffect(() => {
         if (!isLongAudioPlaying) {
@@ -282,15 +282,15 @@ const ProductPage = () => {
                 Your browser does not support the audio element.
             </audio>
             <audio ref={blackAudioRef} onEnded={handleShortAudioEnded}>
-                <source src={BlackAudio} type="audio/mpeg} />
+                <source src={BlackAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
             <audio ref={zoomAudioRef} onEnded={handleShortAudioEnded}>
-                <source src={ZoomAudio} type="audio/mpeg} />
+                <source src={ZoomAudio} type="audio/mpeg" /> {/* Fixed closing quote */}
                 Your browser does not support the audio element.
             </audio>
             <audio ref={blackTanSayingRef} onEnded={handleShortAudioEnded}>
-                <source src={BlackTanSaying} type="audio/mpeg} />
+                <source src={BlackTanSaying} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
 
