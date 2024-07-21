@@ -6,30 +6,27 @@ import BronzeVideo from './assets/videos/Bronze30s.mp4';
 import ZoomCyanVideo from './assets/videos/CyanZoom30s.mp4';
 import ZoomBronzeVideo from './assets/videos/BronzeZoom30s.mp4';
 import ZoomBlackVideo from './assets/videos/BlackZoom30s.mp4';
-// import LongerAudio from "./assets/audios/Default.m4a";
 import LongerAudio from "./assets/audios/longAudio.m4a";
-import CyanAudio from "./assets/audios/Cyan.m4a";
-import BronzeAudio from "./assets/audios/Bronze.m4a";
-import BlackAudio from "./assets/audios/Black.m4a";
-import ZoomAudio from "./assets/audios/Zoom.m4a";
-import BlackTanSaying from "./assets/audios/CyanSaying.m4a";
-// Removed unused imports
-// import BronzeSaying from "./assets/audios/BronzeSaying.m4a";
-// import BlackSaying from "./assets/audios/BlackSaying.m4a";
-// import ZoomSaying from "./assets/audios/ZoomSaying.m4a";
 import styles from './ProductPage.module.scss';
-import BlackTanColorButton from './assets/images/BlackTanColorButton.png'
-import WhiteColorButton from './assets/images/StripeColorButton.png'
-import StripeColorButton from './assets/images/WhiteColorButton.png'
-import Cart from './assets/images/cart.png'
-import Zoom from './assets/images/zoom.png'
+
+// Removed unused imports
+// import CyanAudio from "./assets/audios/Cyan.m4a";
+// import BronzeAudio from "./assets/audios/Bronze.m4a";
+// import BlackAudio from "./assets/audios/Black.m4a";
+// import ZoomAudio from "./assets/audios/Zoom.m4a";
+// import BlackTanSaying from "./assets/audios/CyanSaying.m4a";
+// import BlackTanColorButton from './assets/images/BlackTanColorButton.png'
+// import WhiteColorButton from './assets/images/StripeColorButton.png'
+// import StripeColorButton from './assets/images/WhiteColorButton.png'
+// import Cart from './assets/images/cart.png'
+// import Zoom from './assets/images/zoom.png'
 
 const ProductColors = ({ handleSelectedColor }) => (
     <div className={styles.color_image_container}>
         {/*<button className={styles.cyan_button} onClick={() => handleSelectedColor("Cyan")}></button> */}
-        <img alt="" className={styles.cyan_button} src={BlackTanColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Black/Tan")} />
-        <img alt="" className={styles.cyan_button} src={WhiteColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Gold Awning Stripe")} />
-        <img alt="" className={styles.cyan_button} src={StripeColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Multi Petal")} />
+        {/* <img alt="" className={styles.cyan_button} src={BlackTanColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Black/Tan")} /> */}
+        {/* <img alt="" className={styles.cyan_button} src={WhiteColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Gold Awning Stripe")} /> */}
+        {/* <img alt="" className={styles.cyan_button} src={StripeColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Multi Petal")} /> */}
         {/* <button className={styles.bronze_button} onClick={() => handleSelectedColor("Bronze")}></button>
         <button className={styles.black_button} onClick={() => handleSelectedColor("Black")}></button> */}
     </div>
@@ -44,11 +41,12 @@ const ProductSize = ({ value, isSelected, isOutOfStock, onClick }) => (
 const ProductPage = () => {
     const videoRef = useRef();
     const audioLongRef = useRef(null);
-    const cyanAudioRef = useRef(null);
-    const bronzeAudioRef = useRef(null);
-    const blackAudioRef = useRef(null);
-    const zoomAudioRef = useRef(null);
-    const blackTanSayingRef = useRef()
+    // Removed unused refs
+    // const cyanAudioRef = useRef(null);
+    // const bronzeAudioRef = useRef(null);
+    // const blackAudioRef = useRef(null);
+    // const zoomAudioRef = useRef(null);
+    // const blackTanSayingRef = useRef()
     const [pricePerItem] = useState(103.99)
     const [isLongAudioPlaying, setIsLongAudioPlaying] = useState(true);
     const [isLongAudioEnded, setIsLongAudioEnded] = useState(false);
@@ -94,10 +92,11 @@ const ProductPage = () => {
     }, [selectedColor, videoType]);
 
     const playZoomAudioAsPerSelectedColor = useCallback(() => {
-        zoomAudioRef.current.play();
-        cyanAudioRef.current.pause();
-        bronzeAudioRef.current.pause();
-        blackAudioRef.current.pause();
+        // Removed unnecessary play logic
+        // zoomAudioRef.current.play();
+        // cyanAudioRef.current.pause();
+        // bronzeAudioRef.current.pause();
+        // blackAudioRef.current.pause();
         audioLongRef.current.pause();
         setVideoType(`${selectedColor}Zoom`)
     }, [selectedColor]);
@@ -117,25 +116,25 @@ const ProductPage = () => {
         switch (selectedColor) {
             case 'Black/Tan':
                 if (isLongAudioEnded) {
-                    cyanAudioRef.current.play();
+                    // cyanAudioRef.current.play();
                 } else {
-                    blackTanSayingRef.current.play()
+                    // blackTanSayingRef.current.play()
                 }
 
-                bronzeAudioRef.current.pause();
-                blackAudioRef.current.pause();
+                // bronzeAudioRef.current.pause();
+                // blackAudioRef.current.pause();
                 audioLongRef.current.pause();
                 break;
             case 'Gold Awning Stripe':
-                bronzeAudioRef.current.play();
-                cyanAudioRef.current.pause();
-                blackAudioRef.current.pause();
+                // bronzeAudioRef.current.play();
+                // cyanAudioRef.current.pause();
+                // blackAudioRef.current.pause();
                 audioLongRef.current.pause();
                 break;
             case 'Multi Petal':
-                blackAudioRef.current.play();
-                bronzeAudioRef.current.pause();
-                cyanAudioRef.current.pause();
+                // blackAudioRef.current.play();
+                // bronzeAudioRef.current.pause();
+                // cyanAudioRef.current.pause();
                 audioLongRef.current.pause();
                 break;
             default:
@@ -151,10 +150,11 @@ const ProductPage = () => {
 
     const handleShortAudioEnded = () => {
         audioLongRef.current.play();
-        cyanAudioRef.current.currentTime = 0; // Reset short audio to start for next play
-        bronzeAudioRef.current.currentTime = 0;
-        blackAudioRef.current.currentTime = 0;
-        blackTanSayingRef.current.currentTime = 0;
+        // Removed unnecessary reset logic
+        // cyanAudioRef.current.currentTime = 0;
+        // bronzeAudioRef.current.currentTime = 0;
+        // blackAudioRef.current.currentTime = 0;
+        // blackTanSayingRef.current.currentTime = 0;
     };
 
     //     audioLongRef.current.pause();
@@ -166,9 +166,10 @@ const ProductPage = () => {
     const handlePauseAudio = () => {
         debugger
         audioLongRef.current.pause();
-        cyanAudioRef.current.pause();
-        bronzeAudioRef.current.pause();
-        blackAudioRef.current.pause();
+        // Removed unnecessary pause logic
+        // cyanAudioRef.current.pause();
+        // bronzeAudioRef.current.pause();
+        // blackAudioRef.current.pause();
     };
     const handleAddtoBag = () => {
         if (selectedSize) {
@@ -220,7 +221,7 @@ const ProductPage = () => {
 
             <div className={styles.details_wrapper}>
                 <div className={styles.cartStyles}>
-                    <img src={Cart} alt="" height={"50px"} width={"50px"} />
+                    {/* <img src={Cart} alt="" height={"50px"} width={"50px"} /> */}
                     <p className={styles.items}>{`${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</p>
                 </div>
                 <button onClick={handlePauseAudio}>Pause</button>
@@ -242,7 +243,7 @@ const ProductPage = () => {
                 </div>
                 <div className={styles.zoom_btn_container}>
                     {/* <button className={styles.button} onClick={() => playZoomAudioAsPerSelectedColor()}> */}
-                    <img src={Zoom} alt="" height={"70px"} width={"70px"} onClick={() => playZoomAudioAsPerSelectedColor()} />
+                    {/* <img src={Zoom} alt="" height={"70px"} width={"70px"} onClick={() => playZoomAudioAsPerSelectedColor()} /> */}
                     {/* Closer View */}
                     {/* </button> */}
                 </div>
@@ -273,7 +274,8 @@ const ProductPage = () => {
                 <source src={LongerAudio} type="audio/mpeg" onEnded={() => alert(1)} />
                 Your browser does not support the audio element.
             </audio>
-            <audio ref={cyanAudioRef} onEnded={handleShortAudioEnded}>
+            {/* Removed unused audio elements */}
+            {/* <audio ref={cyanAudioRef} onEnded={handleShortAudioEnded}>
                 <source src={CyanAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
@@ -286,14 +288,13 @@ const ProductPage = () => {
                 Your browser does not support the audio element.
             </audio>
             <audio ref={zoomAudioRef} onEnded={handleShortAudioEnded}>
-                <source src={ZoomAudio} type="audio/mpeg" /> {/* Fixed closing quote */}
+                <source src={ZoomAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
             <audio ref={blackTanSayingRef} onEnded={handleShortAudioEnded}>
                 <source src={BlackTanSaying} type="audio/mpeg" />
                 Your browser does not support the audio element.
-            </audio>
-
+            </audio> */}
         </section>
     );
 };
