@@ -49,7 +49,8 @@ const ProductPage = () => {
     // const blackTanSayingRef = useRef()
     const [pricePerItem] = useState(103.99)
     const [isLongAudioPlaying, setIsLongAudioPlaying] = useState(true);
-    const [isLongAudioEnded, setIsLongAudioEnded] = useState(false);
+    // Removed unused state setter
+    // const [isLongAudioEnded, setIsLongAudioEnded] = useState(false);
     const [selectedColor, setSelectedColor] = useState('Black/Tan');
     const [selectedSize, setSelectedSize] = useState('');
     const [videoType, setVideoType] = useState('')
@@ -91,15 +92,15 @@ const ProductPage = () => {
         }
     }, [selectedColor, videoType]);
 
-    const playZoomAudioAsPerSelectedColor = useCallback(() => {
-        // Removed unnecessary play logic
-        // zoomAudioRef.current.play();
-        // cyanAudioRef.current.pause();
-        // bronzeAudioRef.current.pause();
-        // blackAudioRef.current.pause();
-        audioLongRef.current.pause();
-        setVideoType(`${selectedColor}Zoom`)
-    }, [selectedColor]);
+    // Removed unused function
+    // const playZoomAudioAsPerSelectedColor = useCallback(() => {
+    //     zoomAudioRef.current.play();
+    //     cyanAudioRef.current.pause();
+    //     bronzeAudioRef.current.pause();
+    //     blackAudioRef.current.pause();
+    //     audioLongRef.current.pause();
+    //     setVideoType(`${selectedColor}Zoom`)
+    // }, [selectedColor]);
 
 
     console.log({ ended: audioLongRef })
@@ -115,11 +116,12 @@ const ProductPage = () => {
         console.log({ selectedColor })
         switch (selectedColor) {
             case 'Black/Tan':
-                if (isLongAudioEnded) {
-                    // cyanAudioRef.current.play();
-                } else {
-                    // blackTanSayingRef.current.play()
-                }
+                // Removed unused variable usage
+                // if (isLongAudioEnded) {
+                //     cyanAudioRef.current.play();
+                // } else {
+                //     blackTanSayingRef.current.play()
+                // }
 
                 // bronzeAudioRef.current.pause();
                 // blackAudioRef.current.pause();
@@ -140,7 +142,7 @@ const ProductPage = () => {
             default:
                 break;
         }
-    }, [isLongAudioEnded]) // Added isLongAudioEnded as a dependency
+    }, []) // Removed unused dependency
 
     useEffect(() => {
         if (!isLongAudioPlaying) {
@@ -148,14 +150,14 @@ const ProductPage = () => {
         }
     }, [selectedColor, isLongAudioPlaying, handlePlayAudioAsPerSelectedColor]);
 
-    const handleShortAudioEnded = () => {
-        audioLongRef.current.play();
-        // Removed unnecessary reset logic
-        // cyanAudioRef.current.currentTime = 0;
-        // bronzeAudioRef.current.currentTime = 0;
-        // blackAudioRef.current.currentTime = 0;
-        // blackTanSayingRef.current.currentTime = 0;
-    };
+    // Removed unused function
+    // const handleShortAudioEnded = () => {
+    //     audioLongRef.current.play();
+    //     cyanAudioRef.current.currentTime = 0; // Reset short audio to start for next play
+    //     bronzeAudioRef.current.currentTime = 0;
+    //     blackAudioRef.current.currentTime = 0;
+    //     blackTanSayingRef.current.currentTime = 0;
+    // };
 
     //     audioLongRef.current.pause();
     //     cyanAudioRef.current.currentTime = 0; // Reset short audio to start for next play
@@ -204,7 +206,7 @@ const ProductPage = () => {
     //     setIsLongAudioEnded(true)
     //     audioLongRef.current.currentTime = 0;
     // }
-    console.log(isLongAudioEnded)
+    console.log(isLongAudioPlaying)
     return (
         <section className={isBigScreen ? styles.container_b : styles.container_s}>
             {selectedColor && (
