@@ -2,14 +2,14 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
 body {
-    padding-top: 60px;
+    padding-top: 25px;
     padding-bottom: 60px;
 }
 
 header {
     background-color: #333;
     color: white;
-    padding: 10px 0;
+    padding: 2px 0;
     position: fixed;
     top: 0;
     width: 100%;
@@ -27,6 +27,7 @@ header {
     padding: 0;
     margin: 0;
     gap: 20px; /* Added spacing between items */
+    justify-content: center;
 }
 
 .menu-bar li {
@@ -69,7 +70,9 @@ main {
 .hero h1 {
     font-size: 3rem;
     margin: 0;
-    font-weight: bold;
+    /* font-weight: 400; */
+    /* color: #08090b; */
+    font-weight: 400;
 }
 
 .tile-grid {
@@ -174,9 +177,15 @@ main {
     margin-top: 10px;
 }
 
+.authentication-msg{
+     display: flex;
+     margin-top: 20px;
+     text-align: center
+}
+
 .login-link {
     display: block;
-    margin-top: 20px;
+    margin-top:0px;
     text-align: center;
     color: #007bff;
 }
@@ -400,16 +409,6 @@ main {
     font-weight: bold;
 }
 
-.login-link {
-    display: block;
-    margin-top: 20px;
-    text-align: center;
-    color: #007bff;
-}
-
-.login-link:hover {
-    text-decoration: underline;
-}
 
 .success-message {
     background-color: #dff0d8;
@@ -449,4 +448,15 @@ main {
 
 .back-to-admin:hover {
     background-color: #0056b3;
+}
+
+.password {
+    display: flex;
+    justify-content: space-between;
+}
+.auth-btn {
+display: flex;
+justify-content: space-around;
+text-align: center;
+margin: 5px
 }

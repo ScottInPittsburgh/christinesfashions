@@ -52,7 +52,7 @@ const Login = () => {
                         required
                     />
                 </div>
-                <div>
+                <div className='password'>
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"
@@ -62,11 +62,16 @@ const Login = () => {
                         required
                     />
                 </div>
+                <div className='auth-btn'>
+
                 <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
+                <button onClick={() => setIsRegistering(!isRegistering)}>
+                    {isRegistering ? 'Back to Login' : 'Create Account'}
+                </button>
+
+                </div>
             </form>
-            <button onClick={() => setIsRegistering(!isRegistering)}>
-                {isRegistering ? 'Back to Login' : 'Create Account'}
-            </button>
+
         </div>
     );
 };

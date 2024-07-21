@@ -103,8 +103,11 @@ const Cart = () => {
                     )}
                 </div>
                 {!isAuthenticated && (
-                    <p>Please <Link to="/login" className="login-link">login or create an account</Link> to complete your order.</p>
+                    <p className="authentication-msg">
+                        Please <Link to="/login" className="login-link" style={{ color: '#007bff', marginLeft: '5px', marginRight: '5px' }}>login or create an account</Link> to complete your order.
+                    </p>
                 )}
+
             </main>
         </div>
     );

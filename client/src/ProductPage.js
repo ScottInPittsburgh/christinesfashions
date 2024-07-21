@@ -100,6 +100,9 @@ const ProductPage = () => {
         setVideoType(`${selectedColor}Zoom`)
     }, [selectedColor]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0); // Scrolls to the top of the page
+      }, []);
 
     useEffect(() => {
         const audioLong = audioLongRef.current;
@@ -168,20 +171,16 @@ const ProductPage = () => {
     };
     const handleAddtoBag = () => {
         if (selectedSize) {
-
             const existingItemIndex = selectedItems.findIndex(item => item.color === selectedColor && item.size === selectedSize);
-
             if (existingItemIndex !== -1) {
-
                 const updatedItems = [...selectedItems];
                 updatedItems[existingItemIndex].quantity += 1;
                 updatedItems[existingItemIndex].totalPrice = pricePerItem * updatedItems[existingItemIndex].quantity;
                 setSelectedItems(updatedItems);
                 localStorage.setItem('cart', JSON.stringify(updatedItems))
             } else {
-
                 const newItem = {
-                    id: Math.random(),
+                    _id: Math.random(),
                     color: selectedColor,
                     size: selectedSize,
                     quantity: 1,

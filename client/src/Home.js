@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import heroImage from './assets/images/content/hero-image.jpg';
 import model1image from './assets/images/content/id1image.png';
 import model2image from './assets/images/content/id2image.png';
 import id1image from './assets/images/content/id1image.jpg';
 import id2image from './assets/images/content/id2image.jpg';
 import id3image from './assets/images/content/id3image.jpg';
-// import Footer from './Footer';
+import WelcomeAudio from "./assets/audios/Hello.m4a";
 import CollectionCard from './CollectionCard';
 import ProductCard from './ProductCard';
 
@@ -21,6 +21,19 @@ const collections = [
 ];
 
 const Home = () => {
+    const welcomeAudioRef = useRef(null);
+    useEffect(() => {
+        const hasUserListenedWelcomAudio = localStorage.getItem('isWelcomeAudioListened') === 'true';
+    
+        if (!hasUserListenedWelcomAudio) {
+          welcomeAudioRef.current.play();
+        }
+    
+        return () => {
+        //   welcomeAudioRef.current.pause();
+          localStorage.setItem('isWelcomeAudioListened', 'true');
+        };
+      }, []); 
     return (
         <div>
             <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
@@ -45,9 +58,12 @@ const Home = () => {
                     </div>
                 </section>
 
-              
+
             </main>
-            {/* <Footer /> */}
+            <audio ref={welcomeAudioRef}>
+                <source src={WelcomeAudio} type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
         </div>
     );
 }
