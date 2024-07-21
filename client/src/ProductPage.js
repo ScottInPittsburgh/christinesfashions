@@ -13,9 +13,10 @@ import BronzeAudio from "./assets/audios/Bronze.m4a";
 import BlackAudio from "./assets/audios/Black.m4a";
 import ZoomAudio from "./assets/audios/Zoom.m4a";
 import BlackTanSaying from "./assets/audios/CyanSaying.m4a";
-import BronzeSaying from "./assets/audios/BronzeSaying.m4a";
-import BlackSaying from "./assets/audios/BlackSaying.m4a";
-import ZoomSaying from "./assets/audios/ZoomSaying.m4a";
+// Removed unused imports
+// import BronzeSaying from "./assets/audios/BronzeSaying.m4a";
+// import BlackSaying from "./assets/audios/BlackSaying.m4a";
+// import ZoomSaying from "./assets/audios/ZoomSaying.m4a";
 import styles from './ProductPage.module.scss';
 import BlackTanColorButton from './assets/images/BlackTanColorButton.png'
 import WhiteColorButton from './assets/images/StripeColorButton.png'
@@ -39,6 +40,7 @@ const ProductSize = ({ value, isSelected, isOutOfStock, onClick }) => (
         {value.toUpperCase()}
     </div>
 );
+
 const ProductPage = () => {
     const videoRef = useRef();
     const audioLongRef = useRef(null);
@@ -101,7 +103,7 @@ const ProductPage = () => {
     }, [selectedColor]);
 
 
-    console.log({ended:audioLongRef})
+    console.log({ ended: audioLongRef })
     useEffect(() => {
         const audioLong = audioLongRef.current;
         audioLong.play();
@@ -139,7 +141,7 @@ const ProductPage = () => {
             default:
                 break;
         }
-    }, [])
+    }, [isLongAudioEnded]) // Added isLongAudioEnded dependency
 
     useEffect(() => {
         if (!isLongAudioPlaying) {
@@ -195,11 +197,12 @@ const ProductPage = () => {
         }
     };
 
-    const handleLongAudioEnded = () => {
-        debugger
-        setIsLongAudioEnded(true)
-        audioLongRef.current.currentTime = 0;
-    }
+    // Removed unused function
+    // const handleLongAudioEnded = () => {
+    //     debugger
+    //     setIsLongAudioEnded(true)
+    //     audioLongRef.current.currentTime = 0;
+    // }
     console.log(isLongAudioEnded)
     return (
         <section className={isBigScreen ? styles.container_b : styles.container_s}>
@@ -267,7 +270,7 @@ const ProductPage = () => {
                 </div>
             </div>
             <audio ref={audioLongRef}>
-                <source src={LongerAudio} type="audio/mpeg" onEnded={()=>alert(1)} />
+                <source src={LongerAudio} type="audio/mpeg" onEnded={() => alert(1)} />
                 Your browser does not support the audio element.
             </audio>
             <audio ref={cyanAudioRef} onEnded={handleShortAudioEnded}>
@@ -279,15 +282,15 @@ const ProductPage = () => {
                 Your browser does not support the audio element.
             </audio>
             <audio ref={blackAudioRef} onEnded={handleShortAudioEnded}>
-                <source src={BlackAudio} type="audio/mpeg" />
+                <source src={BlackAudio} type="audio/mpeg} />
                 Your browser does not support the audio element.
             </audio>
             <audio ref={zoomAudioRef} onEnded={handleShortAudioEnded}>
-                <source src={ZoomAudio} type="audio/mpeg" />
+                <source src={ZoomAudio} type="audio/mpeg} />
                 Your browser does not support the audio element.
             </audio>
             <audio ref={blackTanSayingRef} onEnded={handleShortAudioEnded}>
-                <source src={BlackTanSaying} type="audio/mpeg" />
+                <source src={BlackTanSaying} type="audio/mpeg} />
                 Your browser does not support the audio element.
             </audio>
 
