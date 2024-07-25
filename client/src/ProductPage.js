@@ -9,9 +9,9 @@ import ZoomBlackVideo from './assets/videos/BlackZoom30s.mp4';
 import LongerAudio from "./assets/audios/longAudio.m4a";
 
 import CyanAudio from "./assets/audios/Cyan.m4a";
-import BronzeAudio from "./assets/audios/Bronze.m4a";
-import BlackAudio from "./assets/audios/Black.m4a";
-import ZoomAudio from "./assets/audios/Zoom.m4a";
+import BronzeAudio from "./assets/audios/Bronze.3gp";
+import BlackAudio from "./assets/audios/Black.3gp";
+import ZoomAudio from "./assets/audios/Zoom.3gp";
 import BlackTanSaying from "./assets/audios/CyanSaying.m4a";
 import BlackTanColorButton from './assets/images/BlackTanColorButton.png'
 import WhiteColorButton from './assets/images/StripeColorButton.png'
@@ -44,7 +44,7 @@ const ProductPage = () => {
     const blackAudioRef = useRef(null);
     const zoomAudioRef = useRef(null);
     const blackTanSayingRef = useRef()
-    const [pricePerItem] = useState(103.99)
+    const [pricePerItem] = useState(39.99)
     const [isLongAudioPlaying, setIsLongAudioPlaying] = useState(true);
     const [isLongAudioEnded, setIsLongAudioEnded] = useState(false);
     const [selectedColor, setSelectedColor] = useState('Black/Tan');
