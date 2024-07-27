@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import axios from 'axios'; // S.S. ~ Added to integrate backend
+import axios from 'axios';
 import CyanVideo from './assets/videos/Cyan30s.mp4';
 import BlackVideo from './assets/videos/Black30s.mp4';
 import BronzeVideo from './assets/videos/Bronze30s.mp4';
@@ -27,7 +27,6 @@ const ProductColors = ({ handleSelectedColor }) => (
         <img alt="" className={styles.cyan_button} src={BlackTanColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Black/Tan")} />
         <img alt="" className={styles.cyan_button} src={WhiteColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Gold Awning Stripe")} />
         <img alt="" className={styles.cyan_button} src={StripeColorButton} height={"40px"} width={"40px"} onClick={() => handleSelectedColor("Multi Petal")} />
-
     </div>
 );
 
@@ -53,11 +52,8 @@ const ProductPage = () => {
     const [videoType, setVideoType] = useState('')
     const [selectedItems, setSelectedItems] = useState([])
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
-
-    // S.S. ~ Added to integrate backend
     const [products, setProducts] = useState([]);
 
-    // S.S. ~ Added to integrate backend
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -119,7 +115,7 @@ const ProductPage = () => {
     }, [selectedColor]);
 
     useEffect(() => {
-        window.scrollTo(0, 0); // Scrolls to the top of the page
+        window.scrollTo(0, 0);
     }, []);
 
     useEffect(() => {
@@ -173,7 +169,7 @@ const ProductPage = () => {
         else {
             audioLongRef.current.play();
         }
-        cyanAudioRef.current.currentTime = 0; // Reset short audio to start for next play
+        cyanAudioRef.current.currentTime = 0;
         bronzeAudioRef.current.currentTime = 0;
         blackAudioRef.current.currentTime = 0;
         blackTanSayingRef.current.currentTime = 0;
@@ -186,7 +182,6 @@ const ProductPage = () => {
         blackAudioRef.current.pause();
     };
 
-    // S.S. ~ Modified to integrate backend without changing stock
     const handleAddtoBag = () => {
         if (selectedSize && selectedColor) {
             const productName = `Button Front Ruffle Hem Dress - Color: ${selectedColor} - Size: ${selectedSize}`;
@@ -196,7 +191,8 @@ const ProductPage = () => {
                 const cartItem = {
                     _id: selectedProduct._id,
                     name: selectedProduct.name,
-                    price: pricePerItem, // Keep the hardcoded price
+                    price: pricePerItem,
+                    stock: selectedProduct.stock,  // Include stock information
                     quantity: 1,
                     color: selectedColor,
                     size: selectedSize,
@@ -219,8 +215,10 @@ const ProductPage = () => {
         setIsLongAudioEnded(true)
         audioLongRef.current.currentTime = 0;
     }
+
     console.log({isLongAudioPlaying})
     console.log({isLongAudioEnded})
+
     return (
         <section className={isBigScreen ? styles.container_b : styles.container_s}>
             {selectedColor && (
@@ -241,15 +239,11 @@ const ProductPage = () => {
                     <p className={styles.items}>{`${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</p>
                 </div>
                 <button onClick={handlePauseAudio}>Pause</button>
-                {/* <button className={styles.button}>{`Items in Cart ${selectedItems.length ? selectedItems.reduce((acc, item) => acc + item.quantity, 0) : 0}`}</button> */}
                 <div className={styles.description_variant_container}>
                     <div className={styles.description_containter}>
                         <h1 className={styles.name}>Button Front Ruffle <br />
                             Hem Dress </h1>
                         <h6 className={styles.amount}>$39.99 </h6>
-                        {/* <p className={styles.description}>This is a sample product description.</p>
-                        <p className={styles.description}>This is a sample product description.</p>
-                        <p className={styles.description}>This is a sample product description.</p> */}
                     </div>
                     <div className={styles.variants_container}>
                         <div className={styles.variants_wrapper}>
@@ -258,10 +252,7 @@ const ProductPage = () => {
                     </div>
                 </div>
                 <div className={styles.zoom_btn_container}>
-                    {/* <button className={styles.button} onClick={() => playZoomAudioAsPerSelectedColor()}> */}
                     <img src={Zoom} alt="" height={"70px"} width={"70px"} onClick={() => playZoomAudioAsPerSelectedColor()} />
-                    {/* Closer View */}
-                    {/* </button> */}
                 </div>
                 <div className={styles.controls_wrapper}>
                     <div className={styles.sizes_container}>
@@ -283,7 +274,6 @@ const ProductPage = () => {
                             ADD TO CART
                         </button>
                     </div>
-
                 </div>
             </div>
             <audio ref={audioLongRef} onEnded={handleLongAudioEnded}>
