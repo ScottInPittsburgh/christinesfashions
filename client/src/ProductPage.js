@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import axios from 'axios'; // S.S. ~ Added to integrate backend
 import CyanVideo from './assets/videos/Cyan30s.mp4';
 import BlackVideo from './assets/videos/Black30s.mp4';
 import BronzeVideo from './assets/videos/Bronze30s.mp4';
@@ -53,6 +54,24 @@ const ProductPage = () => {
     const [selectedItems, setSelectedItems] = useState([])
     const isBigScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
+    // S.S. ~ Added to integrate backend
+    const [products, setProducts] = useState([]);
+
+    // S.S. ~ Added to integrate backend
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/products`);
+                const dressProducts = response.data.filter(product =>
+                    product.name.startsWith("Button Front Ruffle Hem Dress")
+                );
+                setProducts(dressProducts);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+        fetchProducts();
+    }, []);
 
     const handleSelectedColor = useCallback((color) => {
         setSelectedColor(color);
@@ -90,7 +109,6 @@ const ProductPage = () => {
         }
     }, [selectedColor, videoType]);
 
-
     const playZoomAudioAsPerSelectedColor = useCallback(() => {
         zoomAudioRef.current.play();
         cyanAudioRef.current.pause();
@@ -102,7 +120,7 @@ const ProductPage = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0); // Scrolls to the top of the page
-      }, []);
+    }, []);
 
     useEffect(() => {
         const audioLong = audioLongRef.current;
@@ -148,7 +166,6 @@ const ProductPage = () => {
         }
     }, [selectedColor, isLongAudioPlaying, handlePlayAudioAsPerSelectedColor]);
 
-
     const handleShortAudioEnded = () => {
         if (isLongAudioEnded) {
             audioLongRef.current.pause();
@@ -163,38 +180,42 @@ const ProductPage = () => {
     };
 
     const handlePauseAudio = () => {
-
         audioLongRef.current.pause();
         cyanAudioRef.current.pause();
         bronzeAudioRef.current.pause();
         blackAudioRef.current.pause();
     };
+
+    // S.S. ~ Modified to integrate backend
     const handleAddtoBag = () => {
-        if (selectedSize) {
-            const existingItemIndex = selectedItems.findIndex(item => item.color === selectedColor && item.size === selectedSize);
-            if (existingItemIndex !== -1) {
-                const updatedItems = [...selectedItems];
-                updatedItems[existingItemIndex].quantity += 1;
-                updatedItems[existingItemIndex].totalPrice = pricePerItem * updatedItems[existingItemIndex].quantity;
-                setSelectedItems(updatedItems);
-                localStorage.setItem('cart', JSON.stringify(updatedItems))
-            } else {
-                const newItem = {
-                    _id: Math.random(),
+        if (selectedSize && selectedColor) {
+            const productName = `Button Front Ruffle Hem Dress - Color: ${selectedColor} - Size: ${selectedSize}`;
+            const selectedProduct = products.find(product => product.name === productName);
+
+            if (selectedProduct) {
+                const cartItem = {
+                    _id: selectedProduct._id,
+                    name: selectedProduct.name,
+                    price: pricePerItem, // Keep the hardcoded price
+                    quantity: 1,
                     color: selectedColor,
                     size: selectedSize,
-                    quantity: 1,
                     totalPrice: pricePerItem
                 };
-                setSelectedItems([...selectedItems, newItem]);
-                localStorage.setItem('cart', JSON.stringify([...selectedItems, newItem]))
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(cartItem);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                setSelectedItems(cart);
+                alert('Product added to cart!');
+            } else {
+                alert('Product not found. Please try again.');
             }
+        } else {
+            alert('Please select both color and size');
         }
     };
 
-
     const handleLongAudioEnded = () => {
-
         setIsLongAudioEnded(true)
         audioLongRef.current.currentTime = 0;
     }
