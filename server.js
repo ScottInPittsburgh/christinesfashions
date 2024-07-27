@@ -223,8 +223,8 @@ app.get('/api/admin/orders', async (req, res) => {
 
         const processedOrders = orders.map(order => ({
             ...order,
-            user: order.user.username || order.user,
-            products: order.products.map(product => product.name || product)
+            user: order.user.toString(), // Convert ObjectId to string
+            products: order.products.map(product => product.toString()) // Convert ObjectIds to strings
         }));
 
         res.json(processedOrders);

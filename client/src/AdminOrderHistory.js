@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-//import { Link } from 'react-router-dom';
 import './styles.css';
 
 const AdminOrderHistory = () => {
@@ -38,14 +37,14 @@ const AdminOrderHistory = () => {
                     {orders.map(order => (
                         <li key={order._id} className="order-item">
                             <h3>Order ID: {order._id}</h3>
-                            <p>User: {order.user.username || order.user}</p>
+                            <p>User ID: {order.user}</p>
                             <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
                             <p>Total Amount: ${order.totalAmount.toFixed(2)}</p>
                             <p>Status: {order.status}</p>
                             <h4>Products:</h4>
                             <ul>
                                 {order.products.map((product, index) => (
-                                    <li key={index}>{product.name || product}</li>
+                                    <li key={index}>{product}</li>
                                 ))}
                             </ul>
                         </li>
