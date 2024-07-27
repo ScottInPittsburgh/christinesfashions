@@ -218,10 +218,18 @@ app.get('/api/orders/:userId', async (req, res) => {
 app.get('/api/admin/orders', async (req, res) => {
     console.log('GET /api/admin/orders request received');
     try {
-        const orders = await Order.find().populate('user', 'username').populate('products', 'name');
+        const orders = await Order.find().lean();
         console.log('Orders found:', orders.length);
+
+        // Remove null products and handle missing user data
+        const cleanedOrders = orders.map(order => ({
+            ...order,
+            products: order.products.filter(product => product != null),
+            user: order.user ? order.user.toString() : 'Unknown User'
+        }));
+
         res.set('Cache-Control', 'no-store');
-        res.json(orders);
+        res.json(cleanedOrders);
     } catch (error) {
         console.error('Error fetching admin orders:', error);
         res.status(500).json({ error: 'Error fetching admin orders', details: error.message });
