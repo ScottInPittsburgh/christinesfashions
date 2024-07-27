@@ -218,16 +218,9 @@ app.get('/api/orders/:userId', async (req, res) => {
 app.get('/api/admin/orders', async (req, res) => {
     console.log('GET /api/admin/orders request received');
     try {
-        const orders = await Order.find().lean();
+        const orders = await Order.find().populate('user', 'username').populate('products', 'name');
         console.log('Orders found:', orders.length);
-
-        const processedOrders = orders.map(order => ({
-            ...order,
-            user: order.user.toString(), // Convert ObjectId to string
-            products: order.products.map(product => product.toString()) // Convert ObjectIds to strings
-        }));
-
-        res.json(processedOrders);
+        res.json(orders);
     } catch (error) {
         console.error('Error fetching admin orders:', error);
         res.status(500).json({ error: 'Error fetching admin orders', details: error.message });

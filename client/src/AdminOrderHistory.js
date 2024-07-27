@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import './styles.css';
 
 const AdminOrderHistory = () => {
     const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/admin/orders`);
-                console.log('Orders received:', response.data);
                 setOrders(response.data);
             } catch (error) {
                 console.error('Error fetching orders:', error);
-                setError('Failed to fetch orders. Please try again.');
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchOrders();
     }, []);
-
-    if (loading) return <div>Loading orders...</div>;
-    if (error) return <div>{error}</div>;
 
     return (
         <div className="admin-order-history-container">
@@ -37,20 +29,21 @@ const AdminOrderHistory = () => {
                     {orders.map(order => (
                         <li key={order._id} className="order-item">
                             <h3>Order ID: {order._id}</h3>
-                            <p>User ID: {order.user}</p>
+                            <p>User: {order.user.username}</p>
                             <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
                             <p>Total Amount: ${order.totalAmount.toFixed(2)}</p>
                             <p>Status: {order.status}</p>
                             <h4>Products:</h4>
                             <ul>
-                                {order.products.map((product, index) => (
-                                    <li key={index}>{product}</li>
+                                {order.products.map(product => (
+                                    <li key={product._id}>{product.name}</li>
                                 ))}
                             </ul>
                         </li>
                     ))}
                 </ul>
             )}
+            <Link to="/admin" className="back-to-admin">Back to Admin Dashboard</Link>
         </div>
     );
 };
