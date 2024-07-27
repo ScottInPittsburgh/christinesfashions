@@ -12,6 +12,7 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    console.log(`${process.env.REACT_APP_API_BASE_URL}`)
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

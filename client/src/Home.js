@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef,useState, useEffect } from 'react';
 import heroImage from './assets/images/content/hero-image.jpg';
 import model1image from './assets/images/content/id1image.png';
 import model2image from './assets/images/content/id2image.png';
@@ -11,6 +11,7 @@ import pantsimage from './assets/images/content/pantsimage.png';
 import WelcomeAudio from "./assets/audios/Hello.3gp";
 import CollectionCard from './CollectionCard';
 import ProductCard from './ProductCard';
+import Modal from './Modal'
 
 const newArrivals = [
     { id: 1, name: 'Button Front Ruffle Hem Dress', description: 'Light and breezy', price: 39.99, imageUrl: model1image, link: '/productpage/1' },
@@ -24,21 +25,35 @@ const collections = [
 ];
 
 const Home = () => {
+    const hasUserListenedWelcomAudio = localStorage.getItem('isWelcomeAudioListened') === 'true';
     const welcomeAudioRef = useRef(null);
+    const [isModalOpen, setIsModalOpen] = useState(!hasUserListenedWelcomAudio);
+    const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+
     useEffect(() => {
-        const hasUserListenedWelcomAudio = localStorage.getItem('isWelcomeAudioListened') === 'true';
-    
-        if (!hasUserListenedWelcomAudio) {
-          welcomeAudioRef.current.play();
-        }
-    
         return () => {
         //   welcomeAudioRef.current.pause();
           localStorage.setItem('isWelcomeAudioListened', 'true');
         };
       }, []); 
+
+      useEffect(() => {
+       
+        if (isAudioPlaying && welcomeAudioRef.current && !hasUserListenedWelcomAudio) {
+          welcomeAudioRef.current.play().catch(error => {
+            console.error('Playback error:', error);
+          });
+        }
+        
+      }, [isAudioPlaying]);
+    
+      const handleModalClose = () => {
+        setIsModalOpen(false);
+        setIsAudioPlaying(true); // Start playing audio after closing the modal
+      };
     return (
         <div>
+             <Modal isOpen={isModalOpen} onClose={handleModalClose} />
             <div className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
                 <h1>Christine's Fashions</h1>
             </div>
