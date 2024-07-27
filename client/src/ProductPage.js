@@ -186,7 +186,7 @@ const ProductPage = () => {
         blackAudioRef.current.pause();
     };
 
-    // S.S. ~ Modified to integrate backend
+    // S.S. ~ Modified to integrate backend without changing stock
     const handleAddtoBag = () => {
         if (selectedSize && selectedColor) {
             const productName = `Button Front Ruffle Hem Dress - Color: ${selectedColor} - Size: ${selectedSize}`;
