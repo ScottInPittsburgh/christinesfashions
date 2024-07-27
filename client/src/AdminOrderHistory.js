@@ -4,12 +4,22 @@ import { Link } from 'react-router-dom';
 import './styles.css';
 
 const AdminOrderHistory = () => {
+    console.log('AdminOrderHistory component rendering');
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
+        console.log('AdminOrderHistory component mounted');
         const fetchOrders = async () => {
+            console.log('Fetching orders...'); // Added
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/admin/orders`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/admin/orders`, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache',
+                        'Expires': '0',
+                    }
+                });
+                console.log('Orders received:', response.data);
                 setOrders(response.data);
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -19,11 +29,12 @@ const AdminOrderHistory = () => {
         fetchOrders();
     }, []);
 
+    console.log('Rendering AdminOrderHistory, orders:', orders);
     return (
         <div className="admin-order-history-container">
             <h1>All Orders</h1>
             {orders.length === 0 ? (
-                <p>No orders have been placed yet.</p>
+                <p>No orders found.</p>
             ) : (
                 <ul className="order-list">
                     {orders.map(order => (

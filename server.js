@@ -219,10 +219,12 @@ app.get('/api/admin/orders', async (req, res) => {
     console.log('GET /api/admin/orders request received');
     try {
         const orders = await Order.find().populate('user', 'username').populate('products', 'name');
+        console.log('Orders found:', orders.length);
+        res.set('Cache-Control', 'no-store');
         res.json(orders);
     } catch (error) {
         console.error('Error fetching admin orders:', error);
-        res.status(500).json({ error: 'Error fetching admin orders', details: error.message, stack: error.stack });
+        res.status(500).json({ error: 'Error fetching admin orders', details: error.message });
     }
 });
 
