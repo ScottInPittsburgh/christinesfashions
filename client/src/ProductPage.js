@@ -88,6 +88,8 @@ const ProductPage = () => {
                 bronzeAudioRef.current.pause();
                 blackAudioRef.current.pause();
                 audioLongRef.current.pause();
+                goldSayingRef.current.pause();
+                multiSayingRef.current.pause();
                 break;
             case 'Gold Awning Stripe':
                 if (isLongAudioEnded) {
@@ -98,6 +100,8 @@ const ProductPage = () => {
                 cyanAudioRef.current.pause();
                 blackAudioRef.current.pause();
                 audioLongRef.current.pause();
+                blackTanSayingRef.current.pause();
+                multiSayingRef.current.pause();
                 break;
             case 'Multi Petal':
                 if (isLongAudioEnded) {
@@ -109,6 +113,8 @@ const ProductPage = () => {
                 bronzeAudioRef.current.pause();
                 cyanAudioRef.current.pause();
                 audioLongRef.current.pause();
+                blackTanSayingRef.current.pause();
+                goldSayingRef.current.pause();
                 break;
             default:
                 break;
@@ -162,6 +168,9 @@ const ProductPage = () => {
         cyanAudioRef.current.pause();
         bronzeAudioRef.current.pause();
         blackAudioRef.current.pause();
+        blackTanSayingRef.current.pause();
+        goldSayingRef.current.pause();
+        multiSayingRef.current.pause();
         audioLongRef.current.pause();
         setVideoType(`${selectedColor}Zoom`)
     }, [selectedColor,isLongAudioEnded]);

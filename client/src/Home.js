@@ -45,7 +45,7 @@ const Home = () => {
           });
         }
         
-      }, [isAudioPlaying]);
+      }, [isAudioPlaying,hasUserListenedWelcomAudio]);
     
       const handleModalClose = () => {
         setIsModalOpen(false);
@@ -60,9 +60,9 @@ const Home = () => {
             <main>
                 <section className="new-arrivals">
                     <h2>New Arrivals</h2>
-                    <div className="tile-grid">
+                    <div className="custom-tile-grid">
                         {newArrivals.map(product => (
-                            <ProductCard key={product.id} {...product} />
+                            <ProductCard key={product.id}  customStyles={true}  {...product} />
                         ))}
                     </div>
                 </section>
@@ -71,7 +71,7 @@ const Home = () => {
                     <h2>Our Collections</h2>
                     <div className="tile-grid">
                         {collections.map(collection => (
-                            <CollectionCard key={collection.id} {...collection} />
+                            <CollectionCard key={collection.id}{...collection} />
                         ))}
                     </div>
                 </section>
